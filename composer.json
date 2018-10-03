@@ -1,0 +1,24 @@
+{
+    "name": "kryptoam/srppfg",
+    "description": "Sistema de registro de perfiles de proyectos de grado para FCyT de USMM",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "JCarlos Campos",
+            "email": "solrak.cj@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "AppPHP\\": "app/"
+        }
+    },
+    "require": {
+        "phroute/phroute": "^2.1",
+        "twig/twig": "^1.35",
+        "illuminate/database": "^5.4"
+    },
+    
+    "require-dev": {}
+}

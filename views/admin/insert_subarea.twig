@@ -1,0 +1,28 @@
+{% extends 'layout.twig' %}
+
+{% block content %}
+    <h2>Nueva sub area</h2>
+    <a href="{{ 'admin/subarea/' | url }}">Atras</a>
+    <div class="container-register">                              
+        <form class="group-content-register" action="" method="post">
+            <div class="wrap-register">
+                <h1 class="center-text">Registro de sub area.</h1>
+                <label for="nombsubarea"><b>Nombre de sub área <strong class="check">*</strong></b></label>
+                <input type="text" placeholder="Ingrese sub area" name="nombsubarea" id="nombsubarea" required>
+
+                <label for="email"><b>Nombre de area <strong class="check">*</strong></b></label>
+                <select name="nombareasel" id="nombareasel">
+                    {% for area in areas %}
+                        <option value="{{ area.id_area }}">{{ area.nomb_area }}</option>
+                    {% endfor %}
+                </select>              
+
+                <label for="email"><b>Descripción del área <strong class="check">*</strong></b></label>
+                <textarea class="form-control" name="descsubarea" id="descsubarea" rows="5"></textarea>
+                   
+                <input type="submit" value="Guardar">
+                
+            </div>
+        </form>
+    </div> 
+{% endblock %}

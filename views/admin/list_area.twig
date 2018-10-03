@@ -1,0 +1,26 @@
+{% extends 'layout.twig' %}
+
+{% block content %}
+    <h2>Lista de todas las areas</h2>
+    <a href="{{ 'admin/' | url }}">Atras</a>
+    <br><br>
+    <a href="{{ 'admin/area/create' | url }}">Insertar area</a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Descripcion de area</th>
+                <th scope="col">boton</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for area in areas %}
+                <tr>
+                    <td>{{ area.nomb_area }}</td>
+                    <td>{{ area.desc_area }}</td>
+                    <td><a href="{{ 'admin/' | url }}">boton</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
