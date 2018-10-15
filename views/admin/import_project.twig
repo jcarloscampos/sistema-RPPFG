@@ -1,0 +1,18 @@
+{% extends 'layout.twig' %}
+
+{% block content %}
+    <h2>Importar Proyectos</h2>
+    <a href="{{ 'admin/' | url }}">Atras</a>
+    <div class="container-register">                              
+        <form class="group-content-register" action="" method="post">
+            <div class="wrap-register">
+                <h1 class="center-text">Importar Lista de Proyectos</h1>
+                <hr>
+                <label for="title"><b>Lista de Proyectos<strong class="check">*</strong></b></label>
+                <input type="file" accept=".csv" placeholder="Proyectos" name="listaProyectos" id="listaProyectos">
+                <input type="submit" value="ImportarProyectos">
+                
+            </div>
+        </form>
+    </div>
+{% endblock %}
