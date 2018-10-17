@@ -3,15 +3,15 @@
 namespace AppPHP\Controllers\Admin;
 
 use AppPHP\Controllers\BaseController;
-use AppPHP\Models\Usuario;
-use AppPHP\Models\Docente;
+use AppPHP\Models\ProffesionalUMSS;
 use AppPHP\Models\Area;
 use AppPHP\Models\Subarea;
-use AppPHP\Models\CargaHoraria;
-use AppPHP\Models\GradoAcademico;
+use AppPHP\Models\Workload;
+use AppPHP\Models\ADegree;
+use AppPHP\Models\Account;
 
 /**
- * Clase controlador para lectura, inserción, eliminación y actualización de datos de la tabla docentes
+ * Clase controlador para lectura, inserción, eliminación y actualización de datos de la tabla ProffesionalUMSS
  */
 
 class TeachersController extends BaseController
@@ -44,7 +44,7 @@ class TeachersController extends BaseController
      */
     public function postCreate()
     {
-        //TODO -> Insertar docente desde Administration Page
+        //TODO -> Insertar ProffesionalUMSS desde Administration Page
         // $docente = new Docente([
         //     'nomb_docente' => $_POST['nombdocente'],
         //     'desc_docente' => $_POST['descdocente']
@@ -54,7 +54,7 @@ class TeachersController extends BaseController
     }
 
     /**
-     * Mediante método GET se hace la peticion para mostrar la plantilla para importar docentes
+     * Mediante método GET se hace la peticion para mostrar la plantilla para importar ProffesionalUMSS
      */
     public function getImport()
     {
@@ -92,20 +92,17 @@ class TeachersController extends BaseController
                     $ci = $data[11];
                     $cod_sis = $data[12];
 
-                    //validamos la informacion e insertamos los datos en el sig orden:
-                    // Verificamos si el usuario ya existe regsitrado como docente:
+                    // Verificamos si el usuario ya existe registrado como docente:
                     // Validamos si existe la carga horaria
                     // validamos si existe el grado academico
-                    // Insertamos los datos de usuario
                     // Insertamos los datos del docente
-                    $id_user = Usuario::where('nomb_usuario', $nombre)
-                                        ->where('ap_pat_usuario', $ap_paterno)
-                                        ->where('ap_mat_usuario', $ap_materno)
-                                        ->where('ci_usuario', $ci)
-                                        ->where('email_usuario', $email)->first();
-                    if (is_null($id_user)){
-                        $id_carga_horaria = CargaHoraria::where('nombre_carga_horaria',$carga_horaria)->first();
-                        $id_grado_academico = GradoAcademico::where('nombre_grado',$grado_academico)->first();
+                    $user_exists = ProffesionalUMSS::where('name', $nombre)
+                                        ->where('l_name', $ap_paterno)
+                                        ->where('ml_name', $ap_materno)
+                                        ->where('ci', $ci)->first();
+                    if (is_null($user_exists)){
+                        $id_carga_horaria = Workload::where('name_wl',$carga_horaria)->first();
+                        $id_grado_academico = ADegree::where('name_ad',$grado_academico)->first();
                         if(is_null($id_carga_horaria)){
                             $result = 'Carga horaria: ' . $carga_horaria . ' no registrada.';
                         }else{
@@ -115,38 +112,32 @@ class TeachersController extends BaseController
                                 if($pass_cuenta == ''){
                                     $pass_cuenta = $nombre_cuenta . '.123';
                                 }
-                                $usuario = new Usuario([
-                                    'nomb_usuario' => $nombre,
-                                    'ap_pat_usuario' => $ap_paterno,
-                                    'ap_mat_usuario' => $ap_materno,
-                                    'ci_usuario' => $ci,
-                                    'email_usuario' => $email,
-                                    'telf_usuario' => $telefono,
-                                    'dir_usuario' => $direccion,
-                                    'nombre_cta' => $nombre_cuenta,
-                                    'pass_cta' => $pass_cuenta
+                                $account = new Account([
+                                    'username' => $nombre_cuenta,
+                                    'password' => $pass_cuenta
                                 ]);
-                                $usuario->save();
-                                $id_user = Usuario::where('nomb_usuario', $nombre)
-                                                    ->where('ap_pat_usuario', $ap_paterno)
-                                                    ->where('ap_mat_usuario', $ap_materno)
-                                                    ->where('ci_usuario', $ci)
-                                                    ->where('email_usuario', $email)->first();
-                                if (is_null($id_user)){
-                                    $result = 'Usuario: ' . $nomb_usuario . ' no registrado.';
+                                $account->save();
+                                $account_id = Account::where('username', $nombre_cuenta)
+                                                    ->where('password', $pass_cuenta)->first();
+                                if (is_null($account_id)){
+                                    $result = 'Cuenta de Usuario: ' . $nomb_usuario . ' no registrada.';
                                 }else{
-                                    if($pass_cuenta == ''){
-                                        $pass_cuenta = $nombre_cuenta . '.123';
-                                    }
                                     //Insertamos los datos del docente
-                                    $docente = new Docente([
-                                        'cod_sis_docente' => $cod_sis,
-                                        'perfil_docente' => $perfil,
-                                        'id_grado_academico' => $id_grado_academico->id_grado,
-                                        'id_usuario' => $id_user->id_usuario,
-                                        'id_carga_horaria' => $id_carga_horaria->id_carga_horaria
+                                    $proffesionalUMSS = new ProffesionalUMSS([
+                                        'ci' => $ci,
+                                        'name' => $nombre,
+                                        'l_name' => $ap_paterno,
+                                        'ml_name' => $ap_materno,
+                                        'email' => $email,
+                                        'phone' => $telefono,
+                                        'address' => $direccion,
+                                        'cod_sis' => $cod_sis,
+                                        'id_a_degree' => $id_grado_academico->id,
+                                        'id_workload' => $id_carga_horaria->id,
+                                        'profile' => $perfil,
+                                        'id_account' => $account_id->id
                                     ]);
-                                    $docente->save();
+                                    $proffesionalUMSS->save();
                                 }
                             }
                         }
