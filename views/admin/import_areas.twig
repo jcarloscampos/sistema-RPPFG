@@ -2,14 +2,12 @@
 
 {% block content %}
     <h2>Importar Areas y Subareas</h2>
-    <a href="{{ 'admin/' | url }}">Atras</a>
+    <a href="{{ 'admin/area' | url }}">Atras</a>
     <div class="container-register">                              
-        <form class="group-content-register" action="" method="post">
+        <form class="group-content-register" action="" method="post" enctype="multipart/form-data">
             <div class="wrap-register">
-                <h1 class="center-text">Importar Lista de Areas y Subareas</h1>
-                <hr>
                 <label for="title"><b>Lista de Areas y Subareas<strong class="check">*</strong></b></label>
-                <input type="file" accept=".csv" placeholder="AreasSubareas" name="listaAreasSubareas" id="listaAreasSubareas">
+                <input type="file" accept=".csv" name="listaAreasSubareas" id="listaAreasSubareas">
                 <input type="submit" value="ImportarAreas">
                 
             </div>
