@@ -56,7 +56,7 @@ $router->controller('/admin', AppPHP\Controllers\Admin\IndexController::class);
 $router->controller('/admin/area', AppPHP\Controllers\Admin\AddareaController::class);
 $router->controller('/admin/subarea', AppPHP\Controllers\Admin\AddsubareaController::class);
 
-//$router->controller('/admin/importteacher', AppPHP\Controllers\Admin\ImportteacherController::class);
+$router->controller('/admin/teachers', AppPHP\Controllers\Admin\TeachersController::class);
 //$router->controller('/admin/importproject', AppPHP\Controllers\Admin\ImportprojectController::class);
 
 $router->controller('/', AppPHP\Controllers\IndexController::class);

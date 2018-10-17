@@ -83,11 +83,14 @@ class AddareaController extends BaseController
                     $parentID = $data[3];
                     //insertamos el area solo si no tiene un area ID es decir, solo si no es una subarea
                     if(!$parentID){
-                        $area = new Area([
-                            'nomb_area' => $nomb_area,
-                            'desc_area' => $desc_area
-                            ]);
-                        $area->save();
+                        $area = Area::where('nomb_area',$nomb_area)->get();
+                        if(!count($area)){
+                            $area = new Area([
+                                'nomb_area' => $nomb_area,
+                                'desc_area' => $desc_area
+                                ]);
+                            $area->save();
+                        }
                         $Areas_list[$index] = $nomb_area;
                     }
                 }
@@ -124,9 +127,9 @@ class AddareaController extends BaseController
         else
         {
             //si aparece esto es posible que el archivo no tenga el formato adecuado, inclusive cuando es cvs, revisarlo para
-            //ver si esta separado por " , "
+            //ver si esta separado por " ; "
             $result = "Archivo invalido!";
         }
-        return $this->render('admin/import_areas.twig', ['result'=>$result]);
+        return $this->render('admin/import_areas.twig');
     }
 }
