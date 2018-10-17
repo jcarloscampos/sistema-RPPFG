@@ -1,0 +1,18 @@
+{% extends 'layout.twig' %}
+
+{% block content %}
+    <h2>Importar Docentes</h2>
+    <a href="{{ 'admin/' | url }}">Atras</a>
+    <div class="container-register">                              
+        <form class="group-content-register" action="" method="post">
+            <div class="wrap-register">
+                <h1 class="center-text">Importar Lista de Docentes</h1>
+                <hr>
+                <label for="title"><b>Lista de Docentes<strong class="check">*</strong></b></label>
+                <input type="file" accept=".csv" placeholder="Docentes" name="listaDocentes" id="listaDocentes">
+                <input type="submit" value="ImportarDocentes">
+                
+            </div>
+        </form>
+    </div>
+{% endblock %}

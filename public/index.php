@@ -55,6 +55,10 @@ $router = new RouteCollector();
 $router->controller('/admin', AppPHP\Controllers\Admin\IndexController::class);
 $router->controller('/admin/area', AppPHP\Controllers\Admin\AddareaController::class);
 $router->controller('/admin/subarea', AppPHP\Controllers\Admin\AddsubareaController::class);
+
+//$router->controller('/admin/importteacher', AppPHP\Controllers\Admin\ImportteacherController::class);
+//$router->controller('/admin/importproject', AppPHP\Controllers\Admin\ImportprojectController::class);
+
 $router->controller('/', AppPHP\Controllers\IndexController::class);
 
 /*El Dispatcher, es el objeto que va a tomar la ruta que nos llega y manda a llamar la función que realmente se necesita

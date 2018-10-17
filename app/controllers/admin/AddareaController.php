@@ -3,6 +3,7 @@
 namespace AppPHP\Controllers\Admin;
 
 use AppPHP\Controllers\BaseController;
+use AppPHP\Models\Subarea;
 use AppPHP\Models\Area;
 
 /**
@@ -35,7 +36,7 @@ class AddareaController extends BaseController
 
     /**
      * Por metoodo POST se hace la insercion de datos en BD. para pasar la informacion
-     * lo que se hace es pasar el areglo dentro del constructor
+     * lo que se hace es pasar el arreglo dentro del constructor
      */
     public function postCreate()
     {
@@ -45,5 +46,87 @@ class AddareaController extends BaseController
         ]);
         $area->save();
         return $this->render('admin/insert_area.twig', ['result'=>$result]);
+    }
+
+    /**
+     * Mediante método GET se hace la peticion para mostrar la plantilla para importar areas
+     */
+    public function getImport()
+    {
+        return $this->render('admin/import_areas.twig');
+    }
+
+    /**
+     * Por metoodo POST se hace la insercion de datos en BD. para pasar la informacion
+     * lo que se hace es pasar el arreglo dentro del constructor
+     */
+    public function postImport()
+    {
+        $fname = $_FILES['listaAreasSubareas']['name'];
+        $chk_ext = explode(".",$fname);
+
+        if(strtolower(end($chk_ext)) == "csv")
+        {
+            //si es correcto, entonces damos permisos de lectura para subir
+            $filename = $_FILES['listaAreasSubareas']['tmp_name'];
+            $handle = fopen($filename, "r");
+            //Identificamos solamente las áreas y omitimos cualquier subárea
+            $Areas_list=array();
+            $counter = 0;
+            while (($data = fgetcsv($handle, 1000, ";")) !== FALSE)
+            {
+                //asi omitimos la columna de titulos
+                if($counter > 0){
+                    $index = $data[0];
+                    $nomb_area = $data[1];
+                    $desc_area = $data[2];
+                    $parentID = $data[3];
+                    //insertamos el area solo si no tiene un area ID es decir, solo si no es una subarea
+                    if(!$parentID){
+                        $area = new Area([
+                            'nomb_area' => $nomb_area,
+                            'desc_area' => $desc_area
+                            ]);
+                        $area->save();
+                        $Areas_list[$index] = $nomb_area;
+                    }
+                }
+                $counter++;
+            }
+            fclose($handle);
+            $handle = fopen($filename, "r");
+            //Identificamos solamente las subárea y las insertamos en sus respectivas áreas
+            $counter = 0;
+            while (($data = fgetcsv($handle, 1000, ";")) !== FALSE)
+            {
+                if($counter > 0){
+                    $index = $data[0];
+                    $nomb_subarea = $data[1];
+                    $desc_subarea = $data[2];
+                    $parentID = $data[3];
+                    if($parentID){
+                        $parentName = $Areas_list[$parentID];
+                        $area_ID = Area::where('nomb_area',$parentName)->first()->id_area;
+                        $subarea = new Subarea([
+                            'nomb_subarea' => $nomb_subarea,
+                            'desc_subarea' => $desc_subarea,
+                            'id_area' => $area_ID
+                        ]);
+                        $subarea->save();
+                    }
+                }
+                $counter++;
+            }
+            //cerramos la lectura del archivo
+            fclose($handle);
+            $result = "Importación exitosa!";
+        }
+        else
+        {
+            //si aparece esto es posible que el archivo no tenga el formato adecuado, inclusive cuando es cvs, revisarlo para
+            //ver si esta separado por " , "
+            $result = "Archivo invalido!";
+        }
+        return $this->render('admin/import_areas.twig', ['result'=>$result]);
     }
 }
