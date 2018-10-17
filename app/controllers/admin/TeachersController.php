@@ -121,7 +121,7 @@ class TeachersController extends BaseController
                                 $account_id = Account::where('username', $nombre_cuenta)
                                                     ->where('password', $pass_cuenta)->first();
                                 if (is_null($account_id)){
-                                    $result = 'Cuenta de Usuario: ' . $nomb_usuario . ' no registrada.';
+                                    $result = 'Cuenta de Usuario: ' . $nombre_cuenta . ' no registrada.';
                                 }else{
                                     //Insertamos los datos del docente
                                     $proffesionalUMSS = new ProffesionalUMSS([

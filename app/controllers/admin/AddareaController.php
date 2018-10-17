@@ -14,13 +14,13 @@ class AddareaController extends BaseController
 {
     /**
      * Mediante método GET se hace la petición para mostrar las áreas
-     * query()->orderBy('nomb_area', 'desc') realiza lo mismo que 'SELECT * FROM area ORDER BY nomb_area ASC'
+     * query()->orderBy('name_area', 'desc') realiza lo mismo que 'SELECT * FROM area ORDER BY name_area ASC'
      * get() se usa para traer los resultados (ejecuta la consulta y regresa el valor que obtienes)
      * @return la vista con la lista de áreas que están en la BD
      */
     public function getIndex()
     {
-        $areas = Area::query()->orderBy('nomb_area', 'desc')->get();
+        $areas = Area::query()->orderBy('name_area', 'desc')->get();
         //all(); funciona lo mismo que la anterior consulta; solo no hay opción para hacer ordenamiento
         //$areas = Area::all();
         return $this->render('admin/list_area.twig', ['areas' => $areas]);
@@ -41,7 +41,7 @@ class AddareaController extends BaseController
     public function postCreate()
     {
         $area = new Area([
-            'nomb_area' => $_POST['nombarea'],
+            'name_area' => $_POST['nombarea'],
             'desc_area' => $_POST['descarea']
         ]);
         $area->save();
@@ -78,20 +78,20 @@ class AddareaController extends BaseController
                 //asi omitimos la columna de titulos
                 if($counter > 0){
                     $index = $data[0];
-                    $nomb_area = $data[1];
+                    $name_area = $data[1];
                     $desc_area = $data[2];
                     $parentID = $data[3];
                     //insertamos el area solo si no tiene un area ID es decir, solo si no es una subarea
                     if(!$parentID){
-                        $area = Area::where('nomb_area',$nomb_area)->get();
+                        $area = Area::where('name_area',$name_area)->get();
                         if(!count($area)){
                             $area = new Area([
-                                'nomb_area' => $nomb_area,
+                                'name_area' => $name_area,
                                 'desc_area' => $desc_area
                                 ]);
                             $area->save();
                         }
-                        $Areas_list[$index] = $nomb_area;
+                        $Areas_list[$index] = $name_area;
                     }
                 }
                 $counter++;
@@ -104,14 +104,14 @@ class AddareaController extends BaseController
             {
                 if($counter > 0){
                     $index = $data[0];
-                    $nomb_subarea = $data[1];
+                    $name_subarea = $data[1];
                     $desc_subarea = $data[2];
                     $parentID = $data[3];
                     if($parentID){
                         $parentName = $Areas_list[$parentID];
-                        $area_ID = Area::where('nomb_area',$parentName)->first()->id_area;
+                        $area_ID = Area::where('name_area',$parentName)->first()->id;
                         $subarea = new Subarea([
-                            'nomb_subarea' => $nomb_subarea,
+                            'name_subarea' => $name_subarea,
                             'desc_subarea' => $desc_subarea,
                             'id_area' => $area_ID
                         ]);

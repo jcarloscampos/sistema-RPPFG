@@ -14,5 +14,5 @@ class Area extends Model
      * Para salvar datos desde un formulario, Eloquent protege estos modelos
      * Se  define la variable que contendrá los datos a salvar
      */
-    protected $fillable =  ['nomb_area', 'desc_area', 'activo'];
+    protected $fillable =  ['name_area', 'desc_area', 'activo'];
 }

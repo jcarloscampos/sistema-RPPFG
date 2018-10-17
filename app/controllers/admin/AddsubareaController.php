@@ -14,7 +14,7 @@ class AddsubareaController extends BaseController
 {
     public function getIndex()
     {
-        $subareas = Subarea::query()->orderBy('nomb_subarea', 'desc')->get();
+        $subareas = Subarea::query()->orderBy('name_subarea', 'desc')->get();
         return $this->render('admin/list_subarea.twig', ['subareas' => $subareas]);
     }
 
@@ -28,7 +28,7 @@ class AddsubareaController extends BaseController
     {
         $areas = Area::all();
         $subarea = new Subarea([
-            'nomb_subarea' => $_POST['nombsubarea'],
+            'name_subarea' => $_POST['nombsubarea'],
             'desc_subarea' => $_POST['descsubarea'],
             'id_area' => $_POST['nombareasel']
         ]);
