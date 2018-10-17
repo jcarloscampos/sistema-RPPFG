@@ -112,6 +112,7 @@ class TeachersController extends BaseController
                                 if($pass_cuenta == ''){
                                     $pass_cuenta = $nombre_cuenta . '.123';
                                 }
+                                //TODO -> Juan Carlos, por favor cambiar esto con la forma correcta de creacion de cuentas de usuario
                                 $account = new Account([
                                     'username' => $nombre_cuenta,
                                     'password' => $pass_cuenta
