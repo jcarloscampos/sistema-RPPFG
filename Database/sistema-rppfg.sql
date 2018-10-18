@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Oct 17, 2018 at 06:00 PM
+-- Generation Time: Oct 18, 2018 at 01:49 AM
 -- Server version: 10.3.9-MariaDB
 -- PHP Version: 5.6.38
 
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `account` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=112 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Dumping data for table `account`
@@ -51,7 +51,90 @@ INSERT INTO `account` (`id`, `username`, `password`, `created_at`, `updated_at`)
 (21, 'mayk', '$2y$10$S8Je.AJar2s0kU4n7KVoLe3j0SxsyMY4BbNecmuSOEo/4t6p5DdAy', '2018-10-12 14:43:23', '2018-10-12 14:43:23'),
 (22, 'miguel', '$2y$10$vli4JX9b/ZGS/ScDGiKv3O6F6KPUcAcPORlzzBrJT3cDQInNBwmTu', '2018-10-13 03:02:01', '2018-10-13 03:02:01'),
 (23, 'admin22', '$2y$10$iI/OOi2A6CMKCGmuA5kK6.NTMIDPSDRcV3OhyogBmjl5WlJF8TRCe', '2018-10-13 21:12:06', '2018-10-13 21:12:06'),
-(25, 'christian', '$2y$10$jO3Qa6a0NY5vLKvz025j3.LwOUUMa6NZlYncnA1/27pX2ZpKZ1P36', '2018-10-14 23:33:08', '2018-10-14 23:33:08');
+(25, 'christian', '$2y$10$jO3Qa6a0NY5vLKvz025j3.LwOUUMa6NZlYncnA1/27pX2ZpKZ1P36', '2018-10-14 23:33:08', '2018-10-14 23:33:08'),
+(29, 'pab.aze', 'pab.aze.123', '2018-10-17 18:03:18', '2018-10-17 18:03:18'),
+(30, 'vla.cos', 'vla.cos.123', '2018-10-17 18:03:18', '2018-10-17 18:03:18'),
+(31, 'cor.flo', 'cor.flo.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(32, 'vic.mon', 'vic.mon.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(33, 'car.sal', 'car.sal.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(34, 'hen.vil', 'hen.vil.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(35, 'sam.ach', 'sam.ach.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(36, 'lui.agr', 'lui.agr.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(37, 'tat.apa', 'tat.apa.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(38, 'let.bla', 'let.bla.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(39, 'bor.cal', 'bor.cal.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(40, 'ind.cam', 'ind.cam.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(41, 'dav.esc', 'dav.esc.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(42, 'mar.flo', 'mar.flo.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(43, 'rol.jal', 'rol.jal.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(44, 'root', 'root.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(45, 'car.man', 'car.man.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(46, 'yon.mon', 'yon.mon.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(47, 'pat.rom', 'pat.rom.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(48, 'ro.sa', 'ro.sa.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(49, 'rox.sil', 'rox.sil.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(50, 'her.ust', 'her.ust.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(51, 'aid.var', 'aid.var.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(52, 'alv.car', 'alv.car.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(53, 'rau.cat', 'rau.cat.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(54, 'fra.cho', 'fra.cho.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(55, 'alf.cos', 'alf.cos.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(56, 'wal.cos', 'wal.cos.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(57, 'jor.dav', 'jor.dav.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(58, 'jua.fer', 'jua.fer.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(59, 'est.gri', 'est.gri.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(60, 'vic.gut', 'vic.gut.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(61, 'mau.hoe', 'mau.hoe.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(62, 'tit.lim', 'tit.lim.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(63, 'rob.man', 'rob.man.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(64, 'jul.med', 'jul.med.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(65, 'vic.mej', 'vic.mej.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(66, 'rob.omo', 'rob.omo.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(67, 'jos.omo', 'jos.omo.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(68, 'oma.per', 'oma.per.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(69, 'ram.roj', 'ram.roj.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(70, 'jos.sor', 'jos.sor.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(71, 'fid.tab', 'fid.tab.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(72, 'rob.val', 'rob.val.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(73, 'car.gar', 'car.gar.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(74, 'pat.rod', 'pat.rod.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(75, 'mab.mag', 'mab.mag.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(76, 'gro.cus', 'gro.cus.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(77, 'jor.ore', 'jor.ore.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(78, 'ros.tor', 'ros.tor.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(79, 'jim.vill', 'jim.vill.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(80, 'lig.ara', 'lig.ara.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(81, 'ame.fio', 'ame.fio.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(82, 'ric.ayo', 'ric.ayo.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(83, 'mar.mon', 'mar.mon.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(84, 'villazon', 'villazon.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(85, 'wal.ari', 'wal.ari.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(86, 'ale.bus', 'ale.bus.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(87, 'cec.cas', 'cec.cas.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(88, 'ben.ces', 'ben.ces.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(89, 'ale.cho', 'ale.cho.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
+(90, 'alf.del', 'alf.del.123', '2018-10-17 18:03:20', '2018-10-17 18:03:20'),
+(91, 'dav.fer', 'dav.fer.123', '2018-10-17 18:03:20', '2018-10-17 18:03:20'),
+(92, 'rub.gar', 'rub.gar.123', '2018-10-17 18:03:20', '2018-10-17 18:03:20'),
+(93, 'osv.gut', 'osv.gut.123', '2018-10-17 18:03:20', '2018-10-17 18:03:20'),
+(94, 'gon.guz', 'gon.guz.123', '2018-10-17 18:03:20', '2018-10-17 18:03:20'),
+(95, 'joh.her', 'joh.her.123', '2018-10-17 18:03:20', '2018-10-17 18:03:20'),
+(96, 'dem.juc', 'dem.juc.123', '2018-10-17 18:03:20', '2018-10-17 18:03:20'),
+(97, 'gua.leo', 'gua.leo.123', '2018-10-17 18:03:20', '2018-10-17 18:03:20'),
+(98, 'mar.luc', 'mar.luc.123', '2018-10-17 18:03:20', '2018-10-17 18:03:20'),
+(99, 'ami.mar', 'ami.mar.123', '2018-10-17 18:03:20', '2018-10-17 18:03:20'),
+(100, 'edg.pat', 'edg.pat.123', '2018-10-17 18:03:20', '2018-10-17 18:03:20'),
+(101, 'mag.pee', 'mag.pee.123', '2018-10-17 18:03:20', '2018-10-17 18:03:20'),
+(102, 'alf.per', 'alf.per.123', '2018-10-17 18:03:20', '2018-10-17 18:03:20'),
+(103, 'abd.qui', 'abd.qui.123', '2018-10-17 18:03:20', '2018-10-17 18:03:20'),
+(104, 'ant.rod', 'ant.rod.123', '2018-10-17 18:03:20', '2018-10-17 18:03:20'),
+(105, 'ari.sar', 'ari.sar.123', '2018-10-17 18:03:20', '2018-10-17 18:03:20'),
+(106, 'dar.tay', 'dar.tay.123', '2018-10-17 18:03:20', '2018-10-17 18:03:20'),
+(107, 'jua.ter', 'jua.ter.123', '2018-10-17 18:03:20', '2018-10-17 18:03:20'),
+(108, 'mar.val', 'mar.val.123', '2018-10-17 18:03:20', '2018-10-17 18:03:20'),
+(109, 'mar.var', 'mar.var.123', '2018-10-17 18:03:20', '2018-10-17 18:03:20'),
+(110, 'osc.zab', 'osc.zab.123', '2018-10-17 18:03:20', '2018-10-17 18:03:20'),
+(111, 'val.lai', 'val.lai.123', '2018-10-17 18:03:20', '2018-10-17 18:03:20');
 
 -- --------------------------------------------------------
 
@@ -96,15 +179,9 @@ CREATE TABLE IF NOT EXISTS `area` (
   `desc_area` text COLLATE utf8_spanish_ci DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
-
---
--- Dumping data for table `area`
---
-
-INSERT INTO `area` (`id`, `name_area`, `desc_area`, `created_at`, `updated_at`) VALUES
-(7, 'Redes de computadoras', 'El campo más amplio de la ciencia de la computación teórica a la computación y una amplia gama de otros temas que se centran en los aspectos más abstractos, lógicos y matemáticos de la computación.', '2018-10-12 21:13:40', '2018-10-16 01:13:43');
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name_area` (`name_area`)
+) ENGINE=InnoDB AUTO_INCREMENT=304 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
 
@@ -116,7 +193,8 @@ DROP TABLE IF EXISTS `a_degree`;
 CREATE TABLE IF NOT EXISTS `a_degree` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name_ad` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name_ad` (`name_ad`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -157,6 +235,30 @@ INSERT INTO `is_registered` (`id`, `ci`, `sigla_mat`, `created_at`, `updated_at`
 (4, '963369', 'tg-2010214', '2018-10-11 03:10:10', '0000-00-00 00:00:00'),
 (5, '852258', 'tg-2010214', '2018-10-11 04:36:00', '0000-00-00 00:00:00'),
 (6, '741147', 'tg-2010214', '2018-10-11 15:11:00', '0000-00-00 00:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `modality`
+--
+
+DROP TABLE IF EXISTS `modality`;
+CREATE TABLE IF NOT EXISTS `modality` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name_mod` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name_mod` (`name_mod`)
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `modality`
+--
+
+INSERT INTO `modality` (`id`, `name_mod`) VALUES
+(1, 'Adscripción'),
+(2, 'Proyecto de Grado'),
+(3, 'Trabajo Dirigido'),
+(4, 'Proyecto de Investigación (Tesis)');
 
 -- --------------------------------------------------------
 
@@ -252,15 +354,14 @@ CREATE TABLE IF NOT EXISTS `professional_umss` (
   KEY `FK_ID_ACCOUNT` (`id_account`),
   KEY `FK_ID_A_DEGREE` (`id_a_degree`) USING BTREE,
   KEY `FK_ID_WORKLOAD` (`id_workload`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=93 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Dumping data for table `professional_umss`
 --
 
 INSERT INTO `professional_umss` (`id`, `ci`, `name`, `l_name`, `ml_name`, `email`, `phone`, `address`, `avatar`, `cod_sis`, `id_a_degree`, `id_workload`, `profile`, `id_account`, `created_at`, `updated_at`) VALUES
-(1, '5642123', 'Marco Julian', 'Navarro', 'Flores', 'marcolian@gmail.com', NULL, NULL, NULL, NULL, 1, 2, NULL, 2, '2018-10-13 21:29:33', '2018-10-13 21:29:33'),
-(9, '7900012', 'Christian', 'Villazon', 'Alcocer', 'christian91@outlook.com', NULL, NULL, NULL, NULL, 2, 1, NULL, 25, '2018-10-14 23:33:08', '2018-10-14 23:33:08');
+(1, '5642123', 'Marco Julian', 'Navarro', 'Flores', 'marcolian@gmail.com', NULL, NULL, NULL, NULL, 1, 2, NULL, 2, '2018-10-13 21:29:33', '2018-10-13 21:29:33');
 
 -- --------------------------------------------------------
 
@@ -301,15 +402,7 @@ CREATE TABLE IF NOT EXISTS `subarea` (
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `id_area` (`id_area`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
-
---
--- Dumping data for table `subarea`
---
-
-INSERT INTO `subarea` (`id`, `name_subarea`, `desc_subarea`, `id_area`, `created_at`, `updated_at`) VALUES
-(10, 'Redes WIFI', '', 7, '2018-10-12 21:20:27', '2018-10-12 21:20:27'),
-(11, 'Redes LAN', 'Red LAN conecta diferentes ordenadores en un área pequeña, como un edificio o una habitación, lo que permite a los usuarios enviar, compartir y recibir archivos. Un sistema de redes LAN conectadas mediante líneas telefónicas se denomina WAN \"Wide-Area Network\", es decir, es una red de área ancha.', 7, '2018-10-12 21:21:23', '2018-10-12 21:21:23');
+) ENGINE=InnoDB AUTO_INCREMENT=129 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
 
@@ -347,7 +440,8 @@ DROP TABLE IF EXISTS `workload`;
 CREATE TABLE IF NOT EXISTS `workload` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name_wl` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name_wl` (`name_wl`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -355,8 +449,8 @@ CREATE TABLE IF NOT EXISTS `workload` (
 --
 
 INSERT INTO `workload` (`id`, `name_wl`) VALUES
-(1, 'Tiempo Parcial'),
-(2, 'Tiempo Completo');
+(2, 'Tiempo Completo'),
+(1, 'Tiempo Parcial');
 
 --
 -- Constraints for dumped tables

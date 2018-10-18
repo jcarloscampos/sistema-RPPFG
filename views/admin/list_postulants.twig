@@ -1,0 +1,30 @@
+{% extends 'layout.twig' %}
+
+{% block content %}
+    <h2>Lista de todos los postulantes</h2>
+    <a href="{{ 'admin' | url }}">Atras</a>
+    <br><br>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Nombre Postulante</th>
+                <th scope="col">Correo Electronico</th>
+                <th scope="col">Teléfono</th>
+                <th scope="col">Dirección</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for postulante in postulantes %}
+                <tr>
+                    <td>{{ postulante.l_name }} {{postulante.ml_name}} {{postulante.name}}</td>
+                    <td>{{ postulante.email }}</td>
+                    <td>{{ postulante.phone }}</td>
+                    <td>{{ postulante.address }}</td>
+                    <td><a href="{{ 'admin/' | url }}">Ver Perfil</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

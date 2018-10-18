@@ -14,5 +14,6 @@ class ProffesionalUMSS extends Model
      * Para salvar datos desde un formulario, Eloquent protege estos modelos
      * Se  define la variable que contendrá los datos a salvar
      */
-    protected $fillable =  ['ci', 'name', 'l_name', 'ml_name', 'email', 'phone', 'address', 'avatar', 'cod_sis', 'id_a_degree', 'id_workload', 'profile', 'id_account'];
+    protected $fillable =  ['ci', 'name', 'l_name', 'ml_name', 'email', 'phone', 'address',
+                            'avatar', 'cod_sis', 'id_a_degree', 'id_workload', 'profile', 'id_account'];
 }

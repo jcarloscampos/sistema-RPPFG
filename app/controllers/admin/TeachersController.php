@@ -4,6 +4,7 @@ namespace AppPHP\Controllers\Admin;
 
 use AppPHP\Controllers\BaseController;
 use AppPHP\Models\ProffesionalUMSS;
+use AppPHP\Models\ProffesionalUMSSView;
 use AppPHP\Models\Area;
 use AppPHP\Models\Subarea;
 use AppPHP\Models\Workload;
@@ -23,10 +24,7 @@ class TeachersController extends BaseController
      */
     public function getIndex()
     {
-        //TODO -> Incluir una lista de docentes en esta pagina
-        $docentes = array();
-        //all(); funciona lo mismo que la anterior consulta; solo no hay opción para hacer ordenamiento
-        //$docentes = Docente::all();
+        $docentes = ProffesionalUMSSView::query()->orderBy('full_name', 'asc')->get();
         return $this->render('admin/list_teachers.twig', ['docentes' => $docentes]);
     }
 

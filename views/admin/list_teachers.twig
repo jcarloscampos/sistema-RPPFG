@@ -9,17 +9,25 @@
     <table class="table">
         <thead>
             <tr>
-                <th scope="col">Nombre</th>
-                <th scope="col">Informacion</th>
-                <th scope="col">boton</th>
+                <th scope="col">Nombre Docente</th>
+                <th scope="col">Correo Electronico</th>
+                <th scope="col">Teléfono</th>
+                <th scope="col">Dirección</th>
+                <th scope="col">Carga Horaria</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
             </tr>
         </thead>
         <tbody>
             {% for docente in docentes %}
                 <tr>
-                    {# <td>{{ area.name_area }}</td>
-                    <td>{{ area.desc_area }}</td>
-                    <td><a href="{{ 'admin/' | url }}">boton</a></td> #}
+                    <td>{{ docente.full_name }}</td>
+                    <td>{{ docente.email }}</td>
+                    <td>{{ docente.phone }}</td>
+                    <td>{{ docente.address }}</td>
+                    <td>{{ docente.name_wl }}</td>
+                    <td><a href="{{ 'admin/' | url }}">Ver Perfil</a></td>
+                    <td><a href="{{ 'admin/' | url }}">Inhabilitar<br>Docente</a></td>
                 </tr>
             {% endfor %}
         </tbody>
