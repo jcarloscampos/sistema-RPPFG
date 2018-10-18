@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Oct 18, 2018 at 01:49 AM
+-- Generation Time: Oct 18, 2018 at 04:28 AM
 -- Server version: 10.3.9-MariaDB
 -- PHP Version: 5.6.38
 
@@ -297,6 +297,22 @@ INSERT INTO `postulant` (`id`, `ci`, `name`, `l_name`, `ml_name`, `email`, `phon
 -- --------------------------------------------------------
 
 --
+-- Stand-in structure for view `professionalumssview`
+-- (See below for the actual view)
+--
+DROP VIEW IF EXISTS `professionalumssview`;
+CREATE TABLE IF NOT EXISTS `professionalumssview` (
+`id` int(11)
+,`full_name` varchar(83)
+,`email` varchar(30)
+,`phone` int(8)
+,`address` varchar(50)
+,`name_wl` varchar(15)
+);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `professional_ext`
 --
 
@@ -451,6 +467,15 @@ CREATE TABLE IF NOT EXISTS `workload` (
 INSERT INTO `workload` (`id`, `name_wl`) VALUES
 (2, 'Tiempo Completo'),
 (1, 'Tiempo Parcial');
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `professionalumssview`
+--
+DROP TABLE IF EXISTS `professionalumssview`;
+
+CREATE ALGORITHM=TEMPTABLE DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `professionalumssview`  AS  select `p`.`id` AS `id`,concat(`d`.`name_ad`,' ',`p`.`l_name`,' ',`p`.`ml_name`,' ',`p`.`name`) AS `full_name`,`p`.`email` AS `email`,`p`.`phone` AS `phone`,`p`.`address` AS `address`,`w`.`name_wl` AS `name_wl` from ((`professional_umss` `p` join `a_degree` `d`) join `workload` `w`) where `p`.`id_a_degree` = `d`.`id` and `p`.`id_workload` = `w`.`id` ;
 
 --
 -- Constraints for dumped tables
