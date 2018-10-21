@@ -1,35 +1,86 @@
 {% extends 'layout.twig' %}
 
+{% block csslink %}
+    <link rel='stylesheet' href='../../public/assets/css/app.css'>
+{% endblock %}
+
+{% block namepage %}
+    Perfil de administración en SRPPFG
+{% endblock %}
+
+{% block title %}
+    Administrador:  {{ admin.name }} {{ admin.l_name }}
+{% endblock %}
+
+{% block menu %}
+    {% include('remnant/nav-admin.twig') %}
+{% endblock %}
+
+{% block configpersonal %}
+    {% include('remnant/sub-nav.twig') %}
+{% endblock %}
+
 {% block content %}
-    <h2>Lista de todos los docentes</h2>
-    <a href="{{ 'admin' | url }}">Atras</a>
-    <br><br>
-    <a href="{{ 'admin/teachers/create' | url }}">Insertar docente</a><br>
-    <a href="{{ 'admin/teachers/import' | url }}">Importar docentes desde archivo</a><br>
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Nombre Docente</th>
-                <th scope="col">Correo Electronico</th>
-                <th scope="col">Teléfono</th>
-                <th scope="col">Dirección</th>
-                <th scope="col">Carga Horaria</th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for docente in docentes %}
-                <tr>
-                    <td>{{ docente.full_name }}</td>
-                    <td>{{ docente.email }}</td>
-                    <td>{{ docente.phone }}</td>
-                    <td>{{ docente.address }}</td>
-                    <td>{{ docente.name_wl }}</td>
-                    <td><a href="{{ 'admin/' | url }}">Ver Perfil</a></td>
-                    <td><a href="{{ 'admin/' | url }}">Inhabilitar<br>Docente</a></td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<article id="main">
+        <section class="wrapper style5">
+            <div class="inner">
+                <section>
+                    <div class="wrapper-form">
+                        <div class="table-wrapper">
+                            <div class="menu-actions">
+                                <p>Docentes UMSS registrados</p>
+                                <div class="actions">
+                                    <a href="{{ 'admin/teachers/create' | url }}">Nuevo Docente</a>
+                                    <a href="{{ 'admin/teachers/import' | url }}">Importar Por lote</a>
+                                </div>
+                            </div>
+                            <table id="tabla_docentes">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre Docente</th>
+                                        <th>Correo Electronico</th>
+                                        <th>Teléfono</th>
+                                        <th>Dirección</th>
+                                        <th>Carga Horaria</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="content_table">
+                                {% for docente in docentes %}
+                                    <tr>
+                                        <td>{{ docente.full_name }}</td>
+                                        <td>{{ docente.email }}</td>
+                                        <td>{{ docente.phone }}</td>
+                                        <td>{{ docente.address }}</td>
+                                        <td>{{ docente.name_wl }}</td>
+                                            <td>
+                                                <div class="menu-actions-tb">
+                                                <div class="actions">
+                                                    <a href="{{ 'admin/' | url }}{{docente.id}}">Ver Perfil</a>
+                                                    <a href="{{ 'admin/' | url }}">Inhabilitar</a>
+                                                </div>
+                                                </div>
+                                            </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+                <br> 
+                <br>
+                <br>
+            </div>
+        </section>
+    </article>
+{% endblock %}
+
+{% block jslink %}
+    <script src='../../public/assets/js/jquery.min.js'></script>
+    <script src='../../public/assets/js/jquery.scrollex.min.js'></script>
+    <script src='../../public/assets/js/jquery.scrolly.min.js'></script>
+    <script src='../../public/assets/js/skel.min.js'></script>
+    <script src='../../public/assets/js/util.js'></script>
+    <script src='../../public/assets/js/main.js'></script>
 {% endblock %}

@@ -77,6 +77,8 @@ $router->controller('/admin', AppPHP\Controllers\Admin\IndexController::class);
 $router->group(['before' => 'adm'], function($router){
     $router->controller('/admin/area', AppPHP\Controllers\Admin\AreaController::class);
     $router->controller('/admin/subarea', AppPHP\Controllers\Admin\SubareaController::class);
+    $router->controller('/admin/teachers', AppPHP\Controllers\Admin\TeachersController::class);
+    $router->controller('/admin/postulants', AppPHP\Controllers\Admin\PostulantsController::class);
     $router->controller('/admin/config', AppPHP\Controllers\Admin\configController::class);
 });
 

@@ -4,6 +4,8 @@ namespace AppPHP\Controllers\Admin;
 
 use AppPHP\Controllers\BaseController;
 use AppPHP\Models\Postulant;
+use Sirius\Validation\Validator;
+use AppPHP\Models\Administrator;
 
 class PostulantsController extends BaseController
 {
@@ -14,7 +16,10 @@ class PostulantsController extends BaseController
      */
     public function getIndex()
     {
-        $postulantes = Postulant::query()->orderBy('l_name', 'asc')->get();
-        return $this->render('admin/list_postulants.twig', ['postulantes' => $postulantes]);
+        if (isset($_SESSION['admID'])) {
+            $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
+            $postulantes = Postulant::query()->orderBy('l_name', 'asc')->get();
+            return $this->render('admin/list_postulants.twig', ['postulantes' => $postulantes, 'admin' => $admin]);
+        }
     }
 }
