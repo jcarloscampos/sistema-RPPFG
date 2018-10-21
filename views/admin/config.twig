@@ -25,6 +25,7 @@
         <section class="wrapper style5">
             <div class="inner">
                 <section>
+                    <h4 style="text-align: center;">Configuración</h4>
                     <div class="wrapper-form">
                         <div class="message-box">
                             {% if errors %}
@@ -39,39 +40,41 @@
 							<input type="hidden" name="id" value="{{ user.id }}">
                             <input type="hidden" name="id_account" value="{{ user.id_account }}">
                             <div class="row uniform">
-                               <div class="12u 12u$(xsmall)">
+                               <div class="6u 12u$(xsmall)">
                                     <label>Nombre completo</label>
                                     <input type="text" name="name" id="name" value="{{user.name}}" placeholder="Nombre completo" />
                                 </div>
-                                <div class="6u 12u$(xsmall)">
+                                <div class="3u 12u$(xsmall)">
                                     <label>Apellido paterno</label>
                                     <input type="text" name="lname" id="lname" value="{{user.l_name}}" placeholder="Apellido paterno" />
                                 </div>
-                                <div class="6u 12u$(xsmall)">
+                                <div class="3u$ 12u$(xsmall)">
                                     <label>Apellido materno</label>
                                     <input type="text" name="mlname" id="mlname" value="{{user.ml_name}}" placeholder="Apellido materno" />
                                 </div>
-                                <div class="4u 12u$(xsmall)">
+                                <div class="3u 12u$(xsmall)">
                                     <label>CI</label>
                                     <input type="text" name="ci" id="ci" value="{{user.ci}}" placeholder="CI" />
                                 </div>
-                                <div class="4u 12u$(xsmall)">
+                                <div class="6u 12u$(xsmall)">
+                                    <label>Email</label>
+                                    <input type="text" name="email" id="email" value="{{user.email}}" placeholder="Email" />
+                                </div>
+                                <div class="3u$ 12u$(xsmall)">
                                     <label>Teléfono/celular</label>
                                     <input type="text" name="phone" id="phone" value="{{user.phone}}" placeholder="Teléfono / celular" />
                                 </div>
 
-                                <div class="4u 12u$(xsmall)">
-                                    <label>Email</label>
-                                    <input type="text" name="email" id="email" value="{{user.email}}" placeholder="Email" />
-                                </div>
 
-                                <div class="8u 12u$(xsmall)">
+
+
+                                <div class="6u 12u$(xsmall)">
                                     <label>Dirección</label>
                                     <input type="text" name="address" id="address" value="{{user.address}}" placeholder="Dirección" />
                                 </div>
-                                <div class="4u 12u$(xsmall)">
-                                    <label>Avatar</label>
-                                    <input type="text" name="avatar" id="avatar" value="{{user.avatar}}" placeholder="Foto de perfil" />
+                                <div class="6u 12u$(xsmall)">
+                                    <label>Foto de perfil</label>
+                                    <input type="text" name="avatar" id="avatar" value="{{user.avatar}}" placeholder="Avatar..." />
                                 </div>
 
                                 <div class="6u 12u$(xsmall)">
@@ -86,7 +89,7 @@
                             <br>
                             <div class="12u 12u$(xsmall)">
                                 <ul class="actions" style="text-align: center">
-                                    <li><button class="principal" type="submit">Actualizar</button>
+                                    <li><button class="principal" type="submit">Guardar los cambios</button>
                                     </li>
                                 </ul>
                             </div>
