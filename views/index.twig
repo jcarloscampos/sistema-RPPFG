@@ -1,11 +1,91 @@
 
 {% extends 'layout.twig' %}
 
+{% block namepage %}
+    Sistema de registro de perfiles 
+{% endblock %}
+
+{% block title %}
+    SRPPFG
+{% endblock %}
+
+{% block csslink %}
+    <link rel='stylesheet' href='../public/assets/css/app.css'>
+{% endblock %}
+{% block menu %}
+    <nav id="nav">
+        <ul>
+            <li class="special">
+                <a href="#menu" class="menuToggle"><span>Menu</span></a>
+                <div id="menu">
+                    <ul>
+                        <li>SRPPFG</li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </nav>
+{% endblock %}
+
 {% block content %}
-    <div class="img-welcome">
-        <h4 class="center-text ">Sistema</h4>
-        <h1 class="center-text">Registro de Ferfiles de Proyectos Finales de Grado</h1>
-        <a href="{{ 'admin/' | url }}">Aministracion</a>
-    </div>
+    <article id="main">
+        <header style="padding-top: 50px; padding-bottom: 50px;" >
+            <h2>SRPPFG</h2>
+            <p>Bienvenido a la plataforma de Registro de Perfiles de la UMSS. </p>
+        </header>
+        <section class="wrapper style5">
+            <div class="inner">
+                <section>
+                    <h4 style="text-align: center;">Inicio de sesión</h4>
+                    <div class="wrapper-form">
+                        <div class="form-signin">
+                            <div class="message-box">
+                                {% if errors %}
+                                    {% include 'remnant/errors.twig' %}
+                                {% endif %}
+                            </div>
+                            <form method="post" action="#">
+                                <div class="row uniform">
+                                    <div class="12u 12u$(xsmall)">
+                                        <input id="username" name="username" type="text" value="" placeholder="Usuario" />
+                                    </div>
+
+                                    <div class="12u 12u$(xsmall)">
+                                        <input id="password" name="password" type="password" value="" placeholder="Contraseña"/>
+                                    </div>
+                        
+                                </div>
+                                <br>
+                                <div class="12u$">
+                                    <ul class="actions" style="text-align: center">
+                                        <li><button class="principal" type="submit">Ingresar</button>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="row">
+                                    <div class="signup-box">
+                                        <p><a class="left" href="">¿Olvidaste la contraseña?</a></p>
+                                        <p>¿No tiene una cuenta? <a href="{{ 'signup' | url }}">Cree una.</a></p>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+                <br> 
+                <br>
+                <br>
+            </div>
+        </section>
+    </article>
+{% endblock %}
+
+{% block jslink %}
+    <script src='../public/assets/js/jquery.min.js'></script>
+    <script src='../public/assets/js/jquery.scrollex.min.js'></script>
+    <script src='../public/assets/js/jquery.scrolly.min.js'></script>
+    <script src='../public/assets/js/skel.min.js'></script>
+    <script src='../public/assets/js/util.js'></script>
+    <script src='../public/assets/js/main.js'></script>
 {% endblock %}
 

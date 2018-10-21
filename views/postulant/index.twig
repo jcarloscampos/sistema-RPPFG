@@ -1,0 +1,62 @@
+{% extends 'layout.twig' %}
+
+{% block namepage %}
+    Perfil de postulante en SRPPFG
+{% endblock %}
+
+{% block title %}
+    Postulante:  {{ user.name }} {{ user.l_name }}
+{% endblock %}
+
+{% block csslink %}
+    <link rel='stylesheet' href='../public/assets/css/app.css'>
+{% endblock %}
+
+{% block menu %}
+    {% include('remnant/nav-postulant.twig') %}
+{% endblock %}
+
+{% block configpersonal %}
+    <div class="configpersonal">
+        <a class=".btn .btn-primary" href="{{'logout' | url }}">Salir</a>
+        <a class="principal" href="{{'postulant/ressources' | url }}">Configuración</a>
+    </div>
+{% endblock %}
+
+{% block content %}
+<article id="main">
+        <header style="padding-top: 50px; padding-bottom: 50px;" >
+            <h2>SRPPFG</h2>
+            <p>Bienvenido!; Mediante esta plataforma puedes cargar y publicar tu proyecto. </p>
+        </header>
+        <section class="wrapper style5">
+            <div class="inner">
+                <section>
+                    <div class="wrapper-form">
+                        <div class="message-box">
+                            {% if inforeg %}
+                                {% include 'remnant/info-reg.twig' %}
+                            {% endif %}
+                            
+                        </div>
+                        
+                    </div>
+                </section>
+                <br> 
+                <br>
+                <br>
+            </div>
+        </section>
+    </article>
+
+
+{% endblock %}
+
+{% block jslink %}
+    <script src='../public/assets/js/jquery.min.js'></script>
+    <script src='../public/assets/js/jquery.scrollex.min.js'></script>
+    <script src='../public/assets/js/jquery.scrolly.min.js'></script>
+    <script src='../public/assets/js/skel.min.js'></script>
+    <script src='../public/assets/js/util.js'></script>
+    <script src='../public/assets/js/main.js'></script>
+{% endblock %}

@@ -3,6 +3,8 @@
 namespace AppPHP\Controllers\Admin;
 
 use AppPHP\Controllers\BaseController;
+use AppPHP\Models\Account;
+use AppPHP\Models\Administrator;
 
 /**
  * Clase controlador de inicio de administración.
@@ -17,6 +19,23 @@ class IndexController extends BaseController
      */
     public function getIndex()
     {
-        return $this->render('admin/index.twig');
+        if (isset($_SESSION['admID'])) {
+            # Se guarda la session en una variable local $userId
+            $userId = $_SESSION['admID'];
+            $inforeg = false;
+
+            if ($userId) {
+                # si existe la cuenta en la BD
+                $admin = Administrator::where('id_account', $userId)->first();
+                if ($admin->ci == "" || $admin->name == "" || $admin->l_name == "") {
+                    $inforeg = true;
+                }
+                return $this->render('admin/index.twig', 
+                    ['inforeg'=>$inforeg, 
+                    'admin' => $admin
+                ]);
+            }
+        }
+        header('Location: ' . BASE_URL . '');
     }
 }

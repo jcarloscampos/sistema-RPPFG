@@ -1,0 +1,111 @@
+{% extends 'layout.twig' %}
+
+{% block csslink %}
+    <link rel='stylesheet' href='../../public/assets/css/app.css'>
+{% endblock %}
+
+{% block namepage %}
+    Perfil de administración en SRPPFG
+{% endblock %}
+
+{% block title %}
+    Administrador:  {{ user.name }} {{ user.l_name }}
+{% endblock %}
+
+{% block menu %}
+    {% include('remnant/nav-admin.twig') %}
+{% endblock %}
+
+{% block configpersonal %}
+    {% include('remnant/sub-nav.twig') %}
+{% endblock %}
+
+{% block content %}
+<article id="main">
+        <section class="wrapper style5">
+            <div class="inner">
+                <section>
+                    <div class="wrapper-form">
+                        <div class="message-box">
+                            {% if errors %}
+                                {% include 'remnant/errors.twig' %}
+                            {% endif %}
+                            {% if result %}
+                                {% include 'remnant/success.twig' %}
+                            {% endif %}
+                            
+                        </div>
+                        <form method="post" action="#">
+							<input type="hidden" name="id" value="{{ user.id }}">
+                            <input type="hidden" name="id_account" value="{{ user.id_account }}">
+                            <div class="row uniform">
+                               <div class="12u 12u$(xsmall)">
+                                    <label>Nombre completo</label>
+                                    <input type="text" name="name" id="name" value="{{user.name}}" placeholder="Nombre completo" />
+                                </div>
+                                <div class="6u 12u$(xsmall)">
+                                    <label>Apellido paterno</label>
+                                    <input type="text" name="lname" id="lname" value="{{user.l_name}}" placeholder="Apellido paterno" />
+                                </div>
+                                <div class="6u 12u$(xsmall)">
+                                    <label>Apellido materno</label>
+                                    <input type="text" name="mlname" id="mlname" value="{{user.ml_name}}" placeholder="Apellido materno" />
+                                </div>
+                                <div class="4u 12u$(xsmall)">
+                                    <label>CI</label>
+                                    <input type="text" name="ci" id="ci" value="{{user.ci}}" placeholder="CI" />
+                                </div>
+                                <div class="4u 12u$(xsmall)">
+                                    <label>Teléfono/celular</label>
+                                    <input type="text" name="phone" id="phone" value="{{user.phone}}" placeholder="Teléfono / celular" />
+                                </div>
+
+                                <div class="4u 12u$(xsmall)">
+                                    <label>Email</label>
+                                    <input type="text" name="email" id="email" value="{{user.email}}" placeholder="Email" />
+                                </div>
+
+                                <div class="8u 12u$(xsmall)">
+                                    <label>Dirección</label>
+                                    <input type="text" name="address" id="address" value="{{user.address}}" placeholder="Dirección" />
+                                </div>
+                                <div class="4u 12u$(xsmall)">
+                                    <label>Avatar</label>
+                                    <input type="text" name="avatar" id="avatar" value="{{user.avatar}}" placeholder="Foto de perfil" />
+                                </div>
+
+                                <div class="6u 12u$(xsmall)">
+                                    <label>Contraseña</label>
+                                    <input type="password" name="pwd" id="pwd" value="" placeholder="Contraseña" />
+                                </div>
+                                <div class="6u 12u$(xsmall)">
+                                    <label>Confirmar contraseña</label>
+                                    <input type="password" name="pwdc" id="pwdc" value="" placeholder="Confirme la contraseña" />
+                                </div>
+
+                            <br>
+                            <div class="12u 12u$(xsmall)">
+                                <ul class="actions" style="text-align: center">
+                                    <li><button class="principal" type="submit">Actualizar</button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+                <br> 
+                <br>
+                <br>
+            </div>
+        </section>
+    </article>
+{% endblock %}
+
+{% block jslink %}
+    <script src='../../public/assets/js/jquery.min.js'></script>
+    <script src='../../public/assets/js/jquery.scrollex.min.js'></script>
+    <script src='../../public/assets/js/jquery.scrolly.min.js'></script>
+    <script src='../../public/assets/js/skel.min.js'></script>
+    <script src='../../public/assets/js/util.js'></script>
+    <script src='../../public/assets/js/main.js'></script>
+{% endblock %}

@@ -6,13 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 class Area extends Model
 {
     /**
-     * Eloquent por defacto los unico que necesita parabajar es que se defina el nombre de la tabla en una variable protegida
+     * @type object area
      */
     protected $table = 'area';
 
     /**
      * Para salvar datos desde un formulario, Eloquent protege estos modelos
      * Se  define la variable que contendrá los datos a salvar
+     * @type array
      */
-    protected $fillable =  ['nomb_area', 'desc_area'];
+    protected $fillable =  ['name_area', 'desc_area'];
 }

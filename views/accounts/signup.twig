@@ -1,0 +1,217 @@
+
+{% extends 'layout.twig' %}
+
+{% block namepage %}
+    Sistema de registro de perfiles 
+{% endblock %}
+
+{% block title %}
+    SRPPFG
+{% endblock %}
+
+{% block csslink %}
+    <link rel='stylesheet' href='../public/assets/css/app.css'>
+{% endblock %}
+{% block menu %}
+    <nav id="nav">
+        <ul>
+            <li class="special">
+                <a href="#menu" class="menuToggle"><span>Menu</span></a>
+                <div id="menu">
+                    <ul>
+                        <li>SRPPFG</li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <article id="main">
+        <header style="padding-top: 50px; padding-bottom: 50px;" >
+            <h2>SRPPFG</h2>
+            <p>Bienvenido a la plataforma de Registro de Perfiles de la UMSS. </p>
+        </header>
+        <section class="wrapper style5">
+            <div class="inner">
+                <section>
+                    <h4 style="text-align: center;">Registro de usuario</h4>
+                    <div class="wrapper-form">
+
+                        <div class="form-signin">
+                            <div class="message-box">
+                                {% if errors %}
+                                    {% include 'remnant/errors.twig' %}
+                                {% endif %}
+                                {% if exists %}
+                                    <div class"alert alert-warning">Éste nombre de usuario ya está tomado</div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <form method="post" action="#">
+                            <div class="row uniform">
+                               <div class="6u 12u$(xsmall)">
+                                    <label>Nombre completo</label>
+                                    <input type="text" name="name" id="name" value="{{user.name}}" placeholder="Nombre completo" />
+                                </div>
+
+                                <div class="3u 12u$(xsmall)">
+                                    <label>Apellido paterno</label>
+                                    <input type="text" name="lname" id="lname" value="{{user.l_name}}" placeholder="Apellido paterno" />
+                                </div>
+                                <div class="3u$ 12u$(xsmall)">
+                                    <label>Apellido materno</label>
+                                    <input type="text" name="mlname" id="mlname" value="{{user.ml_name}}" placeholder="Apellido materno" />
+                                </div>
+                                <div class="3u 12u$(xsmall)">
+                                    <label>CI</label>
+                                    <input type="text" name="ci" id="ci" value="{{user.ci}}" placeholder="Identificación personal" />
+                                </div>
+                                <div class="4u 12u$(xsmall)">
+                                    <label>Grado académico</label>
+                                    <select name="tuser">
+                                        <option value="" disabled selected>- Seleccionar -</option>
+                                        <option value="1">Profesional UMSS</option>
+                                        <option value="2">Profesional Externo</option>
+                                        <option value="3">Postulante</option>
+                                    </select>    
+                                </div>
+                                <div class="5u$ 12u$(xsmall)">
+                                    <label>Email</label>
+                                    <input type="text" name="email" id="email" value="{{user.email}}" placeholder="Email" />
+                                </div>
+
+                                <div class="4u 12u$(xsmall)">
+                                    <label>Nombre de usuario</label>
+                                    <input type="text" name="user" id="user" value="{{user.user}}" placeholder="Usuario" />
+                                </div>
+
+                                <div class="4u 12u$(xsmall)">
+                                    <label>Contraseña</label>
+                                    <input type="password" name="pwd" id="pwd" placeholder="Contraseña" />
+                                </div>
+                                <div class="4u$ 12u$(xsmall)">
+                                    <label>Confirmar contraseña</label>
+                                    <input type="password" name="pwdc" id="pwdc"  placeholder="Confirme la contraseña" />
+                                </div>
+                            </div>
+                            <br>
+                            <div class="12u 12u$(xsmall)">
+                                <ul class="actions" style="text-align: center">
+                                    <li><button class="principal" type="submit">Registrarse</button>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="row">
+                                <div class="signup-box">
+                                    <p>¿Ya tiene una cuenta? <a href="{{ '' | url }}">Ingresar.</a></p>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+            </div>
+        </section>
+    </article>
+{% endblock %}
+
+{% block jslink %}
+    <script src='../public/assets/js/jquery.min.js'></script>
+    <script src='../public/assets/js/jquery.scrollex.min.js'></script>
+    <script src='../public/assets/js/jquery.scrolly.min.js'></script>
+    <script src='../public/assets/js/skel.min.js'></script>
+    <script src='../public/assets/js/util.js'></script>
+    <script src='../public/assets/js/main.js'></script>
+{% endblock %}
+
+
+
+
+{# 
+{% block content %}
+    <section id="main-container">
+        <div class="container">
+            <div class="message-box">
+                {% if result %}
+                    <div class"alert alert-success">Registro insertado correctamente</div>
+                {% endif %}
+
+                {% if errors %}
+                    {% include 'remnant/errors.twig' %}
+                {% endif %}
+
+                {% if exists %}
+                    <div class"alert alert-warning">Éste nombre de usuario ya está tomado</div>
+                {% endif %}
+            </div>
+                
+            <div class="row">
+                <div class="col s12 m10 push-m1">
+                    <div class="col s12 m10 push-m1">
+                        <div class="row">
+                            <div class="login-box">
+                                <h4 class="srppfg center">srppfg</h4>
+                                <p class="center">Crear cuenta</p>
+                                <div class="row">
+                                    <form class="col s12" action="" method="post">
+                                        <div class="row">
+                                            <div class="input-field col s12">
+                                                <input id="name" name="name" type="text" placeholder="Nombre completo" class="validate">
+                                            </div>
+
+                                            <div class="input-field col s12 m6">
+                                                <input id="lname" name="lname" type="text" placeholder="Apellido Paterno" class="validate">
+                                            </div>
+
+                                            <div class="input-field col s12 m6">
+                                                <input id="mlname" name="mlname" type="text" placeholder="Apellido Materno" class="validate">
+                                            </div>
+
+                                            <div class="input-field col s12 m6">
+                                                <input id="ci" name="ci" type="text" placeholder="CI" class="validate">
+                                            </div>
+
+                                            <div class="input-field col s12 m6">
+                                                <select name="tuser">
+                                                    <option value="" disabled selected>Tipo de Usuario</option>
+                                                    <option value="1">Profesional UMSS</option>
+                                                    <option value="2">Profesional Externo</option>
+                                                    <option value="3">Postulante</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="input-field col s12 m12">
+                                                <input id="email" name="email" type="email" placeholder="Email" class="validate">
+                                            </div>
+
+                                             <div class="input-field col s12">
+                                                <input id="user" name="user" type="text" placeholder="Nombre de usuario" class="validate">
+                                            </div>
+
+                                            <div class="input-field col s12 m6">
+                                                <input id="pwd" name="pwd" type="password" placeholder="Contraseña" class="validate" >
+                                            </div>
+
+                                            <div class="input-field col s12 m6">
+                                                <input id="pwdc" name="pwdc" type="password" placeholder="Confirme su contraseña"class="validate" >
+                                            </div>
+                                        </div>
+                                        <button class="btn waves-effect waves-ligth btn-signup right" type="submit">Registrarse</button>
+                                    </form>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="signup-box">
+                                ¿Ya tiene una cuenta? <a href="{{ '' | url }}">Ingresar.</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %} #}

@@ -8,6 +8,7 @@
 
 //Se agrega el módulo de auto carga para usar la clase phroute
 require_once '../vendor/autoload.php';
+session_start();
 
 /*Constante que nos permite obtener la base URL en todo el proyecto, que será la raíz en la que esta proyecto*/
 $baseDir = str_replace(basename($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']);
@@ -48,14 +49,62 @@ $route = (isset($_GET['route'])) ? $_GET['route'].'/' : '/';
 use Phroute\Phroute\RouteCollector;
 
 $router = new RouteCollector();
+$router->filter('adm', function(){
+    if(!isset($_SESSION['admID'])){
+        header('Location: ' . BASE_URL . '');
+        return false;
+    }
+});
+
+$router->filter('pst', function(){
+    if(!isset($_SESSION['postID'])){
+        header('Location: ' . BASE_URL . '');
+        return false;
+    }
+});
+
+$router->filter('prof', function(){
+    if(!isset($_SESSION['profID'])){
+        header('Location: ' . BASE_URL . '');
+        return false;
+    }
+});
 
 //rutas
-// $router->controller('/student', AppPHP\Controllers\Student\IndexController::class);
-// $router->controller('/student/registry', AppPHP\Controllers\Student\RegistryController::class);
-$router->controller('/admin', AppPHP\Controllers\Admin\IndexController::class);
-$router->controller('/admin/area', AppPHP\Controllers\Admin\AddareaController::class);
-$router->controller('/admin/subarea', AppPHP\Controllers\Admin\AddsubareaController::class);
 $router->controller('/', AppPHP\Controllers\IndexController::class);
+
+$router->controller('/admin', AppPHP\Controllers\Admin\IndexController::class);
+$router->group(['before' => 'adm'], function($router){
+    $router->controller('/admin/area', AppPHP\Controllers\Admin\AreaController::class);
+    $router->controller('/admin/subarea', AppPHP\Controllers\Admin\SubareaController::class);
+    $router->controller('/admin/config', AppPHP\Controllers\Admin\configController::class);
+});
+
+
+$router->controller('/postulant', AppPHP\Controllers\Postulant\IndexController::class);
+$router->group(['before' => 'pst'], function($router){
+    $router->controller('/postulant/ressources', AppPHP\Controllers\Postulant\RessourceController::class);
+});
+
+
+$router->controller('/professional', AppPHP\Controllers\Professional\IndexController::class);
+$router->group(['before' => 'prof'], function($router){
+    $router->controller('/professional/itnConfig', AppPHP\Controllers\Professional\ItnConfigController::class);
+    $router->controller('/professional/etnConfig', AppPHP\Controllers\Professional\EtnConfigController::class);
+});
+
+
+
+$router->controller('/director', AppPHP\Controllers\Director\IndexController::class);
+
+$router->controller('/signup', AppPHP\Controllers\Accounts\SignupController::class);
+$router->controller('/signin', AppPHP\Controllers\Accounts\SigninController::class);
+$router->controller('/logout', AppPHP\Controllers\Accounts\LogoutController::class);
+
+
+
+
+
 
 /*El Dispatcher, es el objeto que va a tomar la ruta que nos llega y manda a llamar la función que realmente se necesita
 Luego generamos una respuesta que será lo que nos regresa el Dispatcher*/

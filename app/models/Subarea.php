@@ -5,6 +5,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Subarea extends Model
 {
+    /**
+     * @type object subarea
+     */
     protected $table = 'subarea';
-    protected $fillable = ['nomb_subarea', 'desc_subarea', 'id_area'];
+
+    /**
+     * @type array
+     */
+    protected $fillable = ['name_subarea', 'desc_subarea', 'id_area'];
 }
