@@ -3,17 +3,16 @@ namespace AppPHP\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Area extends Model
+class ADegree extends Model
 {
     /**
-     * @type object area
+     * Eloquent por defacto los unico que necesita parabajar es que se defina el nombre de la tabla en una variable protegida
      */
-    protected $table = 'area';
+    protected $table = 'a_degree';
 
     /**
      * Para salvar datos desde un formulario, Eloquent protege estos modelos
      * Se  define la variable que contendrá los datos a salvar
-     * @type array
      */
-    protected $fillable =  ['name_area', 'desc_area', 'activo'];
+    protected $fillable =  ['name_ad'];
 }

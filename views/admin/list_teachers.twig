@@ -28,35 +28,41 @@
                     <div class="wrapper-form">
                         <div class="table-wrapper">
                             <div class="menu-actions">
-                                <p>Sub áreas disponibles</p>
+                                <p>Docentes UMSS registrados</p>
                                 <div class="actions">
-                                    <a href="{{ 'admin/subarea/create' | url }}{{ area.id }}">Nueva sub área</a>
-                                    <a href="{{ 'admin/subarea' | url }}{{ area.id }}">Sub área por lote</a>
+                                    <a href="{{ 'admin/teachers/create' | url }}">Nuevo Docente</a>
+                                    <a href="{{ 'admin/teachers/import' | url }}">Importar Por lote</a>
                                 </div>
                             </div>
-                            <table id="tabla_subareas">
+                            <table id="tabla_docentes">
                                 <thead>
                                     <tr>
-                                        <th>Nombre</th>
-                                        <th>Descripción</th>
-                                        <td>Acción</td>
+                                        <th>Nombre Docente</th>
+                                        <th>Correo Electronico</th>
+                                        <th>Teléfono</th>
+                                        <th>Dirección</th>
+                                        <th>Carga Horaria</th>
+                                        <th>Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody id="content_table">
-                                    {% for subarea in subareas %}
-                                        <tr>
-                                            <td>{{ subarea.name_subarea }}</td>
-                                            <td>{{ subarea.desc_subarea }}</td>
+                                {% for docente in docentes %}
+                                    <tr>
+                                        <td>{{ docente.full_name }}</td>
+                                        <td>{{ docente.email }}</td>
+                                        <td>{{ docente.phone }}</td>
+                                        <td>{{ docente.address }}</td>
+                                        <td>{{ docente.name_wl }}</td>
                                             <td>
                                                 <div class="menu-actions-tb">
                                                 <div class="actions">
-                                                    <a href="{{ 'admin/subarea/edit/' | url }}{{ subarea.id }}">Editar</a>
-                                                    <a href="{{ 'admin/subarea/delete/' | url }}{{ subarea.id }}">Eliminar</a>
+                                                    <a href="{{ 'admin/' | url }}{{docente.id}}">Ver Perfil</a>
+                                                    <a href="{{ 'admin/' | url }}">Inhabilitar</a>
                                                 </div>
                                                 </div>
                                             </td>
-                                        </tr>
-                                    {% endfor %}
+                                    </tr>
+                                {% endfor %}
                                 </tbody>
                             </table>
                         </div>
@@ -78,5 +84,3 @@
     <script src='../../public/assets/js/util.js'></script>
     <script src='../../public/assets/js/main.js'></script>
 {% endblock %}
-
-

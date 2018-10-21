@@ -28,35 +28,38 @@
                     <div class="wrapper-form">
                         <div class="table-wrapper">
                             <div class="menu-actions">
-                                <p>Sub áreas disponibles</p>
+                                <p>Postulantes registrados</p>
                                 <div class="actions">
-                                    <a href="{{ 'admin/subarea/create' | url }}{{ area.id }}">Nueva sub área</a>
-                                    <a href="{{ 'admin/subarea' | url }}{{ area.id }}">Sub área por lote</a>
+                                    <a href="{{ 'admin/postulant/create' | url }}">Nuevo Postulante</a>
                                 </div>
                             </div>
-                            <table id="tabla_subareas">
+                            <table id="tabla_postulantes">
                                 <thead>
                                     <tr>
-                                        <th>Nombre</th>
-                                        <th>Descripción</th>
-                                        <td>Acción</td>
+                                        <th>Nombre Postulante</th>
+                                        <th>Correo Electronico</th>
+                                        <th>Teléfono</th>
+                                        <th>Dirección</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody id="content_table">
-                                    {% for subarea in subareas %}
+                                    {% for postulante in postulantes %}
                                         <tr>
-                                            <td>{{ subarea.name_subarea }}</td>
-                                            <td>{{ subarea.desc_subarea }}</td>
+                                            <td>{{ postulante.l_name }} {{postulante.ml_name}} {{postulante.name}}</td>
+                                            <td>{{ postulante.email }}</td>
+                                            <td>{{ postulante.phone }}</td>
+                                            <td>{{ postulante.address }}</td>
                                             <td>
                                                 <div class="menu-actions-tb">
-                                                <div class="actions">
-                                                    <a href="{{ 'admin/subarea/edit/' | url }}{{ subarea.id }}">Editar</a>
-                                                    <a href="{{ 'admin/subarea/delete/' | url }}{{ subarea.id }}">Eliminar</a>
-                                                </div>
+                                                    <div class="actions">
+                                                        <a href="{{ 'admin/' | url }}{{docente.id}}">Ver Perfil</a>
+                                                        <a href="{{ 'admin/' | url }}">Inhabilitar</a>
+                                                    </div>
                                                 </div>
                                             </td>
-                                        </tr>
-                                    {% endfor %}
+                                    </tr>
+                                {% endfor %}
                                 </tbody>
                             </table>
                         </div>
@@ -78,5 +81,3 @@
     <script src='../../public/assets/js/util.js'></script>
     <script src='../../public/assets/js/main.js'></script>
 {% endblock %}
-
-

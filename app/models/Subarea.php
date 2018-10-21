@@ -9,9 +9,10 @@ class Subarea extends Model
      * @type object subarea
      */
     protected $table = 'subarea';
-
-    /**
-     * @type array
-     */
-    protected $fillable = ['name_subarea', 'desc_subarea', 'id_area'];
+    protected $fillable = [
+        'name_subarea',
+        'desc_subarea',
+        'id_area',
+        'activo'
+    ];
 }

@@ -14,5 +14,8 @@ class UserRol extends Model
     /**
      * @type array
      */
-    protected $fillable =  ['id_account', 'id_rol'];
+    protected $fillable =  [
+        'id_account',
+        'id_rol'
+    ];
 }
