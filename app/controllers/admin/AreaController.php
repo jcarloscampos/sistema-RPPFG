@@ -65,7 +65,9 @@ class AreaController extends BaseController
             ]);
             $area->save();
             $result = true;
-            return $this->render('admin/insert_area.twig', ['result'=>$result]);
+            //return $this->render('admin/insert_area.twig', ['result'=>$result]);
+            header('Location:' . BASE_URL . 'admin/area');
+            return null;
         }
         $errors = $validator->getMessages();
         return $this->render('admin/insert_area.twig', ['result'=>$result, 'errors' => $errors]);
@@ -98,6 +100,7 @@ class AreaController extends BaseController
                 'desc_area' => $_POST['desc']
             ));
             header('Location:' . BASE_URL . 'admin/area');
+            return null;
         }
         $errors = $validator->getMessages();
 		return $this->render('admin/update-area.twig', ['area' => $area, 'errors' => $errors]);

@@ -5,21 +5,21 @@
 {% endblock %}
 
 {% block namepage %}
-    Perfil de postulante en SRPPFG
+    Perfil de docente en SRPPFG
 {% endblock %}
 
 {% block title %}
-    Postulante:  {{ user.name }} {{ user.l_name }}
+    Docente:  {{ vPerfil.name }} {{ vPerfil.l_name }}
 {% endblock %}
 
 {% block menu %}
-    {% include('remnant/nav-postulant.twig') %}
+    {% include('remnant/nav-professional.twig') %}
 {% endblock %}
 
 {% block configpersonal %}
     <div class="configpersonal">
         <a class=".btn .btn-primary" href="{{'logout' | url }}">Salir</a>
-        <a class="principal" href="{{'postulant/ressources' | url }}">Configuración</a>
+        <a class="principal" href="{{'professional/etnConfig' | url }}">Configuración</a>
     </div>
 {% endblock %}
 
@@ -31,6 +31,10 @@
                     <h4 style="text-align: center;">Configuración</h4>
                     <div class="wrapper-form">
                         <div class="message-box">
+                            {% if inforeg %}
+                                {% include 'remnant/info-reg.twig' %}
+                            {% endif %}
+                            
                             {% if errors %}
                                 {% include 'remnant/errors.twig' %}
                             {% endif %}
@@ -40,51 +44,62 @@
                             
                         </div>
                         <form method="post" action="#">
-							<input type="hidden" name="id" value="{{ user.id }}">
-                            <input type="hidden" name="id_account" value="{{ user.id_account }}">
+							<input type="hidden" name="id" value="{{ vPerfil.id }}">
+                            <input type="hidden" name="id_account" value="{{ vPerfil.id_account }}">
                             <div class="row uniform">
                                <div class="6u 12u$(xsmall)">
                                     <label>Nombre completo</label>
-                                    <input type="text" name="name" id="name" value="{{user.name}}" placeholder="Nombre completo" readonly />
+                                    <input type="text" name="name" id="name" value="{{vPerfil.name}}" placeholder="Nombre completo" readonly />
                                 </div>
-
                                 <div class="3u 12u$(xsmall)">
                                     <label>Apellido paterno</label>
-                                    <input type="text" name="lname" id="lname" value="{{user.l_name}}" placeholder="Apellido paterno" readonly />
+                                    <input type="text" name="lname" id="lname" value="{{vPerfil.l_name}}" placeholder="Apellido paterno" readonly />
                                 </div>
                                 <div class="3u$ 12u$(xsmall)">
                                     <label>Apellido materno</label>
-                                    <input type="text" name="mlname" id="mlname" value="{{user.ml_name}}" placeholder="Apellido materno" readonly />
+                                    <input type="text" name="mlname" id="mlname" value="{{vPerfil.ml_name}}" placeholder="Apellido materno" readonly />
                                 </div>
                                 <div class="3u 12u$(xsmall)">
                                     <label>CI</label>
-                                    <input type="text" name="ci" id="ci" value="{{user.ci}}" placeholder="CI" readonly />
+                                    <input type="text" name="ci" id="ci" value="{{vPerfil.ci}}" placeholder="CI" readonly />
                                 </div>
                                 <div class="6u 12u$(xsmall)">
                                     <label>Email</label>
-                                    <input type="text" name="email" id="email" value="{{user.email}}" placeholder="Email" />
+                                    <input type="text" name="email" id="email" value="{{vPerfil.email}}" placeholder="Email" readonly/>
                                 </div>
+                                {# igual hasta aqui #}
                                 <div class="3u$ 12u$(xsmall)">
-                                    <label>Teléfono / celular</label>
-                                    <input type="text" name="phone" id="phone" value="{{user.phone}}" placeholder="Teléfono / celular" />
+                                    <label>Teléfono</label>
+                                    <input type="text" name="phone" id="phone" value="{{vPerfil.phone}}" placeholder="Teléfono/celular" />
                                 </div>
 
 
+                                
                                 <div class="3u 12u$(xsmall)">
-                                    <label>Código SIS</label>
-                                    <input type="text" name="codsis" id="codsis" value="{{user.cod_sis}}" placeholder="Código SIS" />
+                                    <label>Grado académico</label>
+                                    <select name="adegree" id="adegree">
+                                        <option value=""disabled selected>- {{vPerfil.a_degree}} -</option>
+                                        <option value="Licenciatura">Licenciatura</option>
+                                        <option value="Magister">Magister</option>
+                                        <option value="Doctorado">Doctorado</option>
+                                    </select>    
                                 </div>
-
-
+                                
+                                
+                                
+                                
                                 <div class="5u 12u$(xsmall)">
                                     <label>Dirección</label>
-                                    <input type="text" name="address" id="address" value="{{user.address}}" placeholder="Dirección" />
+                                    <input type="text" name="address" id="address" value="{{vPerfil.address}}" placeholder="Dirección" />
                                 </div>
                                 <div class="4u$ 12u$(xsmall)">
                                     <label>Foto de perfil</label>
-                                    <input type="text" name="avatar" id="avatar" value="{{user.avatar}}" placeholder="Avatar..." />
+                                    <input type="text" name="avatar" id="avatar" value="{{vPerfil.avatar}}" placeholder="Avatar" />
                                 </div>
-
+                                 <div class="12u 12u$(xsmall)">
+                                     <label>Definición de perfil</label>
+                                     <textarea name="profile" id="profile" rows="5" placeholder="Perfil..">{{ perfil.profile }}</textarea>
+                                </div>
                                 <div class="6u 12u$(xsmall)">
                                     <label>Contraseña</label>
                                     <input type="password" name="pwd" id="pwd" value="" placeholder="Contraseña" />
@@ -93,24 +108,22 @@
                                     <label>Confirmar contraseña</label>
                                     <input type="password" name="pwdc" id="pwdc" value="" placeholder="Confirme la contraseña" />
                                 </div>
-
-                            <br>
-                            <div class="12u 12u$(xsmall)">
-                                <ul class="actions" style="text-align: center">
-                                    <li><button class="principal" type="submit">Guardar los cambios</button>
-                                    </li>
-                                </ul>
+                                <br>
+                                <div class="12u 12u$(xsmall)">
+                                    <ul class="actions" style="text-align: center">
+                                        <li><button class="principal" type="submit">Guardar los cambios</button>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </form>
                     </div>
                 </section>
-                <br> 
-                <br>
-                <br>
             </div>
         </section>
     </article>
 {% endblock %}
+
 
 {% block jslink %}
     <script src='../../public/assets/js/jquery.min.js'></script>

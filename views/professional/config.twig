@@ -19,7 +19,7 @@
 {% block configpersonal %}
     <div class="configpersonal">
         <a class=".btn .btn-primary" href="{{'logout' | url }}">Salir</a>
-        <a class="principal" href="{{'professional/ressources' | url }}">Configuración</a>
+        <a class="principal" href="{{'professional/itnConfig' | url }}">Configuración</a>
     </div>
 {% endblock %}
 
@@ -28,6 +28,7 @@
         <section class="wrapper style5">
             <div class="inner">
                 <section>
+                    <h4 style="text-align: center;">Configuración</h4>
                     <div class="wrapper-form">
                         <div class="message-box">
                             {% if inforeg %}
@@ -50,15 +51,32 @@
                                     <label>Nombre completo</label>
                                     <input type="text" name="name" id="name" value="{{vPerfil.name}}" placeholder="Nombre completo" readonly />
                                 </div>
-                                <div class="6u 12u$(xsmall)">
+                                <div class="3u 12u$(xsmall)">
                                     <label>Apellido paterno</label>
                                     <input type="text" name="lname" id="lname" value="{{vPerfil.l_name}}" placeholder="Apellido paterno" readonly />
                                 </div>
-                                <div class="6u 12u$(xsmall)">
+                                <div class="3u$ 12u$(xsmall)">
                                     <label>Apellido materno</label>
                                     <input type="text" name="mlname" id="mlname" value="{{vPerfil.ml_name}}" placeholder="Apellido materno" readonly />
                                 </div>
                                 <div class="3u 12u$(xsmall)">
+                                    <label>CI</label>
+                                    <input type="text" name="ci" id="ci" value="{{vPerfil.ci}}" placeholder="CI" readonly />
+                                </div>
+                                <div class="6u 12u$(xsmall)">
+                                    <label>Email</label>
+                                    <input type="text" name="email" id="email" value="{{vPerfil.email}}" placeholder="Email" readonly/>
+                                </div>
+                                {# igual hasta aqui #}
+                                <div class="3u$ 12u$(xsmall)">
+                                    <label>Teléfono</label>
+                                    <input type="text" name="phone" id="phone" value="{{vPerfil.phone}}" placeholder="Teléfono/celular" />
+                                </div>
+                                <div class="4u 12u$(xsmall)">
+                                    <label>Código SIS</label>
+                                    <input type="text" name="codsis" id="codsis" value="{{vPerfil.cod_sis}}" placeholder="Código SIS" />
+                                </div>
+                                <div class="4u 12u$(xsmall)">
                                     <label>Grado académico</label>
                                     <select name="adegree" id="adegree">
                                         <option value=""disabled selected>- {{vPerfil.a_degree}} -</option>
@@ -67,15 +85,8 @@
                                         <option value="Doctorado">Doctorado</option>
                                     </select>    
                                 </div>
-                                <div class="3u$ 12u$(xsmall)">
-                                    <label>Código SIS</label>
-                                    <input type="text" name="codsis" id="codsis" value="{{vPerfil.cod_sis}}" placeholder="Código SIS" />
-                                </div>
-                                <div class="4u 12u$(xsmall)">
-                                    <label>CI</label>
-                                    <input type="text" name="ci" id="ci" value="{{vPerfil.ci}}" placeholder="CI" readonly />
-                                </div>
-                                <div class="5u 12u$(xsmall)">
+                                
+                                <div class="4u$ 12u$(xsmall)">
                                     <label>Carga horaria</label>
                                     {# <fieldset>
                                         <input type="radio" name="color" value="azul" checked> Tiempo parcial
@@ -87,20 +98,14 @@
                                         <option value="Tiempo completo">Tiempo completo</option>
                                     </select>    
                                 </div>
-                                <div class="3u$ 12u$(xsmall)">
-                                    <label>Teléfono</label>
-                                    <input type="text" name="phone" id="phone" value="{{vPerfil.phone}}" placeholder="Teléfono/celular" />
-                                </div>
                                 
-                                <div class="4u 12u$(xsmall)">
-                                    <label>Email</label>
-                                    <input type="text" name="email" id="email" value="{{vPerfil.email}}" placeholder="Email" readonly/>
-                                </div>
-                                <div class="4u 12u$(xsmall)">
+                                
+                                
+                                <div class="6u 12u$(xsmall)">
                                     <label>Dirección</label>
                                     <input type="text" name="address" id="address" value="{{vPerfil.address}}" placeholder="Dirección" />
                                 </div>
-                                <div class="4u$ 12u$(xsmall)">
+                                <div class="6u$ 12u$(xsmall)">
                                     <label>Foto de perfil</label>
                                     <input type="text" name="avatar" id="avatar" value="{{vPerfil.avatar}}" placeholder="Avatar" />
                                 </div>
@@ -119,7 +124,7 @@
                                 <br>
                                 <div class="12u 12u$(xsmall)">
                                     <ul class="actions" style="text-align: center">
-                                        <li><button class="principal" type="submit">Actualizar</button>
+                                        <li><button class="principal" type="submit">Guardar los cambios</button>
                                         </li>
                                     </ul>
                                 </div>

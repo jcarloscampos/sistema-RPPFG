@@ -60,7 +60,7 @@ class SubareaController extends BaseController
                 ]);
                 $subarea->save();
                 $result = true;
-                return $this->render('admin/insert_subarea.twig', ['areas' => $areas, 'result'=>$result, 'admin' => $admin]);
+                //return $this->render('admin/insert_subarea.twig', ['areas' => $areas, 'result'=>$result, 'admin' => $admin]);
             }
         $errors = $validator->getMessages();
         return $this->render('admin/insert_subarea.twig', ['areas' => $areas, 'result'=>$result, 'errors' => $errors]);
@@ -76,7 +76,6 @@ class SubareaController extends BaseController
     public function postEdit($arg)
 	{
         $errors = [];
-
         $validator = new Validator();
         
         $validator->add('name:Nombre de área',
@@ -94,14 +93,19 @@ class SubareaController extends BaseController
                 'desc_subarea' => $_POST['desc']
             ));
             header('Location:' . BASE_URL . 'admin/subarea');
+            return null;
         }
         $errors = $validator->getMessages();
-		return $this->render('admin/update-subarea.twig', ['subarea' => $subarea, 'errors' => $errors]);
+		return $this->render('admin/update-subarea.twig', [
+            'subarea' => $subarea, 
+            'errors' => $errors, 
+            'vProfile'=>$userProfile
+            ]);
     }
     public function getDelete($id)
 	{
-		$area = Area::find($id);
-		$area->delete();
-        header('Location:' . BASE_URL . 'admin/area');	
+		$subarea = Subarea::find($id);
+		$subarea->delete();
+        header('Location:' . BASE_URL . 'admin/subarea');	
 	}
 }
