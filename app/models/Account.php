@@ -3,16 +3,16 @@ namespace AppPHP\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Account extends Model
-{
+class Account extends Model{
+
     /**
-     * Eloquent por defacto los unico que necesita parabajar es que se defina el nombre de la tabla en una variable protegida
+     * @type object Account
      */
     protected $table = 'account';
 
     /**
-     * Para salvar datos desde un formulario, Eloquent protege estos modelos
-     * Se  define la variable que contendrá los datos a salvar
+     * @type array
      */
-    protected $fillable =  ['username','password'];
+    protected $fillable =  ['username', 'password'];
+
 }

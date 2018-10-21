@@ -1,0 +1,67 @@
+{% extends 'layout.twig' %}
+
+{% block namepage %}
+    Perfil de docente en SRPPFG
+{% endblock %}
+
+{% block title %}
+    Docente:  {{ vPerfil.name }} {{ vPerfil.l_name }}
+{% endblock %}
+
+{% block csslink %}
+    <link rel='stylesheet' href='../public/assets/css/app.css'>
+{% endblock %}
+
+{% block menu %}
+    {% include('remnant/nav-professional.twig') %}
+{% endblock %}
+
+{% block configpersonal %}
+    <div class="configpersonal">
+        <a class=".btn .btn-primary" href="{{'logout' | url }}">Salir</a>
+            {% if etn %}
+                {# si es docente es externo #}
+                <a class="principal" href="{{'professional/etnConfig' | url }}">Configuración</a>
+            {% else %}
+                <a class="principal" href="{{'professional/itnConfig' | url }}">Configuración</a>    
+            {% endif %}
+    </div>
+{% endblock %}
+
+{% block content %}
+<article id="main">
+        <header style="padding-top: 50px; padding-bottom: 50px;" >
+            <h2>SRPPFG</h2>
+            <p>Bienvenido!; Plataforma de seguimiento de proyectos finales de grado.</p>
+        </header>
+        <section class="wrapper style5">
+            <div class="inner">
+                <section>
+                    <div class="wrapper-form">
+                        <div class="message-box">
+                            {% if inforeg %}
+                                {% include 'remnant/info-reg.twig' %}
+                            {% endif %}
+                            
+                        </div>
+                        
+                    </div>
+                </section>
+                <br> 
+                <br>
+                <br>
+            </div>
+        </section>
+    </article>
+
+
+{% endblock %}
+
+{% block jslink %}
+    <script src='../public/assets/js/jquery.min.js'></script>
+    <script src='../public/assets/js/jquery.scrollex.min.js'></script>
+    <script src='../public/assets/js/jquery.scrolly.min.js'></script>
+    <script src='../public/assets/js/skel.min.js'></script>
+    <script src='../public/assets/js/util.js'></script>
+    <script src='../public/assets/js/main.js'></script>
+{% endblock %}

@@ -2,10 +2,10 @@
 -- version 4.8.3
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1:3306
--- Generation Time: Oct 18, 2018 at 04:28 AM
--- Server version: 10.3.9-MariaDB
--- PHP Version: 5.6.38
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 21-10-2018 a las 06:21:58
+-- Versión del servidor: 10.1.36-MariaDB
+-- Versión de PHP: 5.6.38
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,169 +19,79 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `sistema-rppfg`
+-- Base de datos: `sistema-rppfg`
 --
+DROP DATABASE IF EXISTS `sistema-rppfg`;
 CREATE DATABASE IF NOT EXISTS `sistema-rppfg` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE `sistema-rppfg`;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `account`
+-- Estructura de tabla para la tabla `account`
 --
 
 DROP TABLE IF EXISTS `account`;
 CREATE TABLE IF NOT EXISTS `account` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `username` varchar(16) COLLATE utf8_spanish_ci NOT NULL,
   `password` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
   `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=112 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+  `updated_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
--- Dumping data for table `account`
+-- Volcado de datos para la tabla `account`
 --
 
 INSERT INTO `account` (`id`, `username`, `password`, `created_at`, `updated_at`) VALUES
-(1, 'admin', '$2y$10$iI/OOi2A6CMKCGmuA5kK6.NTMIDPSDRcV3OhyogBmjl5WlJF8TRCe', '2018-10-13 21:12:06', '2018-10-13 21:12:06'),
-(2, 'marcolian', '$2y$10$zMtJatIPxc2y833u4UEE7uZftvbyIxNMmgWh1nIhrpJFSvwlej3hS', '2018-10-13 21:29:33', '2018-10-13 21:29:33'),
-(18, 'jaimebaz', '$2y$10$7OyVZLTQUZNJlvKy6eSQtuIf3HbHvIcxddK8wRQBE9R4JBYU61z9K', '2018-10-12 03:40:21', '2018-10-12 03:40:21'),
-(21, 'mayk', '$2y$10$S8Je.AJar2s0kU4n7KVoLe3j0SxsyMY4BbNecmuSOEo/4t6p5DdAy', '2018-10-12 14:43:23', '2018-10-12 14:43:23'),
-(22, 'miguel', '$2y$10$vli4JX9b/ZGS/ScDGiKv3O6F6KPUcAcPORlzzBrJT3cDQInNBwmTu', '2018-10-13 03:02:01', '2018-10-13 03:02:01'),
-(23, 'admin22', '$2y$10$iI/OOi2A6CMKCGmuA5kK6.NTMIDPSDRcV3OhyogBmjl5WlJF8TRCe', '2018-10-13 21:12:06', '2018-10-13 21:12:06'),
-(25, 'christian', '$2y$10$jO3Qa6a0NY5vLKvz025j3.LwOUUMa6NZlYncnA1/27pX2ZpKZ1P36', '2018-10-14 23:33:08', '2018-10-14 23:33:08'),
-(29, 'pab.aze', 'pab.aze.123', '2018-10-17 18:03:18', '2018-10-17 18:03:18'),
-(30, 'vla.cos', 'vla.cos.123', '2018-10-17 18:03:18', '2018-10-17 18:03:18'),
-(31, 'cor.flo', 'cor.flo.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(32, 'vic.mon', 'vic.mon.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(33, 'car.sal', 'car.sal.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(34, 'hen.vil', 'hen.vil.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(35, 'sam.ach', 'sam.ach.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(36, 'lui.agr', 'lui.agr.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(37, 'tat.apa', 'tat.apa.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(38, 'let.bla', 'let.bla.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(39, 'bor.cal', 'bor.cal.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(40, 'ind.cam', 'ind.cam.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(41, 'dav.esc', 'dav.esc.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(42, 'mar.flo', 'mar.flo.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(43, 'rol.jal', 'rol.jal.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(44, 'root', 'root.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(45, 'car.man', 'car.man.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(46, 'yon.mon', 'yon.mon.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(47, 'pat.rom', 'pat.rom.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(48, 'ro.sa', 'ro.sa.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(49, 'rox.sil', 'rox.sil.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(50, 'her.ust', 'her.ust.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(51, 'aid.var', 'aid.var.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(52, 'alv.car', 'alv.car.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(53, 'rau.cat', 'rau.cat.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(54, 'fra.cho', 'fra.cho.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(55, 'alf.cos', 'alf.cos.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(56, 'wal.cos', 'wal.cos.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(57, 'jor.dav', 'jor.dav.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(58, 'jua.fer', 'jua.fer.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(59, 'est.gri', 'est.gri.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(60, 'vic.gut', 'vic.gut.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(61, 'mau.hoe', 'mau.hoe.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(62, 'tit.lim', 'tit.lim.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(63, 'rob.man', 'rob.man.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(64, 'jul.med', 'jul.med.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(65, 'vic.mej', 'vic.mej.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(66, 'rob.omo', 'rob.omo.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(67, 'jos.omo', 'jos.omo.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(68, 'oma.per', 'oma.per.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(69, 'ram.roj', 'ram.roj.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(70, 'jos.sor', 'jos.sor.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(71, 'fid.tab', 'fid.tab.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(72, 'rob.val', 'rob.val.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(73, 'car.gar', 'car.gar.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(74, 'pat.rod', 'pat.rod.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(75, 'mab.mag', 'mab.mag.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(76, 'gro.cus', 'gro.cus.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(77, 'jor.ore', 'jor.ore.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(78, 'ros.tor', 'ros.tor.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(79, 'jim.vill', 'jim.vill.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(80, 'lig.ara', 'lig.ara.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(81, 'ame.fio', 'ame.fio.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(82, 'ric.ayo', 'ric.ayo.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(83, 'mar.mon', 'mar.mon.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(84, 'villazon', 'villazon.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(85, 'wal.ari', 'wal.ari.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(86, 'ale.bus', 'ale.bus.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(87, 'cec.cas', 'cec.cas.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(88, 'ben.ces', 'ben.ces.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(89, 'ale.cho', 'ale.cho.123', '2018-10-17 18:03:19', '2018-10-17 18:03:19'),
-(90, 'alf.del', 'alf.del.123', '2018-10-17 18:03:20', '2018-10-17 18:03:20'),
-(91, 'dav.fer', 'dav.fer.123', '2018-10-17 18:03:20', '2018-10-17 18:03:20'),
-(92, 'rub.gar', 'rub.gar.123', '2018-10-17 18:03:20', '2018-10-17 18:03:20'),
-(93, 'osv.gut', 'osv.gut.123', '2018-10-17 18:03:20', '2018-10-17 18:03:20'),
-(94, 'gon.guz', 'gon.guz.123', '2018-10-17 18:03:20', '2018-10-17 18:03:20'),
-(95, 'joh.her', 'joh.her.123', '2018-10-17 18:03:20', '2018-10-17 18:03:20'),
-(96, 'dem.juc', 'dem.juc.123', '2018-10-17 18:03:20', '2018-10-17 18:03:20'),
-(97, 'gua.leo', 'gua.leo.123', '2018-10-17 18:03:20', '2018-10-17 18:03:20'),
-(98, 'mar.luc', 'mar.luc.123', '2018-10-17 18:03:20', '2018-10-17 18:03:20'),
-(99, 'ami.mar', 'ami.mar.123', '2018-10-17 18:03:20', '2018-10-17 18:03:20'),
-(100, 'edg.pat', 'edg.pat.123', '2018-10-17 18:03:20', '2018-10-17 18:03:20'),
-(101, 'mag.pee', 'mag.pee.123', '2018-10-17 18:03:20', '2018-10-17 18:03:20'),
-(102, 'alf.per', 'alf.per.123', '2018-10-17 18:03:20', '2018-10-17 18:03:20'),
-(103, 'abd.qui', 'abd.qui.123', '2018-10-17 18:03:20', '2018-10-17 18:03:20'),
-(104, 'ant.rod', 'ant.rod.123', '2018-10-17 18:03:20', '2018-10-17 18:03:20'),
-(105, 'ari.sar', 'ari.sar.123', '2018-10-17 18:03:20', '2018-10-17 18:03:20'),
-(106, 'dar.tay', 'dar.tay.123', '2018-10-17 18:03:20', '2018-10-17 18:03:20'),
-(107, 'jua.ter', 'jua.ter.123', '2018-10-17 18:03:20', '2018-10-17 18:03:20'),
-(108, 'mar.val', 'mar.val.123', '2018-10-17 18:03:20', '2018-10-17 18:03:20'),
-(109, 'mar.var', 'mar.var.123', '2018-10-17 18:03:20', '2018-10-17 18:03:20'),
-(110, 'osc.zab', 'osc.zab.123', '2018-10-17 18:03:20', '2018-10-17 18:03:20'),
-(111, 'val.lai', 'val.lai.123', '2018-10-17 18:03:20', '2018-10-17 18:03:20');
+(1, 'admin', '$2y$10$t3wvVOaVBZZc/9iEyOGq9eaJS7uJ5ehq13Ysh7CODiLsXLgnaCi0i', '2018-10-13 21:12:06', '2018-10-19 02:36:00'),
+(44, 'jnavarro345356', '$2y$10$J9vFESlAj1uEnY0rOZAeEeRX/klC44mHoEPzMHxRUvx2uPIn9LvQu', '2018-10-21 05:29:37', '2018-10-21 05:29:37');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `administrator`
+-- Estructura de tabla para la tabla `administrator`
 --
 
 DROP TABLE IF EXISTS `administrator`;
 CREATE TABLE IF NOT EXISTS `administrator` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `name` varchar(30) COLLATE utf8_spanish_ci NOT NULL,
   `l_name` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
   `ml_name` varchar(20) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `ci` varchar(10) COLLATE utf8_spanish_ci NOT NULL,
   `phone` int(8) DEFAULT NULL,
   `email` varchar(30) COLLATE utf8_spanish_ci NOT NULL,
   `address` varchar(50) COLLATE utf8_spanish_ci DEFAULT NULL,
   `avatar` varchar(200) COLLATE utf8_spanish_ci DEFAULT NULL,
   `id_account` int(11) NOT NULL,
   `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK_ID_ACCOUNT` (`id_account`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+  `updated_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
--- Dumping data for table `administrator`
+-- Volcado de datos para la tabla `administrator`
 --
 
-INSERT INTO `administrator` (`id`, `name`, `l_name`, `ml_name`, `phone`, `email`, `address`, `avatar`, `id_account`, `created_at`, `updated_at`) VALUES
-(1, '_', '_', NULL, NULL, '_', NULL, NULL, 1, '2018-10-13 16:10:00', '0000-00-00 00:00:00');
+INSERT INTO `administrator` (`id`, `name`, `l_name`, `ml_name`, `ci`, `phone`, `email`, `address`, `avatar`, `id_account`, `created_at`, `updated_at`) VALUES
+(1, 'Santiago diego', 'Valencia', 'Mendez', '5678545', 4454555, 'valencia.re@gmail.com', '6 de agosto # 43', '', 1, '2018-10-13 16:10:00', '2018-10-21 05:23:08');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `area`
+-- Estructura de tabla para la tabla `area`
 --
 
 DROP TABLE IF EXISTS `area`;
 CREATE TABLE IF NOT EXISTS `area` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `name_area` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
   `desc_area` text COLLATE utf8_spanish_ci DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
   UNIQUE KEY `name_area` (`name_area`)
-) ENGINE=InnoDB AUTO_INCREMENT=304 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
 
@@ -211,21 +121,20 @@ INSERT INTO `a_degree` (`id`, `name_ad`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `is_registered`
+-- Estructura de tabla para la tabla `is_registered`
 --
 
 DROP TABLE IF EXISTS `is_registered`;
 CREATE TABLE IF NOT EXISTS `is_registered` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `ci` varchar(10) COLLATE utf8_spanish_ci NOT NULL,
   `sigla_mat` varchar(10) COLLATE utf8_spanish_ci NOT NULL,
   `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+  `updated_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
--- Dumping data for table `is_registered`
+-- Volcado de datos para la tabla `is_registered`
 --
 
 INSERT INTO `is_registered` (`id`, `ci`, `sigla_mat`, `created_at`, `updated_at`) VALUES
@@ -263,12 +172,12 @@ INSERT INTO `modality` (`id`, `name_mod`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `postulant`
+-- Estructura de tabla para la tabla `postulant`
 --
 
 DROP TABLE IF EXISTS `postulant`;
 CREATE TABLE IF NOT EXISTS `postulant` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `ci` varchar(10) COLLATE utf8_spanish_ci NOT NULL,
   `name` varchar(30) COLLATE utf8_spanish_ci NOT NULL,
   `l_name` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
@@ -280,19 +189,8 @@ CREATE TABLE IF NOT EXISTS `postulant` (
   `cod_sis` int(9) NOT NULL,
   `id_account` int(11) NOT NULL,
   `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK_ID_ACCOUNT` (`id_account`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
-
---
--- Dumping data for table `postulant`
---
-
-INSERT INTO `postulant` (`id`, `ci`, `name`, `l_name`, `ml_name`, `email`, `phone`, `address`, `avatar`, `cod_sis`, `id_account`, `created_at`, `updated_at`) VALUES
-(4, '369963', 'jaime', 'Bazualdo', 'acosta', 'jara@gmail.com', NULL, NULL, NULL, 0, 18, '2018-10-12 03:40:21', '2018-10-12 03:40:21'),
-(5, '852258', 'maykel', 'canedo', 'prado', 'mayk_21@gamil.com', NULL, NULL, NULL, 0, 21, '2018-10-12 14:43:23', '2018-10-12 14:43:23'),
-(6, '741147', 'miguel', 'villanuea', 'kjkjkjk', 'juchanidb@gmail.com', NULL, NULL, NULL, 0, 22, '2018-10-13 03:02:01', '2018-10-13 03:02:01');
+  `updated_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
 
@@ -313,12 +211,12 @@ CREATE TABLE IF NOT EXISTS `professionalumssview` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `professional_ext`
+-- Estructura de tabla para la tabla `professional_ext`
 --
 
 DROP TABLE IF EXISTS `professional_ext`;
 CREATE TABLE IF NOT EXISTS `professional_ext` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_prof` int(11) NOT NULL,
   `ci` int(10) NOT NULL,
   `name` varchar(30) COLLATE utf8_spanish_ci NOT NULL,
   `l_name` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
@@ -329,28 +227,19 @@ CREATE TABLE IF NOT EXISTS `professional_ext` (
   `a_degree` varchar(10) COLLATE utf8_spanish_ci DEFAULT NULL,
   `profile` text COLLATE utf8_spanish_ci DEFAULT NULL,
   `id_account` int(11) NOT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK_ID_ACCOUNT` (`id_account`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
-
---
--- Dumping data for table `professional_ext`
---
-
-INSERT INTO `professional_ext` (`id`, `ci`, `name`, `l_name`, `ml_name`, `email`, `address`, `avatar`, `a_degree`, `profile`, `id_account`, `created_at`, `updated_at`) VALUES
-(1, 232323, 'otro', 'otro', 'otro', 'juchanidb@gmail.com', NULL, NULL, NULL, NULL, 23, '2018-10-13 21:12:06', '2018-10-13 21:12:06');
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `professional_umss`
+-- Estructura de tabla para la tabla `professional_umss`
 --
 
 DROP TABLE IF EXISTS `professional_umss`;
 CREATE TABLE IF NOT EXISTS `professional_umss` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `ci` varchar(10) COLLATE utf8_spanish_ci NOT NULL,
   `name` varchar(30) COLLATE utf8_spanish_ci NOT NULL,
   `l_name` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
@@ -364,87 +253,71 @@ CREATE TABLE IF NOT EXISTS `professional_umss` (
   `id_workload` int(11) NOT NULL,
   `profile` text COLLATE utf8_spanish_ci DEFAULT NULL,
   `id_account` int(11) NOT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK_ID_ACCOUNT` (`id_account`),
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
   KEY `FK_ID_A_DEGREE` (`id_a_degree`) USING BTREE,
   KEY `FK_ID_WORKLOAD` (`id_workload`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=93 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
-
---
--- Dumping data for table `professional_umss`
---
-
-INSERT INTO `professional_umss` (`id`, `ci`, `name`, `l_name`, `ml_name`, `email`, `phone`, `address`, `avatar`, `cod_sis`, `id_a_degree`, `id_workload`, `profile`, `id_account`, `created_at`, `updated_at`) VALUES
-(1, '5642123', 'Marco Julian', 'Navarro', 'Flores', 'marcolian@gmail.com', NULL, NULL, NULL, NULL, 1, 2, NULL, 2, '2018-10-13 21:29:33', '2018-10-13 21:29:33');
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `rol`
+-- Estructura de tabla para la tabla `rol`
 --
 
 DROP TABLE IF EXISTS `rol`;
 CREATE TABLE IF NOT EXISTS `rol` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_rol` int(11) NOT NULL,
   `name_rol` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
   `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+  `updated_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
--- Dumping data for table `rol`
+-- Volcado de datos para la tabla `rol`
 --
 
-INSERT INTO `rol` (`id`, `name_rol`, `created_at`, `updated_at`) VALUES
+INSERT INTO `rol` (`id_rol`, `name_rol`, `created_at`, `updated_at`) VALUES
 (1, 'admin', '2018-10-01 09:25:00', '0000-00-00 00:00:00'),
 (2, 'director', '2018-10-01 14:20:00', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `subarea`
+-- Estructura de tabla para la tabla `subarea`
 --
 
 DROP TABLE IF EXISTS `subarea`;
 CREATE TABLE IF NOT EXISTS `subarea` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `name_subarea` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
   `desc_subarea` text COLLATE utf8_spanish_ci DEFAULT NULL,
   `id_area` int(11) NOT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `id_area` (`id_area`)
-) ENGINE=InnoDB AUTO_INCREMENT=129 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user_rol`
+-- Estructura de tabla para la tabla `user_rol`
 --
 
 DROP TABLE IF EXISTS `user_rol`;
 CREATE TABLE IF NOT EXISTS `user_rol` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_urol` int(11) NOT NULL,
   `id_account` int(11) NOT NULL,
   `id_rol` int(11) NOT NULL,
   `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK_ID_ACCOUNT` (`id_account`),
-  KEY `FK_ID_ROL` (`id_rol`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+  `updated_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
--- Dumping data for table `user_rol`
+-- Volcado de datos para la tabla `user_rol`
 --
 
-INSERT INTO `user_rol` (`id`, `id_account`, `id_rol`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, '2018-10-13 10:20:00', '0000-00-00 00:00:00'),
-(2, 2, 2, '2018-10-13 11:12:00', '0000-00-00 00:00:00');
+INSERT INTO `user_rol` (`id_urol`, `id_account`, `id_rol`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, '2018-10-13 10:20:00', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -458,7 +331,7 @@ CREATE TABLE IF NOT EXISTS `workload` (
   `name_wl` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name_wl` (`name_wl`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `workload`
@@ -478,29 +351,164 @@ DROP TABLE IF EXISTS `professionalumssview`;
 CREATE ALGORITHM=TEMPTABLE DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `professionalumssview`  AS  select `p`.`id` AS `id`,concat(`d`.`name_ad`,' ',`p`.`l_name`,' ',`p`.`ml_name`,' ',`p`.`name`) AS `full_name`,`p`.`email` AS `email`,`p`.`phone` AS `phone`,`p`.`address` AS `address`,`w`.`name_wl` AS `name_wl` from ((`professional_umss` `p` join `a_degree` `d`) join `workload` `w`) where `p`.`id_a_degree` = `d`.`id` and `p`.`id_workload` = `w`.`id` ;
 
 --
--- Constraints for dumped tables
+-- Índices para tablas volcadas
 --
 
 --
--- Constraints for table `administrator`
+-- Indices de la tabla `account`
+--
+ALTER TABLE `account`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `administrator`
+--
+ALTER TABLE `administrator`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FK_ID_ACCOUNT` (`id_account`);
+
+--
+-- Indices de la tabla `area`
+--
+ALTER TABLE `area`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `is_registered`
+--
+ALTER TABLE `is_registered`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `postulant`
+--
+ALTER TABLE `postulant`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FK_ID_ACCOUNT` (`id_account`);
+
+--
+-- Indices de la tabla `professional_ext`
+--
+ALTER TABLE `professional_ext`
+  ADD PRIMARY KEY (`id_prof`),
+  ADD KEY `FK_ID_ACCOUNT` (`id_account`);
+
+--
+-- Indices de la tabla `professional_umss`
+--
+ALTER TABLE `professional_umss`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FK_ID_ACCOUNT` (`id_account`);
+
+--
+-- Indices de la tabla `rol`
+--
+ALTER TABLE `rol`
+  ADD PRIMARY KEY (`id_rol`);
+
+--
+-- Indices de la tabla `subarea`
+--
+ALTER TABLE `subarea`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_area` (`id_area`);
+
+--
+-- Indices de la tabla `user_rol`
+--
+ALTER TABLE `user_rol`
+  ADD PRIMARY KEY (`id_urol`),
+  ADD KEY `FK_ID_ACCOUNT` (`id_account`),
+  ADD KEY `FK_ID_ROL` (`id_rol`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `account`
+--
+ALTER TABLE `account`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+
+--
+-- AUTO_INCREMENT de la tabla `administrator`
+--
+ALTER TABLE `administrator`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de la tabla `area`
+--
+ALTER TABLE `area`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+
+--
+-- AUTO_INCREMENT de la tabla `is_registered`
+--
+ALTER TABLE `is_registered`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT de la tabla `postulant`
+--
+ALTER TABLE `postulant`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT de la tabla `professional_ext`
+--
+ALTER TABLE `professional_ext`
+  MODIFY `id_prof` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `professional_umss`
+--
+ALTER TABLE `professional_umss`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
+--
+-- AUTO_INCREMENT de la tabla `rol`
+--
+ALTER TABLE `rol`
+  MODIFY `id_rol` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de la tabla `subarea`
+--
+ALTER TABLE `subarea`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- AUTO_INCREMENT de la tabla `user_rol`
+--
+ALTER TABLE `user_rol`
+  MODIFY `id_urol` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `administrator`
 --
 ALTER TABLE `administrator`
   ADD CONSTRAINT `administrator_ibfk_1` FOREIGN KEY (`id_account`) REFERENCES `account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `postulant`
+-- Filtros para la tabla `postulant`
 --
 ALTER TABLE `postulant`
   ADD CONSTRAINT `postulant_ibfk_1` FOREIGN KEY (`id_account`) REFERENCES `account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `professional_ext`
+-- Filtros para la tabla `professional_ext`
 --
 ALTER TABLE `professional_ext`
   ADD CONSTRAINT `professional_ext_ibfk_1` FOREIGN KEY (`id_account`) REFERENCES `account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `professional_umss`
+-- Filtros para la tabla `professional_umss`
 --
 ALTER TABLE `professional_umss`
   ADD CONSTRAINT `professional_umss_ibfk_1` FOREIGN KEY (`id_account`) REFERENCES `account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -508,17 +516,17 @@ ALTER TABLE `professional_umss`
   ADD CONSTRAINT `professional_umss_ibfk_3` FOREIGN KEY (`id_workload`) REFERENCES `workload` (`id`) ON UPDATE CASCADE;
 
 --
--- Constraints for table `subarea`
+-- Filtros para la tabla `subarea`
 --
 ALTER TABLE `subarea`
   ADD CONSTRAINT `subarea_ibfk_1` FOREIGN KEY (`id_area`) REFERENCES `area` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `user_rol`
+-- Filtros para la tabla `user_rol`
 --
 ALTER TABLE `user_rol`
   ADD CONSTRAINT `user_rol_ibfk_1` FOREIGN KEY (`id_account`) REFERENCES `account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `user_rol_ibfk_2` FOREIGN KEY (`id_rol`) REFERENCES `rol` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `user_rol_ibfk_2` FOREIGN KEY (`id_rol`) REFERENCES `rol` (`id_rol`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -3,37 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Registro de perfiles de grado</title>
+    <title>{% block namepage %}{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat|Oleo Script" rel="stylesheet">
+    {% block csslink %}{% endblock %}
 </head>
 <body>
-    <header class="header relative border-bottom">
-        <a href="#" class="botton-menu icon-menu"></a>
-        <nav class="menu">
-            <ul class="list center-block wrap">
-                <li class="item">
-                    <a href="{{ '' | url }}">Inicio</a>
-                </li>
-                <li class="item">
-                    <a href="{{ 'teacher/' | url }}">Docentes</a>
-                </li>
-                <li class="item">
-                    <a href="{{ 'student/' | url }}">Estudiantes</a>
-                </li>
-                <li class="item">
-                    <a href="#">Búsqueda de perfiles</a>
-                </li>
-                <li class="item">
-                    <a href="#">Guía del trámite</a>
-                </li>
-            </ul>
-        </nav>
-    </header>
-    <section class="wrap-main small medium large">
-        {% block content %}{% endblock %}
-    </section>
-<footer class="center-text padding">
-    <p class="margin-top-bottom"><strong>SRPPFG</strong></p>
-    <p>Universidad Mayor de San Simón 2018</p>
-</footer>  
+    <div class="main">
+        <div id="page-wrapper">
+            <header id="header">
+                <h1>{% block title %}{% endblock %}</h1>
+                {% block menu %}{% endblock %}
+            </header>
+            <header class="config">
+                <p>{% block configpersonal %}{% endblock %}</p>
+            </header>
+                {% block content %}{% endblock %}
+                
+            <footer id="footer">
+                <ul class="copyright">
+                   <li>Universidad Mayor de San Simón 2018</li>
+            </footer>
+        </div>
+        {% block jslink %}{% endblock %}
+    </div>
 </body>
 </html>

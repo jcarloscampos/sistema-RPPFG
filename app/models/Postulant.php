@@ -5,11 +5,24 @@ use Illuminate\Database\Eloquent\Model;
 
 class Postulant extends Model
 {
+     /**
+     * @type object Postulant
+     */
     protected $table = 'postulant';
 
     /**
-     * Para salvar datos desde un formulario, Eloquent protege estos modelos
-     * Se  define la variable que contendrá los datos a salvar
+     * @type array
      */
-    protected $fillable =  ['ci', 'name', 'l_name', 'ml_name', 'email', 'phone', 'address', 'avatar', 'cod_sis'];
+    protected $fillable =  [
+        'ci',
+        'name',
+        'l_name',
+        'ml_name',
+        'email',
+        'phone',
+        'address',
+        'avatar',
+        'cod_sis',
+        'id_account'
+    ];
 }

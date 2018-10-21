@@ -3,3 +3,5 @@ composer.lock
 
 #ignora el directorio vendor
 vendor/*
+lib/*
+

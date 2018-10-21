@@ -1,24 +1,59 @@
 {% extends 'layout.twig' %}
 
-{% block content %}
-    <h4>Panel de administrador</h4>
-        <ul> 
-            <li>
-            <a href="{{'admin/area' | url }}">Administrar áreas</a>
-            </li>
-            <li>
-            <a href="{{'admin/subarea' | url }}">Administrar sub áreas</a>
-            </li>
-            <li>
-            <a href="{{'admin/teachers' | url }}">Administrar Docentes</a>
-            </li>
-            <li>
-            <a href="{{'admin/postulants' | url }}">Administrar Postulantes</a>
-            </li>
-            <li>
-            <a href="{{'admin/projects' | url }}">Administrar Proyectos</a>
-            </li>
-        </ul>
+{% block namepage %}
+    Perfil de administración en SRPPFG
 {% endblock %}
 
+{% block title %}
+    Administrador:  {{ admin.name }} {{ admin.l_name }}
+{% endblock %}
 
+{% block csslink %}
+    <link rel='stylesheet' href='../public/assets/css/app.css'>
+{% endblock %}
+
+{% block menu %}
+    {% include('remnant/nav-admin.twig') %}
+{% endblock %}
+
+{% block configpersonal %}
+    {% include('remnant/sub-nav.twig') %}
+{% endblock %}
+
+{% block content %}
+<article id="main">
+        <header style="padding-top: 50px; padding-bottom: 50px;" >
+            <h2>SRPPFG</h2>
+            <p>Bienvenido!; Área de configuración general  para todo el sistema. </p>
+        </header>
+        <section class="wrapper style5">
+            <div class="inner">
+                <section>
+                    <div class="wrapper-form">
+                        <div class="message-box">
+                            {% if inforeg %}
+                                {% include 'remnant/info-reg.twig' %}
+                            {% endif %}
+                            
+                        </div>
+                        
+                    </div>
+                </section>
+                <br> 
+                <br>
+                <br>
+            </div>
+        </section>
+    </article>
+
+
+{% endblock %}
+
+{% block jslink %}
+    <script src='../public/assets/js/jquery.min.js'></script>
+    <script src='../public/assets/js/jquery.scrollex.min.js'></script>
+    <script src='../public/assets/js/jquery.scrolly.min.js'></script>
+    <script src='../public/assets/js/skel.min.js'></script>
+    <script src='../public/assets/js/util.js'></script>
+    <script src='../public/assets/js/main.js'></script>
+{% endblock %}

@@ -7,7 +7,9 @@ use Twig_Environment;
 
 class BaseController
 {
-    //variable para guardar la vista con twig.
+    /**
+     * @type object
+     */
     protected $templateEngine;
 
     /**
@@ -23,16 +25,15 @@ class BaseController
             'debug' => true,
             'cacche' => false
         ]);
-        //agrega filtros para links de url
         $this->templateEngine->addFilter(new \Twig_SimpleFilter('url', function ($path) {
             return BASE_URL . $path;
         }));
     }
     /**
      * funcion para render de las vistas con plantillas de twig.
-     * @param el nombre del archivo: $fileName.
-     * @param arreglo de datos que se va a desplegar, por defecto se pasa uno vacio: $data=[].
-     * @return la vista a partir del $fileName y $data.
+     * @param string $fileName.
+     * @param array $data.
+     * @return object template.
      */
     public function render($fileName, $data=[])
     {

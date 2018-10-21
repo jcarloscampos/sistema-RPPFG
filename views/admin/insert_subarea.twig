@@ -1,28 +1,82 @@
 {% extends 'layout.twig' %}
 
+{% block csslink %}
+    <link rel='stylesheet' href='../../../public/assets/css/app.css'>
+{% endblock %}
+
+{% block namepage %}
+    Perfil de administración en SRPPFG
+{% endblock %}
+
+{% block title %}
+    Administrador:  {{ admin.name }} {{ admin.l_name }}
+{% endblock %}
+
+{% block menu %}
+    {% include('remnant/nav-admin.twig') %}
+{% endblock %}
+
+{% block configpersonal %}
+    {% include('remnant/sub-nav.twig') %}
+{% endblock %}
+
 {% block content %}
-    <h2>Nueva sub area</h2>
-    <a href="{{ 'admin/subarea/' | url }}">Atras</a>
-    <div class="container-register">                              
-        <form class="group-content-register" action="" method="post">
-            <div class="wrap-register">
-                <h1 class="center-text">Registro de sub area.</h1>
-                <label for="nombsubarea"><b>Nombre de sub área <strong class="check">*</strong></b></label>
-                <input type="text" placeholder="Ingrese sub area" name="nombsubarea" id="nombsubarea" required>
-
-                <label for="email"><b>Nombre de area <strong class="check">*</strong></b></label>
-                <select name="nombareasel" id="nombareasel">
-                    {% for area in areas %}
-                        <option value="{{ area.id_area }}">{{ area.name_area }}</option>
-                    {% endfor %}
-                </select>              
-
-                <label for="email"><b>Descripción del área <strong class="check">*</strong></b></label>
-                <textarea class="form-control" name="descsubarea" id="descsubarea" rows="5"></textarea>
-                   
-                <input type="submit" value="Guardar">
-                
+<article id="main">
+        <section class="wrapper style5">
+            <div class="inner">
+                <section>
+                    <div class="wrapper-form">
+                        <div class="message-box">
+                            {% if errors %}
+                                {% include 'remnant/errors.twig' %}
+                            {% endif %}
+                            {% if result %}
+                                {% include 'remnant/success.twig' %}
+                            {% endif %}
+                        </div>
+                        <form method="post" action="#">
+                            <div class="row uniform">
+                                <div class="8u 12u$(xsmall)">
+                                    <label>Nombre del sub área</label>
+                                    <input type="text" name="namesubarea" id="namesubarea" value="" placeholder="Sub área..." />
+                                </div>
+                                <div class="4u$ 12u$(xsmall)">
+                                    <label>Área al que pertenece</label>
+                                    <select name="nameareasel" id="nameareasel">
+                                        <option value="" disabled selected>- Seleccione -</option>
+                                        {% for area in areas %}
+                                            <option value="{{ area.id }}">{{ area.name_area }}</option>
+                                        {% endfor %}
+                                    </select>    
+                                </div>
+                                <div class="12u 12u$(xsmall)">
+                                    <label>Descripción del sub área</label>
+                                    <textarea class="form-control" name="descsubarea" id="descsubarea" rows="5" value="" placeholder="Descripción.."></textarea>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="12u 12u$(xsmall)">
+                                <ul class="actions" style="text-align: center">
+                                    <li><button class="principal" type="submit">Guardar</button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+                <br> 
+                <br>
+                <br>
             </div>
-        </form>
-    </div> 
+        </section>
+    </article>
+{% endblock %}
+
+{% block jslink %}
+    <script src='../../../public/assets/js/jquery.min.js'></script>
+    <script src='../../../public/assets/js/jquery.scrollex.min.js'></script>
+    <script src='../../../public/assets/js/jquery.scrolly.min.js'></script>
+    <script src='../../../public/assets/js/skel.min.js'></script>
+    <script src='../../../public/assets/js/util.js'></script>
+    <script src='../../../public/assets/js/main.js'></script>
 {% endblock %}
