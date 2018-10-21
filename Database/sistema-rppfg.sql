@@ -2,10 +2,10 @@
 -- version 4.8.3
 -- https://www.phpmyadmin.net/
 --
--- Servidor: 127.0.0.1
--- Tiempo de generación: 21-10-2018 a las 06:21:58
--- Versión del servidor: 10.1.36-MariaDB
--- Versión de PHP: 5.6.38
+-- Host: 127.0.0.1:3306
+-- Generation Time: Oct 21, 2018 at 04:08 PM
+-- Server version: 10.3.9-MariaDB
+-- PHP Version: 5.6.38
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,20 +19,20 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `sistema-rppfg`
+-- Database: `sistema-rppfg`
 --
-DROP DATABASE IF EXISTS `sistema-rppfg`;
+
 CREATE DATABASE IF NOT EXISTS `sistema-rppfg` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE `sistema-rppfg`;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `account`
+-- Table structure for table `account`
 --
 
 DROP TABLE IF EXISTS `account`;
-CREATE TABLE IF NOT EXISTS `account` (
+CREATE TABLE `account` (
   `id` int(11) NOT NULL,
   `username` varchar(16) COLLATE utf8_spanish_ci NOT NULL,
   `password` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `account` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
--- Volcado de datos para la tabla `account`
+-- Dumping data for table `account`
 --
 
 INSERT INTO `account` (`id`, `username`, `password`, `created_at`, `updated_at`) VALUES
@@ -51,11 +51,11 @@ INSERT INTO `account` (`id`, `username`, `password`, `created_at`, `updated_at`)
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `administrator`
+-- Table structure for table `administrator`
 --
 
 DROP TABLE IF EXISTS `administrator`;
-CREATE TABLE IF NOT EXISTS `administrator` (
+CREATE TABLE `administrator` (
   `id` int(11) NOT NULL,
   `name` varchar(30) COLLATE utf8_spanish_ci NOT NULL,
   `l_name` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `administrator` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
--- Volcado de datos para la tabla `administrator`
+-- Dumping data for table `administrator`
 --
 
 INSERT INTO `administrator` (`id`, `name`, `l_name`, `ml_name`, `ci`, `phone`, `email`, `address`, `avatar`, `id_account`, `created_at`, `updated_at`) VALUES
@@ -80,17 +80,16 @@ INSERT INTO `administrator` (`id`, `name`, `l_name`, `ml_name`, `ci`, `phone`, `
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `area`
+-- Table structure for table `area`
 --
 
 DROP TABLE IF EXISTS `area`;
-CREATE TABLE IF NOT EXISTS `area` (
+CREATE TABLE `area` (
   `id` int(11) NOT NULL,
   `name_area` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
   `desc_area` text COLLATE utf8_spanish_ci DEFAULT NULL,
   `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
-  UNIQUE KEY `name_area` (`name_area`)
+  `updated_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
@@ -100,12 +99,10 @@ CREATE TABLE IF NOT EXISTS `area` (
 --
 
 DROP TABLE IF EXISTS `a_degree`;
-CREATE TABLE IF NOT EXISTS `a_degree` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name_ad` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `name_ad` (`name_ad`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `a_degree` (
+  `id` int(11) NOT NULL,
+  `name_ad` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `a_degree`
@@ -121,11 +118,11 @@ INSERT INTO `a_degree` (`id`, `name_ad`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `is_registered`
+-- Table structure for table `is_registered`
 --
 
 DROP TABLE IF EXISTS `is_registered`;
-CREATE TABLE IF NOT EXISTS `is_registered` (
+CREATE TABLE `is_registered` (
   `id` int(11) NOT NULL,
   `ci` varchar(10) COLLATE utf8_spanish_ci NOT NULL,
   `sigla_mat` varchar(10) COLLATE utf8_spanish_ci NOT NULL,
@@ -134,7 +131,7 @@ CREATE TABLE IF NOT EXISTS `is_registered` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
--- Volcado de datos para la tabla `is_registered`
+-- Dumping data for table `is_registered`
 --
 
 INSERT INTO `is_registered` (`id`, `ci`, `sigla_mat`, `created_at`, `updated_at`) VALUES
@@ -152,12 +149,10 @@ INSERT INTO `is_registered` (`id`, `ci`, `sigla_mat`, `created_at`, `updated_at`
 --
 
 DROP TABLE IF EXISTS `modality`;
-CREATE TABLE IF NOT EXISTS `modality` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name_mod` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `name_mod` (`name_mod`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `modality` (
+  `id` int(11) NOT NULL,
+  `name_mod` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `modality`
@@ -172,11 +167,11 @@ INSERT INTO `modality` (`id`, `name_mod`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `postulant`
+-- Table structure for table `postulant`
 --
 
 DROP TABLE IF EXISTS `postulant`;
-CREATE TABLE IF NOT EXISTS `postulant` (
+CREATE TABLE `postulant` (
   `id` int(11) NOT NULL,
   `ci` varchar(10) COLLATE utf8_spanish_ci NOT NULL,
   `name` varchar(30) COLLATE utf8_spanish_ci NOT NULL,
@@ -199,7 +194,7 @@ CREATE TABLE IF NOT EXISTS `postulant` (
 -- (See below for the actual view)
 --
 DROP VIEW IF EXISTS `professionalumssview`;
-CREATE TABLE IF NOT EXISTS `professionalumssview` (
+CREATE TABLE `professionalumssview` (
 `id` int(11)
 ,`full_name` varchar(83)
 ,`email` varchar(30)
@@ -211,11 +206,11 @@ CREATE TABLE IF NOT EXISTS `professionalumssview` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `professional_ext`
+-- Table structure for table `professional_ext`
 --
 
 DROP TABLE IF EXISTS `professional_ext`;
-CREATE TABLE IF NOT EXISTS `professional_ext` (
+CREATE TABLE `professional_ext` (
   `id_prof` int(11) NOT NULL,
   `ci` int(10) NOT NULL,
   `name` varchar(30) COLLATE utf8_spanish_ci NOT NULL,
@@ -234,11 +229,11 @@ CREATE TABLE IF NOT EXISTS `professional_ext` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `professional_umss`
+-- Table structure for table `professional_umss`
 --
 
 DROP TABLE IF EXISTS `professional_umss`;
-CREATE TABLE IF NOT EXISTS `professional_umss` (
+CREATE TABLE `professional_umss` (
   `id` int(11) NOT NULL,
   `ci` varchar(10) COLLATE utf8_spanish_ci NOT NULL,
   `name` varchar(30) COLLATE utf8_spanish_ci NOT NULL,
@@ -254,19 +249,17 @@ CREATE TABLE IF NOT EXISTS `professional_umss` (
   `profile` text COLLATE utf8_spanish_ci DEFAULT NULL,
   `id_account` int(11) NOT NULL,
   `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
-  KEY `FK_ID_A_DEGREE` (`id_a_degree`) USING BTREE,
-  KEY `FK_ID_WORKLOAD` (`id_workload`) USING BTREE
+  `updated_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `rol`
+-- Table structure for table `rol`
 --
 
 DROP TABLE IF EXISTS `rol`;
-CREATE TABLE IF NOT EXISTS `rol` (
+CREATE TABLE `rol` (
   `id_rol` int(11) NOT NULL,
   `name_rol` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
   `created_at` datetime NOT NULL,
@@ -274,7 +267,7 @@ CREATE TABLE IF NOT EXISTS `rol` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
--- Volcado de datos para la tabla `rol`
+-- Dumping data for table `rol`
 --
 
 INSERT INTO `rol` (`id_rol`, `name_rol`, `created_at`, `updated_at`) VALUES
@@ -284,11 +277,11 @@ INSERT INTO `rol` (`id_rol`, `name_rol`, `created_at`, `updated_at`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `subarea`
+-- Table structure for table `subarea`
 --
 
 DROP TABLE IF EXISTS `subarea`;
-CREATE TABLE IF NOT EXISTS `subarea` (
+CREATE TABLE `subarea` (
   `id` int(11) NOT NULL,
   `name_subarea` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
   `desc_subarea` text COLLATE utf8_spanish_ci DEFAULT NULL,
@@ -300,11 +293,11 @@ CREATE TABLE IF NOT EXISTS `subarea` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `user_rol`
+-- Table structure for table `user_rol`
 --
 
 DROP TABLE IF EXISTS `user_rol`;
-CREATE TABLE IF NOT EXISTS `user_rol` (
+CREATE TABLE `user_rol` (
   `id_urol` int(11) NOT NULL,
   `id_account` int(11) NOT NULL,
   `id_rol` int(11) NOT NULL,
@@ -313,7 +306,7 @@ CREATE TABLE IF NOT EXISTS `user_rol` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
--- Volcado de datos para la tabla `user_rol`
+-- Dumping data for table `user_rol`
 --
 
 INSERT INTO `user_rol` (`id_urol`, `id_account`, `id_rol`, `created_at`, `updated_at`) VALUES
@@ -326,11 +319,9 @@ INSERT INTO `user_rol` (`id_urol`, `id_account`, `id_rol`, `created_at`, `update
 --
 
 DROP TABLE IF EXISTS `workload`;
-CREATE TABLE IF NOT EXISTS `workload` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name_wl` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `name_wl` (`name_wl`)
+CREATE TABLE `workload` (
+  `id` int(11) NOT NULL,
+  `name_wl` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -351,70 +342,87 @@ DROP TABLE IF EXISTS `professionalumssview`;
 CREATE ALGORITHM=TEMPTABLE DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `professionalumssview`  AS  select `p`.`id` AS `id`,concat(`d`.`name_ad`,' ',`p`.`l_name`,' ',`p`.`ml_name`,' ',`p`.`name`) AS `full_name`,`p`.`email` AS `email`,`p`.`phone` AS `phone`,`p`.`address` AS `address`,`w`.`name_wl` AS `name_wl` from ((`professional_umss` `p` join `a_degree` `d`) join `workload` `w`) where `p`.`id_a_degree` = `d`.`id` and `p`.`id_workload` = `w`.`id` ;
 
 --
--- Índices para tablas volcadas
+-- Indexes for dumped tables
 --
 
 --
--- Indices de la tabla `account`
+-- Indexes for table `account`
 --
 ALTER TABLE `account`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `administrator`
+-- Indexes for table `administrator`
 --
 ALTER TABLE `administrator`
   ADD PRIMARY KEY (`id`),
   ADD KEY `FK_ID_ACCOUNT` (`id_account`);
 
 --
--- Indices de la tabla `area`
+-- Indexes for table `area`
 --
 ALTER TABLE `area`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name_area` (`name_area`);
 
 --
--- Indices de la tabla `is_registered`
+-- Indexes for table `a_degree`
+--
+ALTER TABLE `a_degree`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name_ad` (`name_ad`);
+
+--
+-- Indexes for table `is_registered`
 --
 ALTER TABLE `is_registered`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `postulant`
+-- Indexes for table `modality`
+--
+ALTER TABLE `modality`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name_mod` (`name_mod`);
+
+--
+-- Indexes for table `postulant`
 --
 ALTER TABLE `postulant`
   ADD PRIMARY KEY (`id`),
   ADD KEY `FK_ID_ACCOUNT` (`id_account`);
 
 --
--- Indices de la tabla `professional_ext`
+-- Indexes for table `professional_ext`
 --
 ALTER TABLE `professional_ext`
   ADD PRIMARY KEY (`id_prof`),
   ADD KEY `FK_ID_ACCOUNT` (`id_account`);
 
 --
--- Indices de la tabla `professional_umss`
+-- Indexes for table `professional_umss`
 --
 ALTER TABLE `professional_umss`
   ADD PRIMARY KEY (`id`),
+  ADD KEY `FK_ID_A_DEGREE` (`id_a_degree`) USING BTREE,
+  ADD KEY `FK_ID_WORKLOAD` (`id_workload`) USING BTREE,
   ADD KEY `FK_ID_ACCOUNT` (`id_account`);
 
 --
--- Indices de la tabla `rol`
+-- Indexes for table `rol`
 --
 ALTER TABLE `rol`
   ADD PRIMARY KEY (`id_rol`);
 
 --
--- Indices de la tabla `subarea`
+-- Indexes for table `subarea`
 --
 ALTER TABLE `subarea`
   ADD PRIMARY KEY (`id`),
   ADD KEY `id_area` (`id_area`);
 
 --
--- Indices de la tabla `user_rol`
+-- Indexes for table `user_rol`
 --
 ALTER TABLE `user_rol`
   ADD PRIMARY KEY (`id_urol`),
@@ -422,93 +430,118 @@ ALTER TABLE `user_rol`
   ADD KEY `FK_ID_ROL` (`id_rol`);
 
 --
--- AUTO_INCREMENT de las tablas volcadas
+-- Indexes for table `workload`
+--
+ALTER TABLE `workload`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name_wl` (`name_wl`);
+
+--
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT de la tabla `account`
+-- AUTO_INCREMENT for table `account`
 --
 ALTER TABLE `account`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
--- AUTO_INCREMENT de la tabla `administrator`
+-- AUTO_INCREMENT for table `administrator`
 --
 ALTER TABLE `administrator`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT de la tabla `area`
+-- AUTO_INCREMENT for table `area`
 --
 ALTER TABLE `area`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
--- AUTO_INCREMENT de la tabla `is_registered`
+-- AUTO_INCREMENT for table `a_degree`
+--
+ALTER TABLE `a_degree`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `is_registered`
 --
 ALTER TABLE `is_registered`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT de la tabla `postulant`
+-- AUTO_INCREMENT for table `modality`
+--
+ALTER TABLE `modality`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `postulant`
 --
 ALTER TABLE `postulant`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
--- AUTO_INCREMENT de la tabla `professional_ext`
+-- AUTO_INCREMENT for table `professional_ext`
 --
 ALTER TABLE `professional_ext`
   MODIFY `id_prof` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT de la tabla `professional_umss`
+-- AUTO_INCREMENT for table `professional_umss`
 --
 ALTER TABLE `professional_umss`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
--- AUTO_INCREMENT de la tabla `rol`
+-- AUTO_INCREMENT for table `rol`
 --
 ALTER TABLE `rol`
   MODIFY `id_rol` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT de la tabla `subarea`
+-- AUTO_INCREMENT for table `subarea`
 --
 ALTER TABLE `subarea`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
--- AUTO_INCREMENT de la tabla `user_rol`
+-- AUTO_INCREMENT for table `user_rol`
 --
 ALTER TABLE `user_rol`
   MODIFY `id_urol` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- Restricciones para tablas volcadas
+-- AUTO_INCREMENT for table `workload`
+--
+ALTER TABLE `workload`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- Constraints for dumped tables
 --
 
 --
--- Filtros para la tabla `administrator`
+-- Constraints for table `administrator`
 --
 ALTER TABLE `administrator`
   ADD CONSTRAINT `administrator_ibfk_1` FOREIGN KEY (`id_account`) REFERENCES `account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Filtros para la tabla `postulant`
+-- Constraints for table `postulant`
 --
 ALTER TABLE `postulant`
   ADD CONSTRAINT `postulant_ibfk_1` FOREIGN KEY (`id_account`) REFERENCES `account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Filtros para la tabla `professional_ext`
+-- Constraints for table `professional_ext`
 --
 ALTER TABLE `professional_ext`
   ADD CONSTRAINT `professional_ext_ibfk_1` FOREIGN KEY (`id_account`) REFERENCES `account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Filtros para la tabla `professional_umss`
+-- Constraints for table `professional_umss`
 --
 ALTER TABLE `professional_umss`
   ADD CONSTRAINT `professional_umss_ibfk_1` FOREIGN KEY (`id_account`) REFERENCES `account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -516,13 +549,13 @@ ALTER TABLE `professional_umss`
   ADD CONSTRAINT `professional_umss_ibfk_3` FOREIGN KEY (`id_workload`) REFERENCES `workload` (`id`) ON UPDATE CASCADE;
 
 --
--- Filtros para la tabla `subarea`
+-- Constraints for table `subarea`
 --
 ALTER TABLE `subarea`
   ADD CONSTRAINT `subarea_ibfk_1` FOREIGN KEY (`id_area`) REFERENCES `area` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Filtros para la tabla `user_rol`
+-- Constraints for table `user_rol`
 --
 ALTER TABLE `user_rol`
   ADD CONSTRAINT `user_rol_ibfk_1` FOREIGN KEY (`id_account`) REFERENCES `account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
