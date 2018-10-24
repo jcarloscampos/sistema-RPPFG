@@ -6,52 +6,30 @@ use AppPHP\Controllers\BaseController;
 use Sirius\Validation\Validator;
 use AppPHP\Models\ProfessionalExt;
 use AppPHP\Models\Account;
+use AppPHP\Controllers\Common\Validation;
+use AppPHP\Controllers\Common\ServerConnection;
 
 class EtnConfigController extends BaseController
 {
     public function getIndex()
     {
         if (isset($_SESSION['profID'])) {
-            $userProfile = ProfessionalExt::where('id_account', $_SESSION['profID'])->first();
+            $userprofile = ProfessionalExt::where('id_account', $_SESSION['profID'])->first();
+            return $this->render('professional/etn-config.twig', ['vPerfil' => $userprofile]);
         }
-        return $this->render('professional/etn-config.twig', ['vPerfil' => $userProfile]);
     }
-
-
-
+    
     public function postIndex()
     {
         $errors = [];
-        $validator = new Validator();
         $result = false;
-        //$user = ProfessionalExt::where('id_account',$_SESSION['profID'])->first();
+        $validator = new Validator();
+        $validation = new Validation();
+        $makeDB = new ServerConnection(); 
         $user = ProfessionalExt::find($_POST['id']);
-        $validator->add(array(
-            'name:Nonbre'=> 'required | 
-                            minlength(3)({label} debe tener al menos {min} caracteres) | 
-                            maxlength(30)({label} debe tener menos de {max} caracteres)',
-            'lname:Apellido paterno'=> 'required | 
-                                        minlength(3)({label} debe tener al menos {min} caracteres) | 
-                                        maxlength(20)({label} debe tener menos de {max} caracteres)',
-            'mlname:Apellido materno'=> 'required | 
-                                        minlength(3)({label} debe tener al menos {min} caracteres) | 
-                                        maxlength(20)({label} debe tener menos de {max} caracteres)',
+        
+        $validation->setRuleBasic($validator);
 
-            'ci:No de identificación personal'=>'required | 
-                                                minlength(6)({label} debe tener al menos {min} caracteres) | 
-                                                maxlength(15)({label} debe tener menos de {max} caracteres)',
-
-            'phone: Teléfono o celular'=>'  minlength(7)({label} debe tener al menos {min} caracteres) | 
-                                            maxlength(8)({label} debe tener menos de {max} caracteres)',
-            'email:Email'=> 'required | email',
-            'address:Dirección de domiciliio'=> 'minlength(5)({label} debe tener al menos {min} caracteres) | 
-                                                maxlength(200)({label} debe tener menos de {max} caracteres)',
-            'pwd:Contraseña'=>  'minlength(5)({label} debe tener al menos {min} caracteres) | 
-                                maxlength(30)({label} debe tener menos de {max} caracteres)',
-            'pwdc:Contraseñas'=> 'match(item=pwd)({label} no coinciden )'
-            
-        ));
-       
         $userprofile = [
             'name' => $_POST['name'],
             'l_name' => $_POST['lname'],
@@ -64,59 +42,23 @@ class EtnConfigController extends BaseController
             'profile'=> $_POST['profile']
         ];
         
-        
         (isset($_POST['adegree'])) ? $userprofile['a_degree'] = $_POST['adegree'] : $userprofile['a_degree'] = $user->a_degree;
 
         if ($validator->validate($_POST)) {
-            if (isset($_POST['pwd']) && $_POST['pwd'] ) {
+            if (isset($_POST['pwd']) && $_POST['pwd'] != "") {
                 # los campos de pwd fueron modificados
-                echo "actuliza datos y pass";
-            } else {
-                # solo actualizar los datos
-                $result = $this->updateUser($user, $userprofile);
-                echo "acrualia soolo datos";
+                $result = $makeDB->updateAccount($user, $_POST['pwd']);
             }
-
-
-
-
-
-
-
-
+            # solo actualizar los datos
+            $result = $makeDB->updateUser($user, $userprofile, $makeDB);
         }else{
             $errors = $validator->getMessages();
-            
         }
-        // return $this->render(
-        //     'professional/etn-config.twig',
-        //     ['vPerfil' => $userprofile,
-        //     'errors' => $errors,
-        //     'result' => $result
-        //     ]);
+        $user = ProfessionalExt::find($_POST['id']);
+        return $this->render('professional/etn-config.twig',
+            ['vPerfil' => $user,
+            'errors' => $errors,
+            'result' => $result
+            ]);
     }
-
-    private function updateUser($usr, $profile)
-    {   
-        $fillableCol = $this->compare($usr, $profile);
-        if ($usr) {
-            $usr::where('id', $usr->id)->update(array(
-                'phone' => $profile['phone'],
-                'address' => $profile['address'],
-                'avatar' => $profile['avatar'],
-                'a_degree' => $profile['a_degree'],
-                'profile' => $profile['profile']
-            ));
-        }
-        return true;
-    }
-    /**
-     * @param object $usr : usario existente para comparar
-     * @param array $filCol : fillable Column in user
-     */
-    private function compare($usr, $filCol){
-
-    }
-
-
 }

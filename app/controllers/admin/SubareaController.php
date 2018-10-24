@@ -7,6 +7,7 @@ use AppPHP\Models\Subarea;
 use AppPHP\Models\Area;
 use AppPHP\Models\Administrator;
 use Sirius\Validation\Validator;
+use AppPHP\Controllers\Common\Validation;
 
 /**
  * Clase controlador para lectura, inserción, eliminación y actualización de datos de la tabla área
@@ -37,25 +38,17 @@ class SubareaController extends BaseController
         $result = false;
         $errors = null;
         $validator = new Validator();
+        $validation = new Validation();
         
-        $validator->add('namesubarea:Nombre de sub área',
-                        'required | 
-                        minlength(5)({label} debe tener al menos {min} caracteres)'
-                    );
-        $validator->add('descsubarea:Descripción de sub área ',
-                        'minlength(5)({label} debe tener al menos {min} caracteres)'
-                    );
-        $validator->add('nameareasel:Selección de área',
-                        'required'
-                    );
-
+        $validation->setRuleSubareaCreate($validator);
+        
         $areas = Area::all();
 
         if ($validator->validate($_POST)) {
             $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
             $subarea = new Subarea([
-                'name_subarea' => $_POST['namesubarea'],
-                'desc_subarea' => $_POST['descsubarea'],
+                'name_subarea' => $_POST['name'],
+                'desc_subarea' => $_POST['desc'],
                 'id_area' => $_POST['nameareasel']
                 ]);
                 $subarea->save();
@@ -77,14 +70,10 @@ class SubareaController extends BaseController
 	{
         $errors = [];
         $validator = new Validator();
+        $validation = new Validation();
+        $userProfile = Administrator::where('id_account', $_SESSION['admID'])->first();
         
-        $validator->add('name:Nombre de área',
-                        'required | 
-                        minlength(5)({label} debe tener al menos {min} caracteres)'
-                    );
-        $validator->add('desc:Descripción de área ',
-                        'minlength(5)({label} debe tener al menos {min} caracteres)'
-                    );
+        $validation->setRuleSubareaUpdt($validator);
 
         $subarea = Subarea::find($arg);
         if ($validator->validate($_POST)) {

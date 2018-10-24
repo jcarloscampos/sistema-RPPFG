@@ -18,6 +18,11 @@
 
 {% block configpersonal %}
     {% include('remnant/sub-nav.twig') %}
+    <div class="nav-way">
+        <p>
+        <a class=".btn .btn-primary" href="{{'admin' | url }}">Home</a> &nbsp; | &nbsp; <a class=".btn .btn-primary" href="{{'admin/subarea' | url }}">Sub áreas</a> &nbsp; | &nbsp; Insertar sub área
+        </p>
+    </div>
 {% endblock %}
 
 {% block content %}
@@ -38,7 +43,7 @@
                             <div class="row uniform">
                                 <div class="8u 12u$(xsmall)">
                                     <label>Nombre del sub área</label>
-                                    <input type="text" name="namesubarea" id="namesubarea" value="" placeholder="Sub área..." />
+                                    <input type="text" name="name" id="name" value="" placeholder="Sub área..." />
                                 </div>
                                 <div class="4u$ 12u$(xsmall)">
                                     <label>Área al que pertenece</label>
@@ -51,7 +56,7 @@
                                 </div>
                                 <div class="12u 12u$(xsmall)">
                                     <label>Descripción del sub área</label>
-                                    <textarea class="form-control" name="descsubarea" id="descsubarea" rows="5" value="" placeholder="Descripción.."></textarea>
+                                    <textarea class="form-control" name="desc" id="desc" rows="5" value="" placeholder="Descripción.."></textarea>
                                 </div>
                             </div>
                             <br>

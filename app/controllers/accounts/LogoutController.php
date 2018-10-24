@@ -14,8 +14,6 @@ class LogoutController extends BaseController
      * Función para terminar la sección de todos los usuarios asociados a este sistema.
      */
     public function getIndex(){
-        // unset($_SESSION['admID']);
-        // header('Location: ' . BASE_URL . '');
 
         if (isset($_SESSION['admID'])) {
             unset($_SESSION['admID']);

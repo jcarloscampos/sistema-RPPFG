@@ -21,10 +21,10 @@ class IndexController extends BaseController
             if ($userId) {
                 # si existe la cuenta en la BD
                 $user = Postulant::where('id_account', $userId)->first();
-                if ($user->ci == "" || $user->name == "" || $user->l_name == "" || $user->cod_sis == "") {
+                if ($user->cod_sis == "") {
                     $inforeg = true;
                 }
-                return $this->render('postulant/index.twig', ['inforeg'=>$inforeg, 'user'=>$user]);
+                return $this->render('postulant/index.twig', ['inforeg'=>$inforeg, 'vPerfil'=>$user]);
             }
         }
         header('Location: ' . BASE_URL . '');

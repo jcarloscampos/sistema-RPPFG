@@ -2784,26 +2784,6 @@ button.button-add {
 p.non-margin {
   margin: 0; }
 
-#main > header {
-  padding: 12em 0 10em 0;
-  background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../../images/wrapper/w2.jpg);
-  background-image: -webkit-linear-gradient(top, rgba(64, 70, 127, 0.5), rgba(0, 0, 0, 0.5)), url(../../images/wrapper/w2.jpg);
-  background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../../images/wrapper/w2.jpg);
-  background-image: linear-gradient(top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../../images/wrapper/w2.jpg); }
-
-body.landing #page-wrapper {
-  background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../../images/wrapper/w2.jpg");
-  background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../../images/wrapper/w2.jpg");
-  background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../../images/wrapper/w2.jpg");
-  background-image: linear-gradient(top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../../images/wrapper/w2.jpg"); }
-
-body.is-mobile.landing #banner,
-body.is-mobile.landing .wrapper.style4 {
-  background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../../images/wrapper/w2.jpg");
-  background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../../images/wrapper/w2.jpg");
-  background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../../images/wrapper/w2.jpg");
-  background-image: linear-gradient(top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../../images/wrapper/w2.jpg"); }
-
 * {
   margin: 0px;
   padding: 0px;
@@ -2950,6 +2930,12 @@ MEDIA QUERY CLASSES
   margin: 0 auto;
   border-radius: 50%; }
 
+.config {
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: space-between; }
+
 .configpersonal {
   padding-left: 1em;
   padding-bottom: .5em; }
@@ -2975,6 +2961,10 @@ MEDIA QUERY CLASSES
   color: #fff;
   background-color: #0d47a1;
   border-color: #0d47a1; }
+
+.nav-way {
+  margin-top: 1em;
+  padding-right: 1em; }
 
 .menu-actions {
   width: 100%;

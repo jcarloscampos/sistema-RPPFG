@@ -21,6 +21,11 @@
         <a class=".btn .btn-primary" href="{{'logout' | url }}">Salir</a>
         <a class="principal" href="{{'professional/etnConfig' | url }}">Configuración</a>
     </div>
+    <div class="nav-way">
+        <p>
+        <a class=".btn .btn-primary" href="{{'professional' | url }}">Home</a> &nbsp; | &nbsp; Configuración
+        </p>
+    </div>
 {% endblock %}
 
 {% block content %}
@@ -49,23 +54,23 @@
                             <div class="row uniform">
                                <div class="6u 12u$(xsmall)">
                                     <label>Nombre completo</label>
-                                    <input type="text" name="name" id="name" value="{{vPerfil.name}}" placeholder="Nombre completo" readonly />
+                                    <input type="text" name="name" id="name" value="{{vPerfil.name}}" placeholder="Nombre completo" />
                                 </div>
                                 <div class="3u 12u$(xsmall)">
                                     <label>Apellido paterno</label>
-                                    <input type="text" name="lname" id="lname" value="{{vPerfil.l_name}}" placeholder="Apellido paterno" readonly />
+                                    <input type="text" name="lname" id="lname" value="{{vPerfil.l_name}}" placeholder="Apellido paterno" />
                                 </div>
                                 <div class="3u$ 12u$(xsmall)">
                                     <label>Apellido materno</label>
-                                    <input type="text" name="mlname" id="mlname" value="{{vPerfil.ml_name}}" placeholder="Apellido materno" readonly />
+                                    <input type="text" name="mlname" id="mlname" value="{{vPerfil.ml_name}}" placeholder="Apellido materno" />
                                 </div>
                                 <div class="3u 12u$(xsmall)">
                                     <label>CI</label>
-                                    <input type="text" name="ci" id="ci" value="{{vPerfil.ci}}" placeholder="CI" readonly />
+                                    <input type="text" name="ci" id="ci" value="{{vPerfil.ci}}" placeholder="CI" />
                                 </div>
                                 <div class="6u 12u$(xsmall)">
                                     <label>Email</label>
-                                    <input type="text" name="email" id="email" value="{{vPerfil.email}}" placeholder="Email" readonly/>
+                                    <input type="text" name="email" id="email" value="{{vPerfil.email}}" placeholder="Email"/>
                                 </div>
                                 {# igual hasta aqui #}
                                 <div class="3u$ 12u$(xsmall)">
@@ -98,7 +103,7 @@
                                 </div>
                                  <div class="12u 12u$(xsmall)">
                                      <label>Definición de perfil</label>
-                                     <textarea name="profile" id="profile" rows="5" placeholder="Perfil..">{{ perfil.profile }}</textarea>
+                                     <textarea name="profile" id="profile" rows="5" placeholder="Perfil..">{{ vPerfil.profile }}</textarea>
                                 </div>
                                 <div class="6u 12u$(xsmall)">
                                     <label>Contraseña</label>

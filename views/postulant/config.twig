@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block title %}
-    Postulante:  {{ user.name }} {{ user.l_name }}
+    Postulante:  {{ vPerfil.name }} {{ vPerfil.l_name }}
 {% endblock %}
 
 {% block menu %}
@@ -20,6 +20,11 @@
     <div class="configpersonal">
         <a class=".btn .btn-primary" href="{{'logout' | url }}">Salir</a>
         <a class="principal" href="{{'postulant/ressources' | url }}">Configuración</a>
+    </div>
+    <div class="nav-way">
+        <p>
+        <a class=".btn .btn-primary" href="{{'postulant' | url }}">Home</a> &nbsp; | &nbsp; Configuración
+        </p>
     </div>
 {% endblock %}
 
@@ -40,49 +45,49 @@
                             
                         </div>
                         <form method="post" action="#">
-							<input type="hidden" name="id" value="{{ user.id }}">
-                            <input type="hidden" name="id_account" value="{{ user.id_account }}">
+							<input type="hidden" name="id" value="{{ vPerfil.id }}">
+                            <input type="hidden" name="id_account" value="{{ vPerfil.id_account }}">
                             <div class="row uniform">
                                <div class="6u 12u$(xsmall)">
                                     <label>Nombre completo</label>
-                                    <input type="text" name="name" id="name" value="{{user.name}}" placeholder="Nombre completo" readonly />
+                                    <input type="text" name="name" id="name" value="{{vPerfil.name}}" placeholder="Nombre completo" />
                                 </div>
 
                                 <div class="3u 12u$(xsmall)">
                                     <label>Apellido paterno</label>
-                                    <input type="text" name="lname" id="lname" value="{{user.l_name}}" placeholder="Apellido paterno" readonly />
+                                    <input type="text" name="lname" id="lname" value="{{vPerfil.l_name}}" placeholder="Apellido paterno" />
                                 </div>
                                 <div class="3u$ 12u$(xsmall)">
                                     <label>Apellido materno</label>
-                                    <input type="text" name="mlname" id="mlname" value="{{user.ml_name}}" placeholder="Apellido materno" readonly />
+                                    <input type="text" name="mlname" id="mlname" value="{{vPerfil.ml_name}}" placeholder="Apellido materno" />
                                 </div>
                                 <div class="3u 12u$(xsmall)">
                                     <label>CI</label>
-                                    <input type="text" name="ci" id="ci" value="{{user.ci}}" placeholder="CI" readonly />
+                                    <input type="text" name="ci" id="ci" value="{{vPerfil.ci}}" placeholder="CI" />
                                 </div>
                                 <div class="6u 12u$(xsmall)">
                                     <label>Email</label>
-                                    <input type="text" name="email" id="email" value="{{user.email}}" placeholder="Email" />
+                                    <input type="text" name="email" id="email" value="{{vPerfil.email}}" placeholder="Email" />
                                 </div>
                                 <div class="3u$ 12u$(xsmall)">
                                     <label>Teléfono / celular</label>
-                                    <input type="text" name="phone" id="phone" value="{{user.phone}}" placeholder="Teléfono / celular" />
+                                    <input type="text" name="phone" id="phone" value="{{vPerfil.phone}}" placeholder="Teléfono / celular" />
                                 </div>
 
 
                                 <div class="3u 12u$(xsmall)">
                                     <label>Código SIS</label>
-                                    <input type="text" name="codsis" id="codsis" value="{{user.cod_sis}}" placeholder="Código SIS" />
+                                    <input type="text" name="codsis" id="codsis" value="{{vPerfil.cod_sis}}" placeholder="Código SIS" />
                                 </div>
 
 
                                 <div class="5u 12u$(xsmall)">
                                     <label>Dirección</label>
-                                    <input type="text" name="address" id="address" value="{{user.address}}" placeholder="Dirección" />
+                                    <input type="text" name="address" id="address" value="{{vPerfil.address}}" placeholder="Dirección" />
                                 </div>
                                 <div class="4u$ 12u$(xsmall)">
                                     <label>Foto de perfil</label>
-                                    <input type="text" name="avatar" id="avatar" value="{{user.avatar}}" placeholder="Avatar..." />
+                                    <input type="text" name="avatar" id="avatar" value="{{vPerfil.avatar}}" placeholder="Avatar..." />
                                 </div>
 
                                 <div class="6u 12u$(xsmall)">

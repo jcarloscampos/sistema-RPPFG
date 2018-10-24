@@ -28,11 +28,11 @@ class SigninController extends BaseController
             header('Location:' . BASE_URL . 'director');
             return null;
         } elseif (isset($_SESSION['postID'])) {
-            # la cuesta es de un postulante
+            # la cuenta es de un postulante
             header('Location:' . BASE_URL . 'postulant');
             return null;
         } elseif (isset($_SESSION['profID'])) {
-            # la cuenta es de un profecional
+            # la cuenta es de un profesional
             header('Location:' . BASE_URL . 'professional');
             return null;
         }

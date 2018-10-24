@@ -12,6 +12,7 @@ use AppPHP\Models\ADegree;
 use AppPHP\Models\Account;
 use Sirius\Validation\Validator;
 use AppPHP\Models\Administrator;
+use AppPHP\Controllers\Common\Validation;
 
 /**
  * Clase controlador para lectura, inserción, eliminación y actualización de datos de la tabla ProffesionalUMSS
@@ -93,13 +94,12 @@ class TeachersController extends BaseController
         $result = false;
         $errors = [];
         $validator = new Validator();
-        $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
+        $validation = new Validation();
         
-        //TODO by Walter -> Juan Carlos por favor implementar validaciones para estos casos
-        // $validator->add('listaAreasSubareas:Lista de áreas y subáreas',
-        //                 'required'
-        //             );
-
+        $validation->setRuleFile($validator);
+        
+        $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
+ 
         if ($validator->validate($_POST)) {
             $fname = $_FILES['listaDocentes']['name'];
             $chk_ext = explode(".",$fname);

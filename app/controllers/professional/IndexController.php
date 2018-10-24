@@ -23,23 +23,32 @@ class IndexController extends BaseController
             
             if ($userId) {
                 # si existe la cuenta en la BD
-                $userProfile = ProfessionalUmss::where('id_account', $userId)->first();
-                if (isset($userProfile)) {
+                $userprofile = ProfessionalUmss::where('id_account', $userId)->first();
+                if (isset($userprofile)) {
                     # Es un profecional de UMSS
-                    $inforeg = $this->validated($userProfile);
+                    $inforeg = $this->valItn($userprofile);
+                    //define que no es profesional externo; uso en vista para mostrar algunos campos
                     $etn = false;
-                    return $this->render('professional/index.twig', ['inforeg'=>$inforeg, 'vPerfil'=>$userProfile, 'etn'=>$etn]);
+                    return $this->render('professional/index.twig', ['inforeg'=>$inforeg, 'vPerfil'=>$userprofile, 'etn'=>$etn]);
                 }
-                $userProfile = ProfessionalExt::where('id_account', $userId)->first();
-                $inforeg = $this->validated($userProfile);
-                return $this->render('professional/index.twig', ['inforeg'=>$inforeg, 'vPerfil'=>$userProfile, 'etn' =>$etn]);
+                $userprofile = ProfessionalExt::where('id_account', $userId)->first();
+                $inforeg = $this->valEtn($userprofile);
+                return $this->render('professional/index.twig', ['inforeg'=>$inforeg, 'vPerfil'=>$userprofile, 'etn' =>$etn]);
             }
         }
         header('Location: ' . BASE_URL . '');
     }
-    private function validated($uProfile){
+    private function valEtn($uProfile){
         $val = false;
-        if ($uProfile->a_degree == "" || $uProfile->workload == "" || $uProfile->cod_sis == "") {
+        if ($uProfile->a_degree == "" || $uProfile->phone == 0) {
+            $val = true;
+        }
+        return $val;
+    }
+
+    private function valItn($uProfile){
+        $val = false;
+        if ($uProfile->a_degree == "" || $uProfile->phone == 0 || $uProfile->workload == "" || $uProfile->cod_sis == "") {
             $val = true;
         }
         return $val;

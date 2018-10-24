@@ -9,6 +9,7 @@
 {% endblock %}
 
 {% block csslink %}
+    <link rel='stylesheet' href='../public/assets/css/background2.css'>
     <link rel='stylesheet' href='../public/assets/css/app.css'>
 {% endblock %}
 
@@ -17,7 +18,12 @@
 {% endblock %}
 
 {% block configpersonal %}
-    {% include('remnant/sub-nav.twig') %}
+   {% include('remnant/sub-nav.twig') %}
+    <div class="nav-way">
+        <p>
+        Home
+        </p>
+    </div>
 {% endblock %}
 
 {% block content %}

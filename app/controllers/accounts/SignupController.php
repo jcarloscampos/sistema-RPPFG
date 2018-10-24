@@ -10,6 +10,7 @@ use AppPHP\Models\ProfessionalUmss;
 use AppPHP\Models\ProfessionalExt;
 use AppPHP\Models\IsRegistered;
 use AppPHP\Controllers\Common\ServerConnection;
+use AppPHP\Controllers\Common\Validation;
 
 /**
  * Clase controlador para registro de todos los usuarios asociados a este sistema
@@ -30,36 +31,13 @@ class SignupController extends BaseController
     public function postIndex()
     {
         $errors = [];
-        $validator = new Validator();
         $result = false;
         $exists = false;
-
-        $validator->add(array(
-            'name:Nonbre'=> 'required | 
-                            minlength(3)({label} debe tener al menos {min} caracteres) | 
-                            maxlength(30)({label} debe tener menos de {max} caracteres)',
-            'lname:Apellido paterno'=> 'required | 
-                                        minlength(3)({label} debe tener al menos {min} caracteres) | 
-                                        maxlength(20)({label} debe tener menos de {max} caracteres)',
-            'mlname:Apellido materno'=> 'required | 
-                                        minlength(3)({label} debe tener al menos {min} caracteres) | 
-                                        maxlength(20)({label} debe tener menos de {max} caracteres)',
-
-            'ci:No de identificación personal'=>'required | 
-                                                minlength(6)({label} debe tener al menos {min} caracteres) | 
-                                                maxlength(15)({label} debe tener menos de {max} caracteres)',
-            'tuser:Tipo de usuario'=> 'required',
-            
-            'email:Email'=> 'required | email',
-            'user:Nonbre de usuario'=> 'required | 
-                            minlength(4)({label} debe tener al menos {min} caracteres) | 
-                            maxlength(16)({label} debe tener menos de {max} caracteres)',
-            'pwd:Contraseña'=>  'required | 
-                                minlength(5)({label} debe tener al menos {min} caracteres) | 
-                                maxlength(30)({label} debe tener menos de {max} caracteres)',
-            'pwdc:Contraseñas'=> 'required | match(item=pwd)({label} no coinciden )'
-            
-        ));
+        $validator = new Validator();
+        $validation = new Validation();
+        $validation->setRuleBasic($validator);
+        $validation->setRuleTuser($validator);
+        $validation->setRuleUser($validator);
 
         $pData = [
             'ci'=> $_POST['ci'],
@@ -155,7 +133,6 @@ class SignupController extends BaseController
         }
     }
     
-
     private function setSession($user, $name)
     {
         $_SESSION[$name] = $user->id;

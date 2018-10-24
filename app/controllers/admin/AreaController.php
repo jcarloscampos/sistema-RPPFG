@@ -7,6 +7,7 @@ use AppPHP\Models\Area;
 use AppPHP\Models\Subarea;
 use Sirius\Validation\Validator;
 use AppPHP\Models\Administrator;
+use AppPHP\Controllers\Common\Validation;
 
 /**
  * Clase controlador para lectura, inserción, eliminación y actualización de datos de la tabla área
@@ -49,19 +50,14 @@ class AreaController extends BaseController
         $result = false;
         $errors = [];
         $validator = new Validator();
+        $validation = new Validation();
         
-        $validator->add('namearea:Nombre de área',
-                        'required | 
-                        minlength(5)({label} debe tener al menos {min} caracteres)'
-                    );
-        $validator->add('descarea:Descripción de área ',
-                        'minlength(5)({label} debe tener al menos {min} caracteres)'
-                    );
+        $validation->setRuleArea($validator);
 
         if ($validator->validate($_POST)) {
             $area = new Area([
-                'name_area' => $_POST['namearea'],
-                'desc_area' => $_POST['descarea']
+                'name_area' => $_POST['name'],
+                'desc_area' => $_POST['desc']
             ]);
             $area->save();
             $result = true;
@@ -82,16 +78,10 @@ class AreaController extends BaseController
     public function postEdit($arg)
 	{
         $errors = [];
-
         $validator = new Validator();
+        $validation = new Validation();
         
-        $validator->add('name:Nombre de área',
-                        'required | 
-                        minlength(5)({label} debe tener al menos {min} caracteres)'
-                    );
-        $validator->add('desc:Descripción de área ',
-                        'minlength(5)({label} debe tener al menos {min} caracteres)'
-                    );
+        $validation->setRuleArea($validator);
 
         $area = Area::find($arg);
         if ($validator->validate($_POST)) {
@@ -125,13 +115,12 @@ class AreaController extends BaseController
         $result = false;
         $errors = [];
         $validator = new Validator();
+        $validation = new Validation();
+        
+        $validation->setRuleFile($validator);
+        
         $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
         
-        //TODO by Walter -> Juan Carlos por favor implementar validaciones para estos casos
-        // $validator->add('listaAreasSubareas:Lista de áreas y subáreas',
-        //                 'required'
-        //             );
-
         if ($validator->validate($_POST)) {
             $fname = $_FILES['listaAreasSubareas']['name'];
             $chk_ext = explode(".",$fname);
