@@ -6,8 +6,10 @@ use AppPHP\Controllers\BaseController;
 use Sirius\Validation\Validator;
 use AppPHP\Models\ProfessionalExt;
 use AppPHP\Models\Account;
+use AppPHP\Models\ADegree;
 use AppPHP\Controllers\Common\Validation;
 use AppPHP\Controllers\Common\ServerConnection;
+
 
 class EtnConfigController extends BaseController
 {
@@ -15,7 +17,8 @@ class EtnConfigController extends BaseController
     {
         if (isset($_SESSION['profID'])) {
             $userprofile = ProfessionalExt::where('id_account', $_SESSION['profID'])->first();
-            return $this->render('professional/etn-config.twig', ['vPerfil' => $userprofile]);
+            $title = ADegree::query()->get();
+            return $this->render('professional/etn-config.twig', ['vPerfil' => $userprofile, 'vTitles'=>$title]);
         }
     }
     
@@ -27,6 +30,7 @@ class EtnConfigController extends BaseController
         $validation = new Validation();
         $makeDB = new ServerConnection(); 
         $user = ProfessionalExt::find($_POST['id']);
+        $title = ADegree::query()->get();
         
         $validation->setRuleBasic($validator);
 
@@ -41,9 +45,10 @@ class EtnConfigController extends BaseController
             'avatar'=> $_POST['avatar'],
             'profile'=> $_POST['profile']
         ];
+        if (isset($_POST['adegree'])) {
+            $userprofile['id_ad'] = $_POST['adegree'];
+        }
         
-        (isset($_POST['adegree'])) ? $userprofile['a_degree'] = $_POST['adegree'] : $userprofile['a_degree'] = $user->a_degree;
-
         if ($validator->validate($_POST)) {
             if (isset($_POST['pwd']) && $_POST['pwd'] != "") {
                 # los campos de pwd fueron modificados
@@ -58,7 +63,8 @@ class EtnConfigController extends BaseController
         return $this->render('professional/etn-config.twig',
             ['vPerfil' => $user,
             'errors' => $errors,
-            'result' => $result
+            'result' => $result,
+            'vTitles'=>$title
             ]);
     }
 }

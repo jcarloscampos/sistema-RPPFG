@@ -5,6 +5,8 @@ namespace AppPHP\Controllers\Professional;
 use AppPHP\Controllers\BaseController;
 use Sirius\Validation\Validator;
 use AppPHP\Models\ProfessionalUmss;
+use AppPHP\Models\ADegree;
+use AppPHP\Models\Workload;
 use AppPHP\Controllers\Common\Validation;
 use AppPHP\Controllers\Common\ServerConnection;
 
@@ -14,7 +16,9 @@ class ItnConfigController extends BaseController
     {
         if (isset($_SESSION['profID'])) {
             $user = ProfessionalUmss::where('id_account', $_SESSION['profID'])->first();
-            return $this->render('professional/config.twig', ['vPerfil' => $user]);
+            $title = ADegree::query()->get();
+            $work = Workload::query()->get();
+            return $this->render('professional/itn-config.twig', ['vPerfil' => $user, 'vTitles'=>$title, 'vWorks'=>$work]);
         }
     }
 
@@ -27,6 +31,8 @@ class ItnConfigController extends BaseController
         $validation = new Validation();
         $makeDB = new ServerConnection();
         $user = ProfessionalUmss::find($_POST['id']);
+        $title = ADegree::query()->get();
+        $work = Workload::query()->get();
         
         $validation->setRuleBasic($validator);
         $validation->setRuleCodeSis($validator);
@@ -44,8 +50,14 @@ class ItnConfigController extends BaseController
             'profile'=> $_POST['profile']
         ];
 
-        (isset($_POST['adegree'])) ? $userprofile['a_degree'] = $_POST['adegree'] : $userprofile['a_degree'] = $user->a_degree;
-        (isset($_POST['wload'])) ? $userprofile['workload'] = $_POST['wload'] : $userprofile['workload'] = $user->workload;
+        if (isset($_POST['adegree'])) {
+            $userprofile['id_ad'] = $_POST['adegree'];
+        }
+
+        if (isset($_POST['wload'])) {
+            $userprofile['id_wl'] = $_POST['wload'];
+        }
+        //(isset($_POST['wload'])) ? $userprofile['workload'] = $_POST['wload'] : $userprofile['workload'] = $user->workload;
 
         if ($validator->validate($_POST)) {    
             if (isset($_POST['pwd']) && $_POST['pwd'] != "") {
@@ -59,10 +71,12 @@ class ItnConfigController extends BaseController
         }
         $user = ProfessionalUmss::find($_POST['id']);
         return $this->render(
-            'professional/config.twig',
+            'professional/itn-config.twig',
             ['vPerfil' => $user,
             'errors' => $errors,
-            'result' => $result
+            'result' => $result,
+            'vTitles'=>$title,
+            'vWorks'=>$work
             ]);
     }
 }

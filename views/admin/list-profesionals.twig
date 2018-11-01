@@ -1,0 +1,162 @@
+{% extends 'layout.twig' %}
+
+{% block csslink %}
+    <link rel='stylesheet' href='../../public/assets/css/app.css'>
+{% endblock %}
+
+{% block namepage %}
+    Perfil de administración en SRPPFG
+{% endblock %}
+
+{% block title %}
+    Administrador:  {{ admin.name }} {{ admin.l_name }} {{ admin.ml_name }}
+{% endblock %}
+
+{% block menu %}
+    {% include('remnant/nav-admin.twig') %}
+{% endblock %}
+
+{% block configpersonal %}
+    {% include('remnant/sub-nav.twig') %}
+    <div class="nav-way">
+        <p>
+        <a class=".btn .btn-primary" href="{{'admin' | url }}">Home</a> &nbsp; | &nbsp; Docentes
+        </p>
+    </div>
+{% endblock %}
+
+{% block content %}
+<article id="main">
+        <section class="wrapper style5">
+            <div class="inner">
+                <section>
+                    <div class="wrapper-form">
+                        <div class="table-wrapper">
+                            <div class="menu-actions">
+                                <h2>Profesionales </h2>
+                                <div class="actions">
+                                    <a href="{{ 'admin/profesionals/newaccount' | url }}">Nueva Cuenta</a>
+                                    <a href="{{ 'admin/profesionals/import' | url }}">Importar Por lote</a>
+                                </div>
+                            </div>
+                            <table id="tabla_docentes">
+                                <thead>
+                                    <tr>
+                                        <th>Activo</th>
+                                        <th>Nombre completo</th>
+                                        <th>Correo</th>
+                                        <th>Username</th>
+                                        <th>Rol</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                
+                                <tbody id="content_table">
+                                {# Listado de profesionales de la umss #}
+                                    {% for itn in vitns %}
+                                        <tr>
+                                            <td>
+                                                {% if itn.active == 1 %}
+                                                    {# <input type="checkbox" name="state" value="{{ account.id }}" checked> #}
+                                                    Si
+                                                {% else %}
+                                                    {# <input type="checkbox" name="state" value="{{ account.id }}"> #}
+                                                    No
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ itn.name }} {{ itn.l_name }} {{ itn.ml_name }}</td>
+                                            <td>{{ itn.email }}</td>
+
+                                            <td>
+                                                {% for account in vaccounts %}
+                                                    {% if account.id == itn.id_account %}
+                                                        {{ account.username }}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </td>
+                                            <td>
+                                                {% for urol in vurols %}
+                                                    {% if urol.id_account == itn.id_account %}
+                                                        {% for rol in vrols %}
+                                                            {% if rol.id_rol == urol.id_rol %}
+                                                                {{ rol.name_rol }}
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </td>
+                                            <td>
+                                                <div class="menu-actions-tb">
+                                                <div class="actions">
+                                                    <a href="{{ 'admin/' | url }}{{docente.id}}">Ver</a>
+                                                    <a href="{{ 'admin/' | url }}">Editar</a>
+                                                </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    {# Listado de profesionales del exterior #}
+                                    {% for etn in vetns %}
+                                        <tr>
+                                            <td>
+                                                {% if etn.active == 1 %}
+                                                    {# <input type="checkbox" name="state" value="{{ account.id }}" checked> #}
+                                                    Si
+                                                {% else %}
+                                                    {# <input type="checkbox" name="state" value="{{ account.id }}"> #}
+                                                    No
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ etn.name }} {{ etn.l_name }} {{ etn.ml_name }}</td>
+                                            <td>{{ etn.email }}</td>
+
+                                            <td>
+                                                {% for account in vaccounts %}
+                                                    {% if account.id == etn.id_account %}
+                                                        {{ account.username }}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </td>
+                                            <td>
+                                                {% for urol in vurols %}
+                                                    {% if urol.id_account == etn.id_account %}
+                                                        {% for rol in vrols %}
+                                                            {% if rol.id_rol == urol.id_rol %}
+                                                                {{ rol.name_rol }}
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </td>
+                                            <td>
+                                                <div class="menu-actions-tb">
+                                                <div class="actions">
+                                                    <a href="{{ 'admin/' | url }}{{docente.id}}">Ver</a>
+                                                    <a href="{{ 'admin/' | url }}">Editar</a>
+                                                </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                               
+                            </table>
+                        </div>
+                    </div>
+                </section>
+                <br> 
+                <br>
+                <br>
+            </div>
+        </section>
+    </article>
+{% endblock %}
+
+{% block jslink %}
+    <script src='../../public/assets/js/jquery.min.js'></script>
+    <script src='../../public/assets/js/jquery.scrollex.min.js'></script>
+    <script src='../../public/assets/js/jquery.scrolly.min.js'></script>
+    <script src='../../public/assets/js/skel.min.js'></script>
+    <script src='../../public/assets/js/util.js'></script>
+    <script src='../../public/assets/js/main.js'></script>
+{% endblock %}

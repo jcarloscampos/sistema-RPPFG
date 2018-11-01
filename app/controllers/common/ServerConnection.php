@@ -141,4 +141,16 @@ class ServerConnection extends BaseController
             $user::where('id', $user->id)->update(array('workload' => $arg));
         }
     }
+    public function id_ad($user, $arg)
+    {
+        if (isset($user)) {
+            $user::where('id', $user->id)->update(array('id_ad' => $arg));
+        }
+    }
+    public function id_wl($user, $arg)
+    {
+        if (isset($user)) {
+            $user::where('id', $user->id)->update(array('id_wl' => $arg));
+        }
+    }
 }

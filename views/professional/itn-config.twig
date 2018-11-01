@@ -84,10 +84,14 @@
                                 <div class="4u 12u$(xsmall)">
                                     <label>Grado académico</label>
                                     <select name="adegree" id="adegree">
-                                        <option value=""disabled selected>- {{vPerfil.a_degree}} -</option>
-                                        <option value="Licenciatura">Licenciatura</option>
-                                        <option value="Magister">Magister</option>
-                                        <option value="Doctorado">Doctorado</option>
+                                        {% for title in vTitles %}
+                                            {% if title.id == vPerfil.id_ad %}
+                                                <option value=""disabled selected>- {{title.name_ad}} -</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                        {% for title in vTitles %}
+                                            <option value="{{title.id}}">{{title.name_ad}}</option>
+                                        {% endfor %}
                                     </select>    
                                 </div>
                                 
@@ -98,9 +102,14 @@
                                         <input type="radio" name="color" value="negro"> Tiempo completo
                                     </fieldset> #}
                                     <select name="wload" id="wload">
-                                        <option value=""disabled selected>- {{vPerfil.workload}} -</option>
-                                        <option value="Tiempo parcial">Tiempo parcial</option>
-                                        <option value="Tiempo completo">Tiempo completo</option>
+                                        {% for work in vWorks %}
+                                            {% if work.id == vPerfil.id_wl %}
+                                                <option value=""disabled selected>- {{work.name_wl}} -</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                        {% for work in vWorks %}
+                                            <option value="{{work.id}}">{{work.name_wl}}</option>
+                                        {% endfor %}
                                     </select>    
                                 </div>
                                 

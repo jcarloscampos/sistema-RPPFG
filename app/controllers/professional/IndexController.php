@@ -40,7 +40,7 @@ class IndexController extends BaseController
     }
     private function valEtn($uProfile){
         $val = false;
-        if ($uProfile->a_degree == "" || $uProfile->phone == 0) {
+        if ($uProfile->name == "" || $uProfile->l_name == "" || $uProfile->ci == 0 || $uProfile->email == "") {
             $val = true;
         }
         return $val;
@@ -48,7 +48,8 @@ class IndexController extends BaseController
 
     private function valItn($uProfile){
         $val = false;
-        if ($uProfile->a_degree == "" || $uProfile->phone == 0 || $uProfile->workload == "" || $uProfile->cod_sis == "") {
+        //if ($uProfile->a_degree == "" || $uProfile->phone == 0 || $uProfile->workload == "" || $uProfile->cod_sis == "") {
+            if ($uProfile->name == "" || $uProfile->l_name == "" || $uProfile->ci == 0 || $uProfile->email == "" || $uProfile->cod_sis == "") {
             $val = true;
         }
         return $val;

@@ -21,6 +21,7 @@ class ProfessionalExt extends Model
         'ml_name',
         'email',
         'address',
+        'active',
         'avatar',
         'a_degree',
         'profile',

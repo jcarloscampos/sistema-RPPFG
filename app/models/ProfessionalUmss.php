@@ -24,6 +24,7 @@ class ProfessionalUmss extends Model
         'address',
         'avatar',
         'cod_sis',
+        'active',
         'a_degree',
         'workload',
         'profile',

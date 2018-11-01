@@ -13,6 +13,6 @@ class Account extends Model{
     /**
      * @type array
      */
-    protected $fillable =  ['username', 'password'];
+    protected $fillable =  ['username', 'password', 'state'];
 
 }

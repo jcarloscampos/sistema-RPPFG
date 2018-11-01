@@ -77,22 +77,20 @@
                                     <label>Teléfono</label>
                                     <input type="text" name="phone" id="phone" value="{{vPerfil.phone}}" placeholder="Teléfono/celular" />
                                 </div>
-
-
-                                
                                 <div class="3u 12u$(xsmall)">
                                     <label>Grado académico</label>
                                     <select name="adegree" id="adegree">
-                                        <option value=""disabled selected>- {{vPerfil.a_degree}} -</option>
-                                        <option value="Licenciatura">Licenciatura</option>
-                                        <option value="Magister">Magister</option>
-                                        <option value="Doctorado">Doctorado</option>
+                                        {% for title in vTitles %}
+                                            {% if title.id == vPerfil.id_ad %}
+                                                <option value=""disabled selected>- {{title.name_ad}} -</option>
+                                            {% endif %}
+                                        {% endfor %}
+
+                                        {% for title in vTitles %}
+                                            <option value="{{title.id}}">{{title.name_ad}}</option>
+                                        {% endfor %}
                                     </select>    
                                 </div>
-                                
-                                
-                                
-                                
                                 <div class="5u 12u$(xsmall)">
                                     <label>Dirección</label>
                                     <input type="text" name="address" id="address" value="{{vPerfil.address}}" placeholder="Dirección" />
