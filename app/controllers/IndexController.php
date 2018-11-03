@@ -34,7 +34,7 @@ class IndexController extends BaseController
         
         $validator->add('username:Nonbre de usuario',
                         'required | 
-                        minlength(4)({label} debe tener al menos {min} caracteres)'
+                        minlength(3)({label} debe tener al menos {min} caracteres)'
                     );
         $validator->add('password:Contraseña',
                         'required | 

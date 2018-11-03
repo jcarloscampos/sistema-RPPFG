@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block title %}
-    Administrador:  {{ admin.name }} {{ admin.l_name }} {{ admin.ml_name }}
+    Administrador:  {{ vadmin.name }} {{ vadmin.l_name }} {{ vadmin.ml_name }}
 {% endblock %}
 
 {% block menu %}
@@ -20,7 +20,7 @@
     {% include('remnant/sub-nav.twig') %}
     <div class="nav-way">
         <p>
-        <a class=".btn .btn-primary" href="{{'admin' | url }}">Home</a> &nbsp; | &nbsp; Docentes
+        <a class=".btn .btn-primary" href="{{'admin' | url }}">Home</a> &nbsp; | &nbsp; Profesionales
         </p>
     </div>
 {% endblock %}
@@ -35,8 +35,8 @@
                             <div class="menu-actions">
                                 <h2>Profesionales </h2>
                                 <div class="actions">
-                                    <a href="{{ 'admin/profesionals/newaccount' | url }}">Nueva Cuenta</a>
-                                    <a href="{{ 'admin/profesionals/import' | url }}">Importar Por lote</a>
+                                    <a href="{{ 'admin/professionals/newaccount' | url }}">Nueva Cuenta</a>
+                                    <a href="{{ 'admin/professionals/import' | url }}">Importar Por lote</a>
                                 </div>
                             </div>
                             <table id="tabla_docentes">

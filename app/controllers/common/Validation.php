@@ -10,15 +10,10 @@ class Validation
                             minlength(3)({label} debe tener al menos {min} caracteres) | 
                             maxlength(30)({label} debe tener menos de {max} caracteres)',
             'lname:Apellido paterno'=> 'required | 
-                                        minlength(3)({label} debe tener al menos {min} caracteres) | 
+                                        minlength(2)({label} debe tener al menos {min} caracteres) | 
                                         maxlength(20)({label} debe tener menos de {max} caracteres)',
-            'mlname:Apellido materno'=> 'required | 
-                                        minlength(3)({label} debe tener al menos {min} caracteres) | 
+            'mlname:Apellido materno'=>'minlength(2)({label} debe tener al menos {min} caracteres) | 
                                         maxlength(20)({label} debe tener menos de {max} caracteres)',
-            'ci:No de identificación personal'=>'required | 
-                                                minlength(6)({label} debe tener al menos {min} caracteres) | 
-                                                maxlength(15)({label} debe tener menos de {max} caracteres)',
-
             'phone: Teléfono o celular'=>'  minlength(7)({label} debe tener al menos {min} caracteres) | 
                                             maxlength(8)({label} debe tener menos de {max} caracteres)',
             'email:Email'=> 'required | email',
@@ -87,13 +82,20 @@ class Validation
         return $validator;
     }
 
-
     public function setRuleFile($validator)
     {
         $validator->add(array('listaAreasSubareas:Archivo de áreas y sub áreas'=> 'required'));
         return $validator;
     }
 
-
+    public function setRuleCI($validator)
+    {
+        $validator->add(array(
+            'ci:No de identificación personal'=>'required | 
+                                                minlength(6)({label} debe tener al menos {min} caracteres) | 
+                                                maxlength(15)({label} debe tener menos de {max} caracteres)'
+        ));
+        return $validator;
+    }
     
 }

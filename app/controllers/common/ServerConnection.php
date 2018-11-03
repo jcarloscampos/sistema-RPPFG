@@ -4,6 +4,11 @@ namespace AppPHP\Controllers\Common;
 
 use AppPHP\Controllers\BaseController;
 use AppPHP\Models\Account;
+use AppPHP\Models\Rol;
+use AppPHP\Models\UserRol;
+use AppPHP\Models\ProfessionalUmss;
+use AppPHP\Models\ProfessionalExt;
+use AppPHP\Models\Postulant;
 
 /**
  * Clase controlador de inicio para Director de Carrera.
@@ -19,7 +24,79 @@ class ServerConnection extends BaseController
         return null;
     }
 
-   
+    /**
+     * @param object $user : Usuario al que se asignara un Rol
+     * @param string $rol : Nombre de Rol 
+     * @return bool $result
+     */
+    public function linkUseRol($user, $nr)
+    {   
+        $result = false;
+
+        if (isset($user)) {
+            $rol = Rol::where('name_rol', $nr)->first();
+    
+            $urol = new UserRol([
+                'id_account' => $user->id_account,
+                'id_rol' => $rol->id_rol
+            ]);
+            $urol->save();
+            $resul = true;
+        }
+        return $resul;
+    }
+
+    public function issetAccount($uname)
+    {
+        $exists = false;
+        $accounts = Account::where("username", "=", $uname)->get()->toArray();
+        if (!empty($accounts)){
+            $exists = true;
+        }
+        return $exists;
+    }
+
+    /**
+     * @param string $uname
+     * @param string $pwd
+     * @return int id_account
+     */
+    public function newAccount($uname, $pwd)
+    {
+        $account = new Account([
+            'username' => $uname,
+            'password' => password_hash($pwd, PASSWORD_DEFAULT)
+        ]);
+        $account->save();
+        return $account;
+    }
+
+    /**
+     * @param int $user
+     * @param array $profile
+     * @return object new user
+     */
+    public function createUser($tuser, $account)
+    {   
+        $user = null;
+        if ($tuser == "itnprof") {
+            # Professional de Umss
+            $user = new ProfessionalUmss();
+            $user->id_ad = 1;
+            $user->id_wl = 1;
+        }elseif ($tuser == "etnprof"){
+            #Professional exterior
+            $user = new ProfessionalExt();
+            $user->id_ad = 1;
+        }elseif ($tuser == "pstt") {
+            # Postulante
+            $user = new Postulant();
+        }
+
+        $user->id_account = $account->id;        
+        $user->save();
+        return $user;
+    }
 
     /**
      * @param object $user : Usuario del que se actualizara la contraseña de su cuenta.
@@ -151,6 +228,12 @@ class ServerConnection extends BaseController
     {
         if (isset($user)) {
             $user::where('id', $user->id)->update(array('id_wl' => $arg));
+        }
+    }
+    public function active($user, $arg)
+    {
+        if (isset($user)) {
+            $user::where('id', $user->id)->update(array('active' => $arg));
         }
     }
 }
