@@ -3,7 +3,6 @@
 namespace AppPHP\Controllers\Admin;
 
 use AppPHP\Controllers\BaseController;
-use AppPHP\Models\Subarea;
 use AppPHP\Models\Area;
 use AppPHP\Models\Administrator;
 use Sirius\Validation\Validator;
@@ -19,7 +18,7 @@ class SubareaController extends BaseController
     {
         if (isset($_SESSION['admID'])) {
             $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
-            $subareas = Subarea::query()->orderBy('name_subarea', 'desc')->get();
+            $subareas = Area::query()->orderBy('name_area', 'desc')->get();
             return $this->render('admin/list_subarea.twig', ['subareas' => $subareas, 'admin' => $admin]);
         }
     }
@@ -46,10 +45,10 @@ class SubareaController extends BaseController
 
         if ($validator->validate($_POST)) {
             $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
-            $subarea = new Subarea([
-                'name_subarea' => $_POST['name'],
-                'desc_subarea' => $_POST['desc'],
-                'id_area' => $_POST['nameareasel']
+            $subarea = new Area([
+                'name_area' => $_POST['name'],
+                'desc_area' => $_POST['desc'],
+                'id_parent_area' => $_POST['nameareasel']
                 ]);
                 $subarea->save();
                 $result = true;
@@ -61,7 +60,7 @@ class SubareaController extends BaseController
 
     public function getEdit($id)
 	{   
-        $subarea = Subarea::where('id', $id)->first();
+        $subarea = Area::where('id', $id)->first();
         $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
 		return $this->render('admin/update-subarea.twig', ['subarea' => $subarea, 'admin' => $admin]);
 	}
@@ -75,11 +74,11 @@ class SubareaController extends BaseController
         
         $validation->setRuleSubareaUpdt($validator);
 
-        $subarea = Subarea::find($arg);
+        $subarea = Area::find($arg);
         if ($validator->validate($_POST)) {
-            Subarea::where('id', $arg)->update(array(
-                'name_subarea' => $_POST['name'],
-                'desc_subarea' => $_POST['desc']
+            Area::where('id', $arg)->update(array(
+                'name_area' => $_POST['name'],
+                'desc_area' => $_POST['desc']
             ));
             header('Location:' . BASE_URL . 'admin/subarea');
             return null;
@@ -93,7 +92,7 @@ class SubareaController extends BaseController
     }
     public function getDelete($id)
 	{
-		$subarea = Subarea::find($id);
+		$subarea = Area::find($id);
 		$subarea->delete();
         header('Location:' . BASE_URL . 'admin/subarea');	
 	}

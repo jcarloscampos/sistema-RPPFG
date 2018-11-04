@@ -15,5 +15,5 @@ class Area extends Model
      * Se  define la variable que contendrá los datos a salvar
      * @type array
      */
-    protected $fillable =  ['name_area', 'desc_area', 'activo'];
+    protected $fillable =  ['name_area', 'desc_area', 'id_parent_area', 'status'];
 }

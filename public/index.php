@@ -25,7 +25,7 @@ $capsule = new Capsule;
 $capsule->addConnection([
     'driver'    => 'mysql',
     'host'      => 'localhost',
-    'database'  => 'sistema',
+    'database'  => 'sistema-rppfg',
     'username'  => 'root',
     'password'  => '',
     'charset'   => 'utf8',
@@ -79,7 +79,7 @@ $router->group(['before' => 'adm'], function($router){
     $router->controller('/admin/subarea', AppPHP\Controllers\Admin\SubareaController::class);
     $router->controller('/admin/professionals', AppPHP\Controllers\Admin\ProfessionalsController::class);
     $router->controller('/admin/postulants', AppPHP\Controllers\Admin\PostulantsController::class);
-    $router->controller('/admin/config', AppPHP\Controllers\Admin\configController::class);
+    $router->controller('/admin/projects', AppPHP\Controllers\Admin\ProjectsController::class);
 });
 
 
