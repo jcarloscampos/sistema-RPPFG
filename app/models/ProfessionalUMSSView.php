@@ -3,7 +3,7 @@ namespace AppPHP\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ProffesionalUMSSView extends Model
+class ProfessionalUMSSView extends Model
 {
     protected $table = 'professionalumssview';
 }

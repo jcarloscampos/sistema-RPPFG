@@ -1,0 +1,117 @@
+{% extends 'layout.twig' %}
+
+{% block csslink %}
+    <link rel='stylesheet' href='../../public/assets/css/app.css'>
+{% endblock %}
+
+{% block namepage %}
+    Perfil de administración en SRPPFG
+{% endblock %}
+
+{% block title %}
+    Administrador:  {{ admin.name }} {{ admin.l_name }}
+{% endblock %}
+
+{% block menu %}
+    {% include('remnant/nav-admin.twig') %}
+{% endblock %}
+
+{% block configpersonal %}
+    {% include('remnant/sub-nav.twig') %}
+    <div class="nav-way">
+        <p>
+        <a class=".btn .btn-primary" href="{{'admin' | url }}">Home</a> &nbsp; | &nbsp; Proyectos
+        </p>
+    </div>
+{% endblock %}
+
+{% block content %}
+<article id="main">
+        <section class="wrapper style5">
+            <div class="inner">
+                <section>
+                    <div class="wrapper-form">
+                        <div class="table-wrapper">
+                            <div class="menu-actions">
+                                <p>Proyectos de Grado registrados</p>
+                                <div class="actions">
+                                    <a href="{{ 'admin/projects/create' | url }}">Nuevo Proyecto</a>
+                                    <a href="{{ 'admin/projects/import' | url }}">Importar Por lote</a>
+                                </div>
+                            </div>
+                            <table id="tabla_proyectos">
+                                <thead>
+                                    <tr>
+                                        <th>Titulo</th>
+                                        <th>Tutor(es)</th>
+                                        <th>Postulante(s)</th>
+                                        <th>Objetivo General</th>
+                                        <th>Area(s)</th>
+                                        <th>Modalidad de Titulación</th>
+                                        <th>Carrera</th>
+                                        <th>Fecha de Registro</th>
+                                        <th>Periodo</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="content_table">
+                                {% for proyecto in proyectos %}
+                                    <tr>
+                                        <td>{{ proyecto.title }}</td>
+                                        <td>
+                                            {{ proyecto.fullname_tutor }}
+                                            {% if (proyecto.fullname_tutor_2 != '') %}
+                                            <br>{{ proyecto.fullname_tutor_2 }}
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ proyecto.fullname_student }}
+                                            {% if (proyecto.fullname_student_2 != '') %}
+                                            <br>{{ proyecto.fullname_student_2 }}
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ proyecto.general_obj }}</td>
+                                        <td>{{ proyecto.area }}
+                                            {% if (proyecto.subarea != '') %}
+                                            <br> - {{ proyecto.subarea }}
+                                            {% endif %}
+                                            {% if (proyecto.area_2 != '') %}
+                                            <br>{{ proyecto.area_2 }}
+                                            {% endif %}
+                                            {% if (proyecto.subarea_2 != '') %}
+                                            <br> - {{ proyecto.subarea_2 }}
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ proyecto.modality }}</td>
+                                        <td>{{ proyecto.career }}</td>
+                                        <td>{{ proyecto.registry_date }}</td>
+                                        <td>{{ proyecto.period }}</td>
+                                            <td>
+                                                <div class="menu-actions-tb">
+                                                <div class="actions">
+                                                    <a href="{{ 'admin/' | url }}{{proyecto.id}}">Ver Proyecto</a>
+                                                </div>
+                                                </div>
+                                            </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+                <br> 
+                <br>
+                <br>
+            </div>
+        </section>
+    </article>
+{% endblock %}
+
+{% block jslink %}
+    <script src='../../public/assets/js/jquery.min.js'></script>
+    <script src='../../public/assets/js/jquery.scrollex.min.js'></script>
+    <script src='../../public/assets/js/jquery.scrolly.min.js'></script>
+    <script src='../../public/assets/js/skel.min.js'></script>
+    <script src='../../public/assets/js/util.js'></script>
+    <script src='../../public/assets/js/main.js'></script>
+{% endblock %}

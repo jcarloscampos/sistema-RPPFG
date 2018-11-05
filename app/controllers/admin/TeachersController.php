@@ -3,10 +3,9 @@
 namespace AppPHP\Controllers\Admin;
 
 use AppPHP\Controllers\BaseController;
-use AppPHP\Models\ProffesionalUMSS;
-use AppPHP\Models\ProffesionalUMSSView;
+use AppPHP\Models\ProfessionalUMSS;
+use AppPHP\Models\ProfessionalUMSSView;
 use AppPHP\Models\Area;
-use AppPHP\Models\Subarea;
 use AppPHP\Models\Workload;
 use AppPHP\Models\ADegree;
 use AppPHP\Models\Account;
@@ -15,7 +14,7 @@ use AppPHP\Models\Administrator;
 use AppPHP\Controllers\Common\Validation;
 
 /**
- * Clase controlador para lectura, inserción, eliminación y actualización de datos de la tabla ProffesionalUMSS
+ * Clase controlador para lectura, inserción, eliminación y actualización de datos de la tabla ProfessionalUMSS
  */
 
 class TeachersController extends BaseController
@@ -29,7 +28,7 @@ class TeachersController extends BaseController
     {
         if (isset($_SESSION['admID'])) {
             $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
-            $docentes = ProffesionalUMSSView::query()->orderBy('full_name', 'asc')->get();
+            $docentes = ProfessionalUMSSView::query()->orderBy('full_name', 'asc')->get();
             return $this->render('admin/list_teachers.twig', ['docentes' => $docentes, 'admin' => $admin]);
         }
     }
@@ -75,7 +74,7 @@ class TeachersController extends BaseController
     }
 
     /**
-     * Mediante método GET se hace la peticion para mostrar la plantilla para importar ProffesionalUMSS
+     * Mediante método GET se hace la peticion para mostrar la plantilla para importar ProfessionalUMSS
      */
     public function getImport()
     {
@@ -130,7 +129,7 @@ class TeachersController extends BaseController
                         // Validamos si existe la carga horaria
                         // validamos si existe el grado academico
                         // Insertamos los datos del docente
-                        $user_exists = ProffesionalUMSS::where('name', $nombre)
+                        $user_exists = ProfessionalUMSS::where('name', $nombre)
                                             ->where('l_name', $ap_paterno)
                                             ->where('ml_name', $ap_materno)
                                             ->where('ci', $ci)->first();
@@ -144,21 +143,21 @@ class TeachersController extends BaseController
                                     $result = 'Grado Académico: ' . $grado_academico . ' no registrado.';
                                 }else{
                                     if($pass_cuenta == ''){
-                                        $pass_cuenta = $nombre_cuenta . '.123';
+                                        //TODO -> Se van  a crear las cuentas con las 3 primeras letras del nombre, las 3 primeras del apellido y el CI en caso de no existir un password por defecto en el documento de donde se importan los datos
+                                        $pass_cuenta = substr($nombre,0,3) . substr($ap_paterno,0,3) . $ci;
                                     }
-                                    //TODO by Walter -> Juan Carlos, por favor cambiar esto con la forma correcta de creacion de cuentas de usuario
                                     $account = new Account([
                                         'username' => $nombre_cuenta,
-                                        'password' => $pass_cuenta
+                                        'password' => password_hash($pass_cuenta, PASSWORD_DEFAULT)
                                     ]);
                                     $account->save();
                                     $account_id = Account::where('username', $nombre_cuenta)
-                                                        ->where('password', $pass_cuenta)->first();
+                                                        ->where('password', password_hash($pass_cuenta, PASSWORD_DEFAULT))->first();
                                     if (is_null($account_id)){
                                         $result = 'Cuenta de Usuario: ' . $nombre_cuenta . ' no registrada.';
                                     }else{
                                         //Insertamos los datos del docente
-                                        $proffesionalUMSS = new ProffesionalUMSS([
+                                        $ProfessionalUMSS = new ProfessionalUMSS([
                                             'ci' => $ci,
                                             'name' => $nombre,
                                             'l_name' => $ap_paterno,
@@ -172,7 +171,7 @@ class TeachersController extends BaseController
                                             'profile' => $perfil,
                                             'id_account' => $account_id->id
                                         ]);
-                                        $proffesionalUMSS->save();
+                                        $ProfessionalUMSS->save();
                                     }
                                 }
                             }
@@ -188,7 +187,7 @@ class TeachersController extends BaseController
                 $result = "Importación exitosa!";
             }
             else{
-                //TODO by Walter -> Juan Carlos por favor agregar el catch de este mensaje
+                //TODO by Walter -> Juan Carlos por favor agregar el catch de este mensaje o enseñarme como se hace
                 array_push($errors, "Archivo invalido!");
                 $result = false;
             }

@@ -4,7 +4,6 @@ namespace AppPHP\Controllers\Admin;
 
 use AppPHP\Controllers\BaseController;
 use AppPHP\Models\Area;
-use AppPHP\Models\Subarea;
 use Sirius\Validation\Validator;
 use AppPHP\Models\Administrator;
 use AppPHP\Controllers\Common\Validation;
@@ -361,10 +360,10 @@ class AreaController extends BaseController
                         if($parentID){
                             $parentName = $Areas_list[$parentID];
                             $area_ID = Area::where('name_area',$parentName)->first()->id;
-                            $subarea = new Subarea([
+                            $subarea = new Area([
                                 'name_subarea' => $name_subarea,
                                 'desc_subarea' => $desc_subarea,
-                                'id_area' => $area_ID
+                                'id_parent_area' => $area_ID
                             ]);
                             $subarea->save();
                         }
@@ -375,7 +374,7 @@ class AreaController extends BaseController
                 $result = true;
             }
             else{
-                //TODO by Walter -> Juan Carlos por favor agregar el catch de este mensaje
+                //TODO by Walter -> Juan Carlos por favor agregar el catch de este mensaje o enseñarme como se hace
                 array_push($errors, "Archivo invalido!");
                 $result = false;
             }

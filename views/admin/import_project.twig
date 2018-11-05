@@ -1,16 +1,80 @@
 {% extends 'layout.twig' %}
 
-{% block content %}
-    <h2>Importar Proyectos</h2>
-    <a href="{{ 'admin/' | url }}">Atras</a>
-    <div class="container-register">                              
-        <form class="group-content-register" action="" method="post" enctype="multipart/form-data">
-            <div class="wrap-register">
-                <label for="title"><b>Lista de Proyectos<strong class="check">*</strong></b></label>
-                <input type="file" accept=".csv" placeholder="Proyectos" name="listaProyectos" id="listaProyectos"><br>
-                <input type="submit" value="ImportarProyectos">
-                
-            </div>
-        </form>
+{% block csslink %}
+    <link rel='stylesheet' href='../../../public/assets/css/app.css'>
+{% endblock %}
+
+{% block namepage %}
+    Perfil de administración en SRPPFG
+{% endblock %}
+
+{% block title %}
+    Administrador:  {{ admin.name }} {{ admin.l_name }}
+{% endblock %}
+
+{% block menu %}
+    {% include('remnant/nav-admin.twig') %}
+{% endblock %}
+
+{% block configpersonal %}
+    {% include('remnant/sub-nav.twig') %}
+    <div class="nav-way">
+        <p>
+        <a class=".btn .btn-primary" href="{{'admin' | url }}">Home</a> &nbsp; | &nbsp; <a class=".btn .btn-primary" href="{{'admin/list_projects' | url }}">Perfiles</a> &nbsp; | &nbsp; Importar Perfiles
+        </p>
     </div>
+{% endblock %}
+
+{% block content %}
+<article id="main">
+        <section class="wrapper style5">
+            <div class="inner">
+                <section>
+                    <div class="wrapper-form">
+                        <div class="message-box">
+                            {% if errors %}
+                                {% include 'remnant/errors.twig' %}
+                            {% endif %}
+                            {% if result %}
+                                {% include 'remnant/success.twig' %}
+                            {% endif %}
+                            
+                        </div>         
+                        <form method="post" action="#" enctype="multipart/form-data">
+                            <div class="row uniform">
+                                <div class="12u 12u$(xsmall)">
+                                <label>Importar desde Lista de Perfiles</label>
+                                <input type="file" accept=".csv" name="listaProyectos" id="listaProyectos">
+                                <label for="listaProyectos" style='display:none'>
+                                    <img src="../../../public/images/wrapper/loading.gif" style="width:10px;height:10px;">Uploading...</img>
+                                </label>
+                                <br>
+                            </div>
+                            </div>
+                            <br>
+                            <div class="12u 12u$(xsmall)">
+                                <ul class="actions" style="text-align: center">
+                                    <li><button class="principal" type="submit">Importar</button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+                <br> 
+                <br>
+                <br>
+            </div>
+        </section>
+    </article>
+{% endblock %}
+
+{% block jslink %}
+    <script src='../../../public/assets/js/jquery.min.js'></script>
+    <script src='../../../public/assets/js/jquery.scrollex.min.js'></script>
+    <script src='../../../public/assets/js/jquery.scrolly.min.js'></script>
+    <script src='../../../public/assets/js/skel.min.js'></script>
+    <script src='../../../public/assets/js/util.js'></script>
+    <script src='../../../public/assets/js/main.js'></script>
+    <script src='../../../public/assets/js/upload.file.js'></script>
 {% endblock %}
