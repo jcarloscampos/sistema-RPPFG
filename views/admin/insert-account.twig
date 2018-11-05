@@ -32,17 +32,13 @@
                 <section>
                     <div class="wrapper-form">
                         <div class="message-box">
-                            {% if errors %}
-                                {% include 'remnant/errors.twig' %}
-                            {% endif %}
-                            {% if result %}
-                                {% include 'remnant/success.twig' %}
-                            {% endif %}
-                            
+                            {% include 'remnant/errors.twig' %}
+                            {% include 'remnant/success.twig' %}
+                            {% include 'remnant/warning.twig' %}
                         </div>
                         <form method="post" action="#">
                             <div class="row uniform">
-                                <div class="6u 12u$(xsmall)">
+                                <div class="3u 12u$(xsmall)">
                                     <label>Nombre completo</label>
                                     <input type="text" name="name" id="name" value="{{vPerfil.name}}" placeholder="Nombre completo" />
                                 </div>
@@ -50,9 +46,13 @@
                                     <label>Apellido paterno</label>
                                     <input type="text" name="lname" id="lname" value="{{vPerfil.l_name}}" placeholder="Apellido paterno" />
                                 </div>
-                                <div class="3u$ 12u$(xsmall)">
+                                <div class="3u 12u$(xsmall)">
                                     <label>Apellido materno</label>
                                     <input type="text" name="mlname" id="mlname" value="{{vPerfil.ml_name}}" placeholder="Apellido materno" />
+                                </div>
+                                <div class="3u$ 12u$(xsmall)">
+                                    <label>CI</label>
+                                    <input type="text" name="ci" id="ci" value="{{vPerfil.ci}}" placeholder="CI" />
                                 </div>
                                 <div class="6u 12u$(xsmall)">
                                     <label>Email</label>

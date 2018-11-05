@@ -45,6 +45,7 @@ class ProfessionalsController extends BaseController
     {
         $errors = [];
         $result = false;
+        $duplicate = false;
         $validator = new Validator();
         $validation = new Validation();
         $makeDB = new ServerConnection();
@@ -54,17 +55,28 @@ class ProfessionalsController extends BaseController
     
         $validation->setRuleBasic($validator);
         $validation->setRuleTuser($validator);
+        $validation->setRuleCI($validator);
         
         $userprofile = [
             'name' => $_POST['name'],
             'l_name' => $_POST['lname'],
             'ml_name' => $_POST['mlname'],
+            'ci'=> $_POST['ci'],
             'email'=> $_POST['email'],
             'active'=>1
         ];
         if ($validator->validate($_POST)) {
-            $datasend = $this->generateProfile($generate, $makeDB, $userprofile, $_POST['tuser']);
-            $result = $mail->sendEMail($datasend);
+            if ($_POST['tuser'] == "itnprof") {
+                $userstemp = ProfessionalUmss::where('ci', '=', $_POST['ci'])->get()->toArray();
+            } elseif ($_POST['tuser'] == "etnprof") {
+                $userstemp = ProfessionalExt::where('ci', '=', $_POST['ci'])->get()->toArray();
+            }
+            if (empty($userstemp)){
+                $datasend = $this->generateProfile($generate, $makeDB, $userprofile, $_POST['tuser']);
+                $result = $mail->sendEMail($datasend);
+            } else {
+                $duplicate = true;
+            }
         } else {
             $errors = $validator->getMessages();
             return $this->render(
@@ -74,7 +86,7 @@ class ProfessionalsController extends BaseController
         }
         return $this->render(
             'admin/insert-account.twig', 
-            ['vadmin' => $admin, 'result' => $result]);
+            ['vadmin' => $admin, 'result' => $result, 'duplicate' => $duplicate]);
     }
 
     /**
@@ -116,5 +128,64 @@ class ProfessionalsController extends BaseController
         $account['password'] = $generator->generatePassword();
 
         return $account;
-    }  
+    }
+
+    public function getUpdateprofessional($idAccount)
+    {
+        $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
+        $urol = UserRol::where('id_account', $idAccount)->first();
+        $rol = Rol::where('id_rol', $urol->id_rol)->first();
+        $itn = false;
+
+        
+        if ($rol->name_rol == "itnprof" || $rol->name_rol == "director") {
+            # Profesional del UMSS
+            $user = ProfessionalUmss::where('id_account', $idAccount)->first();
+            $itn = true;
+        } elseif ($rol->name_rol == "etnprof") {
+            # Profesional externo
+            $user = ProfessionalExt::where('id_account', $idAccount)->first();
+        }
+        return $this->render('admin/update-professional.twig', ['vadmin' => $admin, 'vPerfil'=>$user, 'itn'=>$itn, 'rol'=>$rol]);
+    }
+
+    public function postUpdateprofessional($idAccount)
+    {
+        $result = false;
+        $itn = false;
+        $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
+        $urol = UserRol::where('id_account', $idAccount)->first();
+        //$rol = Rol::where('id_rol', $_POST['id_rol'])->first();
+        $rol = Rol::where('id_rol', $urol->id_rol)->first();
+
+        $makeDB = new ServerConnection();
+
+        if ($rol->name_rol == "itnprof" || $rol->name_rol == "director") {
+            $user = ProfessionalUmss::where('id_account', $idAccount)->first();
+            $itn = true;
+        } elseif ($rol->name_rol == "etnprof") {
+            $user = ProfessionalExt::where('id_account', $idAccount)->first();
+        }
+
+        if (isset($_POST['rolprof'])) {
+            $userprofile = ['id_rol'=> $_POST['rolprof']];
+            $result = $makeDB->updateUser($urol, $userprofile, $makeDB);
+        }
+
+        if (isset($_POST['activeprof'])) {
+            $userprofile = ['active'=> $_POST['activeprof']];
+            $result = $makeDB->updateUser($user, $userprofile, $makeDB);
+        }
+        //optimizar las vistas...
+        if ($rol->name_rol == "itnprof" || $rol->name_rol == "director") {
+            $user = ProfessionalUmss::find($_POST['id']);
+            $itn = true;
+        } elseif ($rol->name_rol == "etnprof") {
+            $user = ProfessionalExt::find($_POST['id']);
+        }
+        $rol = Rol::where('id_rol', $_POST['id_rol'])->first();
+        
+        return $this->render('admin/update-professional.twig',
+        ['vadmin' => $admin, 'result' => $result, 'vPerfil'=>$user, 'itn'=>$itn, 'rol'=>$rol]);
+    }
 }

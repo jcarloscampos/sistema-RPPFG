@@ -1,0 +1,129 @@
+{% extends 'layout.twig' %}
+
+{% block csslink %}
+
+    {% if updarea %}
+        <link rel='stylesheet' href='../../../../public/assets/css/app.css'>
+    {% else %}
+        <link rel='stylesheet' href='../../../public/assets/css/app.css'>
+    {% endif %}
+    
+{% endblock %}
+
+{% block namepage %}
+    Perfil de administración en SRPPFG
+{% endblock %}
+
+{% block title %}
+    Administrador:  {{ vadmin.name }} {{ vadmin.l_name }} {{ vadmin.ml_name }}
+{% endblock %}
+
+{% block menu %}
+    {% include('remnant/nav-admin.twig') %}
+{% endblock %}
+
+{% block configpersonal %}
+    {% include('remnant/sub-nav.twig') %}
+    <div class="nav-way">
+        <p>
+        <a class=".btn .btn-primary" href="{{'admin' | url }}">Home</a> &nbsp; | &nbsp; <a class=".btn .btn-primary" href="{{'admin/area' | url }}">Áreas</a> &nbsp; | &nbsp; Insertar Área
+        </p>
+    </div>
+{% endblock %}
+
+{% block content %}
+<article id="main">
+        <section class="wrapper style5">
+            <div class="inner">
+                <section>
+                    <div class="wrapper-form">
+                        <div class="message-box">
+                            {% include 'remnant/errors.twig' %}
+                            {% include 'remnant/success.twig' %}
+                            {% include 'remnant/warning.twig' %}
+                        </div>
+                        <form method="post" action="#">
+                            <input type="hidden" name="idArea" value="{{ varea.id }}">
+                            <div class="row uniform">
+
+                            {% if typeArea or updarea %}
+                                
+                                {% if addsubarea %}
+                                    <div class="12u 12u$(xsmall)">
+                                        <label>Nombre de sub área</label>
+                                        <input type="text" placeholder="Sub area..." name="name" id="name">
+                                    </div>
+                                    <div class="12u 12u$(xsmall)">
+                                        <label>Descripción de sub área</label>
+                                        <textarea class="form-control" name="desc" id="desc" rows="5" placeholder="Descripción..."></textarea>
+                                    </div>
+                                {% else %}
+                                    <div class="12u 12u$(xsmall)">
+                                        <label>Nombre del área</label>
+                                        <input type="text" placeholder="Area..." name="name" id="name" value="{{ varea.name }}">
+                                    </div>
+                                    <div class="12u 12u$(xsmall)">
+                                        <label>Descripción del área</label>
+                                        <textarea class="form-control" name="desc" id="desc" rows="5" value="" placeholder="Descripción...">{{ varea.description }}</textarea>
+                                    </div>
+                                {% endif %}
+                            {% elseif not typeArea %}
+                                <div class="8u 12u$(xsmall)">
+                                    <label>Nombre de sub área</label>
+                                    <input type="text" name="name" id="name" value="" placeholder="Sub área..." />
+                                </div>
+                                <div class="4u$ 12u$(xsmall)">
+                                    <label>Área al que pertenece</label>
+                                    <select name="nameareasel" id="nameareasel">
+                                        <option value="" disabled selected>- Seleccione -</option>
+                                        {% for area in vareas %}
+                                            {% if area.id == area.id_parent_area %}
+                                                <option value="{{ area.id }}">{{ area.name }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>    
+                                </div>
+                                <div class="12u 12u$(xsmall)">
+                                    <label>Descripción de sub área</label>
+                                    <textarea class="form-control" name="desc" id="desc" rows="5" value="" placeholder="Descripción.."></textarea>
+                                </div>
+                            {% endif %}
+                                
+                                
+                            </div>
+
+                            <br>
+                            <div class="12u 12u$(xsmall)">
+                                <ul class="actions" style="text-align: center">
+                                    <li><button class="principal" type="submit">Guardar</button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+                <br> 
+                <br>
+                <br>
+            </div>
+        </section>
+    </article>
+{% endblock %}
+
+{% block jslink %}
+    {% if updarea %}
+        <script src='../../../../public/assets/js/jquery.min.js'></script>
+        <script src='../../../../public/assets/js/jquery.scrollex.min.js'></script>
+        <script src='../../../../public/assets/js/jquery.scrolly.min.js'></script>
+        <script src='../../../../public/assets/js/skel.min.js'></script>
+        <script src='../../../../public/assets/js/util.js'></script>
+        <script src='../../../../public/assets/js/main.js'></script>
+    {% else %}
+        <script src='../../../public/assets/js/jquery.min.js'></script>
+        <script src='../../../public/assets/js/jquery.scrollex.min.js'></script>
+        <script src='../../../public/assets/js/jquery.scrolly.min.js'></script>
+        <script src='../../../public/assets/js/skel.min.js'></script>
+        <script src='../../../public/assets/js/util.js'></script>
+        <script src='../../../public/assets/js/main.js'></script>
+    {% endif %}
+{% endblock %}

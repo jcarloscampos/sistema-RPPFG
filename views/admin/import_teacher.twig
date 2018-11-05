@@ -32,13 +32,8 @@
                 <section>
                     <div class="wrapper-form">
                         <div class="message-box">
-                            {% if errors %}
-                                {% include 'remnant/errors.twig' %}
-                            {% endif %}
-                            {% if result %}
-                                {% include 'remnant/success.twig' %}
-                            {% endif %}
-                            
+                            {% include 'remnant/errors.twig' %}
+                            {% include 'remnant/success.twig' %}
                         </div>         
                         <form method="post" action="#" enctype="multipart/form-data">
                             <div class="row uniform">

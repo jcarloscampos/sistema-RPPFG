@@ -70,7 +70,15 @@ class Validation
         ));
         return $validator;
     }
-
+    public function setRuleAddSubarea($validator)
+    {
+        $validator->add(array(
+            'name:Nombre de sub área'=> 'required | 
+                                        minlength(5)({label} debe tener al menos {min} caracteres)',
+            'desc:Descripción de sub área'=> 'minlength(5)({label} debe tener al menos {min} caracteres)'
+        ));
+        return $validator;
+    }
     public function setRuleSubareaCreate($validator)
     {
         $validator->add(array(

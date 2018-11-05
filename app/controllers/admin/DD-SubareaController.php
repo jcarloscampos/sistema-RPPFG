@@ -13,7 +13,7 @@ use AppPHP\Controllers\Common\Validation;
  * Clase controlador para lectura, inserción, eliminación y actualización de datos de la tabla área
  */
 
-class SubareaController extends BaseController
+class SubareaControllerAAA extends BaseController
 {
     public function getIndex()
     {

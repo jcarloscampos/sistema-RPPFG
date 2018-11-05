@@ -27,11 +27,11 @@
                 <a class="principal" href="{{'professional/itnConfig' | url }}">Configuración</a>    
             {% endif %}
     </div>
-    <div class="nav-way">
+    {# <div class="nav-way">
         <p>
         Home
         </p>
-    </div>
+    </div> #}
 {% endblock %}
 
 {% block content %}
@@ -45,10 +45,7 @@
                 <section>
                     <div class="wrapper-form">
                         <div class="message-box">
-                            {% if inforeg %}
-                                {% include 'remnant/info-reg.twig' %}
-                            {% endif %}
-                            
+                            {% include 'remnant/information.twig' %}
                         </div>
                         
                     </div>

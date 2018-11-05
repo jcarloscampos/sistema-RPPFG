@@ -3,7 +3,7 @@ namespace AppPHP\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Subarea extends Model
+class SubareaAAA extends Model
 {
     /**
      * @type object subarea

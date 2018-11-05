@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block title %}
-    Administrador:  {{ admin.name }} {{ admin.l_name }}
+    Administrador:  {{ vadmin.name }} {{ vadmin.l_name }} {{ vadmin.ml_name }}
 {% endblock %}
 
 {% block menu %}
@@ -37,12 +37,15 @@
                                 <div class="actions">
                                     <a href="{{ 'admin/area/create' | url }}{{ area.id }}">Nueva área</a>
                                     <a href="{{ 'admin/area/import' | url }}">Área por lote</a>
+                                    &nbsp; | &nbsp;
+                                    <a href="{{ 'admin/area/createsubarea' | url }}">Nueva sub área</a>
                                 </div>
                             </div>
                             <table id="tabla_areas">
                                 <thead>
                                     <tr>
                                         <th>Nombre</th>
+                                        <th>Subárea</th>
                                         <th>Descripción</th>
                                         <td>Acción</td>
                                     </tr>
@@ -50,13 +53,25 @@
                                 <tbody id="content_table">
                                     {% for area in areas %}
                                         <tr>
-                                            <td>{{ area.name_area }}</td>
-                                            <td>{{ area.desc_area }}</td>
+                                            <td>{{ area.name }}</td>
+                                            
+                                            <td>
+                                                {% if area.id != area.id_parent_area %}
+
+                                                    {% for subarea in areas %}
+                                                        {% if subarea.id == area.id_parent_area %}
+                                                            {{ subarea.name }}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ area.description }}</td>
                                             <td>
                                                 <div class="menu-actions-tb">
                                                 <div class="actions">
                                                     <a href="{{ 'admin/area/edit/' | url }}{{ area.id }}">Editar</a>
                                                     <a href="{{ 'admin/area/delete/' | url }}{{ area.id }}">Eliminar</a>
+                                                    <a href="{{ 'admin/area/addsubarea/' | url }}{{ area.id }}">Añadir sub área</a>
                                                 </div>
                                                 </div>
                                             </td>

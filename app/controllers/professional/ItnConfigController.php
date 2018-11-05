@@ -7,6 +7,7 @@ use Sirius\Validation\Validator;
 use AppPHP\Models\ProfessionalUmss;
 use AppPHP\Models\ADegree;
 use AppPHP\Models\Workload;
+use AppPHP\Models\Area;
 use AppPHP\Controllers\Common\Validation;
 use AppPHP\Controllers\Common\ServerConnection;
 
@@ -78,5 +79,14 @@ class ItnConfigController extends BaseController
             'vTitles'=>$title,
             'vWorks'=>$work
             ]);
+    }
+
+    public function getInterestareas()
+    {
+        if (isset($_SESSION['profID'])) {
+            $user = ProfessionalUmss::where('id_account', $_SESSION['profID'])->first();
+            $areas = Area::query()->get();
+            return $this->render('professional/interest-areas.twig', ['vPerfil' => $user, 'vareas' => $areas]);
+        }
     }
 }

@@ -8,6 +8,7 @@ use AppPHP\Models\Subarea;
 use Sirius\Validation\Validator;
 use AppPHP\Models\Administrator;
 use AppPHP\Controllers\Common\Validation;
+use AppPHP\Controllers\Common\ServerConnection;
 
 /**
  * Clase controlador para lectura, inserción, eliminación y actualización de datos de la tabla área
@@ -25,8 +26,8 @@ class AreaController extends BaseController
     {
         if (isset($_SESSION['admID'])) {
             $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
-            $areas = Area::query()->orderBy('name_area', 'desc')->get();
-            return $this->render('admin/list_area.twig', ['areas' => $areas, 'admin' => $admin]);
+            $areas = Area::query()->orderBy('name')->get();
+            return $this->render('admin/list-area.twig', ['areas' => $areas, 'vadmin' => $admin]);
         }
     }
 
@@ -37,7 +38,10 @@ class AreaController extends BaseController
     {
         if (isset($_SESSION['admID'])) {
             $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
-            return $this->render('admin/insert_area.twig', ['admin' => $admin]);
+            //$areas = Area::all();
+            $typeArea = true;
+            //return $this->render('admin/crud-area.twig', ['vadmin' => $admin, 'vareas' => $areas, 'typeArea' => $typeArea]);
+            return $this->render('admin/crud-area.twig', ['vadmin' => $admin, 'typeArea' => $typeArea]);
         }
     }
 
@@ -47,53 +51,73 @@ class AreaController extends BaseController
      */
     public function postCreate()
     {
-        $result = false;
         $errors = [];
+        $result = false;
+        $typeArea = true;
+        $duplicate = false;
+        $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
         $validator = new Validator();
         $validation = new Validation();
+        $makeDB = new ServerConnection(); 
         
         $validation->setRuleArea($validator);
-
+        
         if ($validator->validate($_POST)) {
-            $area = new Area([
-                'name_area' => $_POST['name'],
-                'desc_area' => $_POST['desc']
-            ]);
-            $area->save();
-            $result = true;
-            //return $this->render('admin/insert_area.twig', ['result'=>$result]);
-            header('Location:' . BASE_URL . 'admin/area');
-            return null;
+            $existArea = Area::where('name', '=', $_POST['name'])->get()->toArray();
+            if (empty($existArea)){ //mejorar para control entre mayusculas y minusculas
+                $area = new Area([
+                    'name' => $_POST['name'],
+                    'description' => $_POST['desc'],
+                    'id_parent_area' => 1
+                    ]);
+                $area->save();
+                
+                $uArea = Area::where('name', $_POST['name'])->first();
+                $areaprofile = ['id_parent_area' => $uArea->id];
+                $result = $makeDB->updateUser($uArea, $areaprofile, $makeDB);
+                //return $this->render('admin/insert_area.twig', ['result'=>$result]);
+                header('Location:' . BASE_URL . 'admin/area');
+                return null;
+            } else {
+                $duplicate = true;
+            }
         }
         $errors = $validator->getMessages();
-        return $this->render('admin/insert_area.twig', ['result'=>$result, 'errors' => $errors]);
+        return $this->render('admin/crud-area.twig',
+        ['vadmin' => $admin, 'errors' => $errors, 'duplicate' => $duplicate, 'result'=>$result, 'typeArea' => $typeArea]);
     }
+
 
     public function getEdit($id)
 	{   
         $area = Area::where('id', $id)->first();
-		return $this->render('admin/update-area.twig', ['area' => $area]);
+        $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
+        $updarea = true;
+
+		return $this->render('admin/crud-area.twig', ['vadmin' => $admin, 'varea' => $area, 'updarea' => $updarea]);
 	}
 
     public function postEdit($arg)
 	{
         $errors = [];
+        $updarea = true;
+        $result = false;
         $validator = new Validator();
         $validation = new Validation();
+        $makeDB = new ServerConnection();
+        $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
+        $uArea = Area::find($arg);
         
         $validation->setRuleArea($validator);
 
-        $area = Area::find($arg);
         if ($validator->validate($_POST)) {
-            Area::where('id', $arg)->update(array(
-                'name_area' => $_POST['name'],
-                'desc_area' => $_POST['desc']
-            ));
+            $areaprofile = ['name' => $_POST['name'], 'description' => $_POST['desc']];
+            $result = $makeDB->updateUser($uArea, $areaprofile, $makeDB);
             header('Location:' . BASE_URL . 'admin/area');
             return null;
         }
         $errors = $validator->getMessages();
-		return $this->render('admin/update-area.twig', ['area' => $area, 'errors' => $errors]);
+		return $this->render('admin/crud-area.twig', ['vadmin' => $admin, 'errors' => $errors, 'varea' => $uArea, 'updarea' => $updarea]);
     }
     public function getDelete($id)
 	{
@@ -101,7 +125,174 @@ class AreaController extends BaseController
 		$area->delete();
         header('Location:' . BASE_URL . 'admin/area');	
     }
+
     
+
+
+
+
+
+
+
+
+
+
+
+    // ####################################################################################################
+    
+    public function getCreatesubarea()
+	{   
+        $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
+        $areas = Area::query()->orderBy('name')->get();
+        $typeArea = false;
+
+        return $this->render('admin/crud-area.twig', 
+        ['vadmin' => $admin, 'vareas' => $areas, 'typeArea' => $typeArea]);
+    }
+
+    public function postCreatesubarea()
+    {
+        $errors = [];
+        $result = false;
+        $typeArea = false;
+        $duplicate = false;
+        $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
+        $validator = new Validator();
+        $validation = new Validation();
+        $makeDB = new ServerConnection();
+        $areas = Area::all();
+        
+        $validation->setRuleSubareaCreate($validator);
+        
+        if ($validator->validate($_POST)) {
+            $existArea = Area::where('name', '=', $_POST['name'])->get()->toArray();
+            if (empty($existArea)){ //mejorar para control entre mayusculas y minusculas
+                $area = new Area([
+                    'name' => $_POST['name'],
+                    'description' => $_POST['desc'],
+                    'id_parent_area' => $_POST['nameareasel']
+                    ]);
+                    $area->save();
+                    $result = true;
+                    //return $this->render('admin/insert_subarea.twig', ['areas' => $areas, 'result'=>$result, 'admin' => $admin]);
+                    header('Location:' . BASE_URL . 'admin/area');
+                    return null;
+            } else {
+                $duplicate = true;
+            }
+        }
+        $errors = $validator->getMessages();
+        return $this->render('admin/crud-area.twig',
+        ['vadmin' => $admin, 'errors' => $errors, 'vareas' => $areas, 'duplicate' => $duplicate, 'typeArea' => $typeArea]);
+    }
+
+    public function getAddsubarea($id)
+	{   
+        $uArea = Area::find($id);
+        $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
+        $updarea = true;
+        $addsubarea = true;
+
+        return $this->render('admin/crud-area.twig', 
+        ['vadmin' => $admin, 'varea' => $uArea, 'updarea' => $updarea, 'addsubarea' => $addsubarea]);
+    }
+    
+    public function postAddsubarea($id)
+    {
+        $errors = [];
+        $result = false;
+        $typeArea = false;
+        $duplicate = false;
+        $updarea = true;
+        $addsubarea = true;
+        $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
+        $validator = new Validator();
+        $validation = new Validation();
+        $makeDB = new ServerConnection();
+        
+        $validation->setRuleAddSubarea($validator);
+        
+        if ($validator->validate($_POST)) {
+            $existArea = Area::where('name', '=', $_POST['name'])->get()->toArray();
+            if (empty($existArea)){ //mejorar para control entre mayusculas y minusculas
+                $area = new Area([
+                    'name' => $_POST['name'],
+                    'description' => $_POST['desc'],
+                    'id_parent_area' => $id
+                    ]);
+                    $area->save();
+                    $result = true;
+                    //return $this->render('admin/insert_subarea.twig', ['areas' => $areas, 'result'=>$result, 'admin' => $admin]);
+                    header('Location:' . BASE_URL . 'admin/area');
+                    return null;
+            } else {
+                $duplicate = true;
+            }
+        }
+        $errors = $validator->getMessages();
+        return $this->render('admin/crud-area.twig',
+        ['vadmin' => $admin, 'errors' => $errors, 'duplicate' => $duplicate, 'typeArea' => $typeArea, 
+        'updarea' => $updarea, 'addsubarea' => $addsubarea]);
+    }
+    
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public function getImport()
     {
         if (isset($_SESSION['admID'])) {

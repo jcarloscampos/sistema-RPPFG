@@ -44,6 +44,7 @@
                                     <tr>
                                         <th>Activo</th>
                                         <th>Nombre completo</th>
+                                        <th>CI</th>
                                         <th>Correo</th>
                                         <th>Username</th>
                                         <th>Rol</th>
@@ -65,6 +66,7 @@
                                                 {% endif %}
                                             </td>
                                             <td>{{ itn.name }} {{ itn.l_name }} {{ itn.ml_name }}</td>
+                                            <td>{{ itn.ci }}</td>
                                             <td>{{ itn.email }}</td>
 
                                             <td>
@@ -88,8 +90,8 @@
                                             <td>
                                                 <div class="menu-actions-tb">
                                                 <div class="actions">
-                                                    <a href="{{ 'admin/' | url }}{{docente.id}}">Ver</a>
-                                                    <a href="{{ 'admin/' | url }}">Editar</a>
+                                                    <a href="{{ 'admin/' | url }}{{ itn.id }}">Ver</a>
+                                                    <a href="{{ 'admin/professionals/updateprofessional/' | url }}{{ itn.id_account }}">Editar</a>
                                                 </div>
                                                 </div>
                                             </td>
@@ -108,6 +110,7 @@
                                                 {% endif %}
                                             </td>
                                             <td>{{ etn.name }} {{ etn.l_name }} {{ etn.ml_name }}</td>
+                                            <td>{{ etn.ci }}</td>
                                             <td>{{ etn.email }}</td>
 
                                             <td>
@@ -131,8 +134,8 @@
                                             <td>
                                                 <div class="menu-actions-tb">
                                                 <div class="actions">
-                                                    <a href="{{ 'admin/' | url }}{{docente.id}}">Ver</a>
-                                                    <a href="{{ 'admin/' | url }}">Editar</a>
+                                                    <a href="{{ 'admin/' | url }}{{ etn.id }}">Ver</a>
+                                                    <a href="{{ 'admin/professionals/updateprofessional/' | url }}{{ etn.id_account }}">Editar</a>
                                                 </div>
                                                 </div>
                                             </td>

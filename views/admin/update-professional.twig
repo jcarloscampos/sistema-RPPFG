@@ -1,0 +1,115 @@
+{% extends 'layout.twig' %}
+
+{% block csslink %}
+    <link rel='stylesheet' href='../../../../public/assets/css/app.css'>
+{% endblock %}
+
+{% block namepage %}
+    Perfil de administración en SRPPFG
+{% endblock %}
+
+{% block title %}
+    Administrador:  {{ vadmin.name }} {{ vadmin.l_name }} {{ vadmin.ml_name }}
+{% endblock %}
+
+{% block menu %}
+    {% include('remnant/nav-admin.twig') %}
+{% endblock %}
+
+{% block configpersonal %}
+    {% include('remnant/sub-nav.twig') %}
+    <div class="nav-way">
+        <p>
+        <a class=".btn .btn-primary" href="{{'admin' | url }}">Home</a> &nbsp; | &nbsp; <a class=".btn .btn-primary" href="{{'admin/professionals' | url }}">Profesionales</a> &nbsp; | &nbsp; Editar Profesional
+        </p>
+    </div>
+{% endblock %}
+
+{% block content %}
+<article id="main">
+        <section class="wrapper style5">
+            <div class="inner">
+                <section>
+                    <div class="wrapper-form">
+                        <div class="message-box">
+                            {% include 'remnant/errors.twig' %}
+                            {% include 'remnant/success.twig' %}
+                        </div>
+                        <form method="post" action="#">
+                            <input type="hidden" name="id_rol" value="{{ rol.id_rol }}">
+                            <input type="hidden" name="id" value="{{ vPerfil.id }}">
+                            <div class="row uniform">
+                                <div class="3u 12u$(xsmall)">
+                                    <label>Nombre completo</label>
+                                    <input type="text" name="name" id="name" value="{{vPerfil.name}}" placeholder="Nombre completo" readonly/>
+                                </div>
+                                <div class="3u 12u$(xsmall)">
+                                    <label>Apellido paterno</label>
+                                    <input type="text" name="lname" id="lname" value="{{vPerfil.l_name}}" placeholder="Apellido paterno" readonly/>
+                                </div>
+                                <div class="3u 12u$(xsmall)">
+                                    <label>Apellido materno</label>
+                                    <input type="text" name="mlname" id="mlname" value="{{vPerfil.ml_name}}" placeholder="Apellido materno" readonly/>
+                                </div>
+                                <div class="3u$ 12u$(xsmall)">
+                                    <label>CI</label>
+                                    <input type="text" name="ci" id="ci" value="{{vPerfil.ci}}" placeholder="CI" readonly/>
+                                </div>
+                                <div class="5u 12u$(xsmall)">
+                                    <label>Email</label>
+                                    <input type="text" name="email" id="email" value="{{vPerfil.email}}" placeholder="Email"readonly/>
+                                </div>
+                                {% if itn %}
+                                    <div class="3u 12u$(xsmall)">
+                                        <label>Rol del Profesional</label>
+                                        <select name="rolprof">
+                                            {% if rol.name_rol == "director" %}
+                                                <option value="" disabled selected>- Director de Carrera -</option>
+                                            {% else %}
+                                                <option value="" disabled selected>- Docente UMSS -</option>
+                                            {% endif %}
+                                            <option value="4">Docente UMSS</option>
+                                            <option value="2">Director de Carrera</option>
+                                        </select>    
+                                    </div>
+                                {% endif %}
+                                <div class="4u$ 12u$(xsmall)">
+                                    <label>Estado del Profesional</label>
+                                    <select name="activeprof">
+                                        {% if vPerfil.active == 1 %}
+                                            <option value="" disabled selected>- Activo para Proyectos -</option>
+                                        {% else %}
+                                            <option value="" disabled selected>- Inactivo para Proyectos -</option>
+                                        {% endif %}
+                                        <option value="1">Activo para Proyectos</option>
+                                        <option value="0">Inactivo para Proyectos</option>
+                                    </select>    
+                                </div> 
+                            </div>
+
+                            <br>
+                            <div class="12u 12u$(xsmall)">
+                                <ul class="actions" style="text-align: center">
+                                    <li><button class="principal" type="submit">Actualizar</button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+                <br> 
+                <br>
+                <br>
+            </div>
+        </section>
+    </article>
+{% endblock %}
+
+{% block jslink %}
+    <script src='../../../../public/assets/js/jquery.min.js'></script>
+    <script src='../../../../public/assets/js/jquery.scrollex.min.js'></script>
+    <script src='../../../../public/assets/js/jquery.scrolly.min.js'></script>
+    <script src='../../../../public/assets/js/skel.min.js'></script>
+    <script src='../../../../public/assets/js/util.js'></script>
+    <script src='../../../../public/assets/js/main.js'></script>
+{% endblock %}

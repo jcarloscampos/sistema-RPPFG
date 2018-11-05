@@ -42,12 +42,8 @@
 
                         <div class="form-signin">
                             <div class="message-box">
-                                {% if errors %}
                                     {% include 'remnant/errors.twig' %}
-                                {% endif %}
-                                {% if exists %}
-                                    <div class"alert alert-warning">Éste nombre de usuario ya está tomado</div>
-                                {% endif %}
+                                    {% include 'remnant/warning.twig' %}
                             </div>
                         </div>
 

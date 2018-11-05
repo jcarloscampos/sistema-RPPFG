@@ -236,4 +236,22 @@ class ServerConnection extends BaseController
             $user::where('id', $user->id)->update(array('active' => $arg));
         }
     }
+    public function id_rol($user, $arg)
+    {
+        if (isset($user)) {
+            $user::where('id', $user->id)->update(array('id_rol' => $arg));
+        }
+    }
+    public function description($user, $arg)
+    {
+        if (isset($user)) {
+            $user::where('id', $user->id)->update(array('description' => $arg));
+        }
+    }
+    public function id_parent_area($user, $arg)
+    {
+        if (isset($user)) {
+            $user::where('id', $user->id)->update(array('id_parent_area' => $arg));
+        }
+    }
 }
