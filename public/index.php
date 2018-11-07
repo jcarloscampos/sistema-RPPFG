@@ -25,7 +25,7 @@ $capsule = new Capsule;
 $capsule->addConnection([
     'driver'    => 'mysql',
     'host'      => 'localhost',
-    'database'  => 'sistema-rppfg',
+    'database'  => 'sistema',
     'username'  => 'root',
     'password'  => '',
     'charset'   => 'utf8',
@@ -89,11 +89,18 @@ $router->group(['before' => 'pst'], function($router){
 });
 
 
-$router->controller('/professional', AppPHP\Controllers\Professional\IndexController::class);
-$router->group(['before' => 'prof'], function($router){
-    $router->controller('/professional/itnConfig', AppPHP\Controllers\Professional\ItnConfigController::class);
-    $router->controller('/professional/etnConfig', AppPHP\Controllers\Professional\EtnConfigController::class);
-});
+// $router->controller('/professional', AppPHP\Controllers\Professional\IndexController::class);
+// $router->group(['before' => 'prof'], function($router){
+//     $router->controller('/professional/itnConfig', AppPHP\Controllers\Professional\ItnConfigController::class);
+//     $router->controller('/professional/etnConfig', AppPHP\Controllers\Professional\EtnConfigController::class);
+// });
+
+$router->controller('/itnprofessional', AppPHP\Controllers\Professional\ItnController::class);
+$router->controller('/etnprofessional', AppPHP\Controllers\Professional\EtnController::class);
+// $router->group(['before' => 'prof'], function($router){
+//     $router->controller('/professional/itnConfig', AppPHP\Controllers\Professional\ItnConfigController::class);
+//     $router->controller('/professional/etnConfig', AppPHP\Controllers\Professional\EtnConfigController::class);
+// });
 
 
 

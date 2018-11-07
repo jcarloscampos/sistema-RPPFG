@@ -14,16 +14,30 @@
                 </div>
                 
                 <br><br><br>
+
                 <ul> 
-                    <li>
-                        <a href="{{'professional/interestareas' | url }}">Seleccionar áreas de interés</a>
-                    </li>
-                    <li>
-                        <a href="{{'professional' | url }}">Proyectos de asistencia  como tutor</a>
-                    </li>
-                    <li>
-                        <a href="{{'professional' | url }}">Proyectos de  asistencia como docente</a>
-                    </li>
+                    {% if etn %}
+                        <li>
+                            <a href="{{'etnprofessional/interestareas' | url }}">Seleccionar áreas de interés</a>
+                        </li>
+                        <li>
+                            <a href="{{'etnprofessional' | url }}">Proyectos de asistencia  como tutor</a>
+                        </li>
+                        <li>
+                            <a href="{{'etnprofessional' | url }}">Proyectos de  asistencia como docente</a>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a href="{{'itnprofessional/interestareas' | url }}">Seleccionar áreas de interés</a>
+                        </li>
+                        <li>
+                            <a href="{{'itnprofessional' | url }}">Proyectos de asistencia  como tutor</a>
+                        </li>
+                        <li>
+                            <a href="{{'itnprofessional' | url }}">Proyectos de  asistencia como docente</a>
+                        </li>
+                    {% endif %}
+                    
                 </ul>
             </div>
         </li>

@@ -27,8 +27,11 @@ class LogoutController extends BaseController
             unset($_SESSION['postID']);
             header('Location: ' . BASE_URL . '');
 
-        } elseif (isset($_SESSION['profID'])) {
-            unset($_SESSION['profID']);
+        } elseif (isset($_SESSION['iprofID'])) {
+            unset($_SESSION['iprofID']);
+            header('Location: ' . BASE_URL . '');
+        }elseif (isset($_SESSION['eprofID'])) {
+            unset($_SESSION['eprofID']);
             header('Location: ' . BASE_URL . '');
         }
     }

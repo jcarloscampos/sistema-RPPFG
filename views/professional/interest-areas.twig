@@ -5,22 +5,33 @@
 {% endblock %}
 
 {% block namepage %}
-    Perfil de administración en SRPPFG
+    Áreas de interés para docentes
 {% endblock %}
 
 {% block title %}
-    Administrador:  {{ vPerfil.name }} {{ vPerfil.l_name }} {{ vPerfil.ml_name }}
+    Docente:  {{ vPerfil.name }} {{ vPerfil.l_name }} {{ vPerfil.ml_name }}
 {% endblock %}
 
 {% block menu %}
-    {% include('remnant/nav-admin.twig') %}
+    {% include('remnant/nav-professional.twig') %}
 {% endblock %}
 
 {% block configpersonal %}
-    {% include('remnant/sub-nav.twig') %}
+    <div class="configpersonal">
+        <a class=".btn .btn-primary" href="{{'logout' | url }}">Salir</a>
+            {% if etn %}
+                <a class="principal" href="{{'etnprofessional/config' | url }}">Configuración</a>
+            {% else %}
+                <a class="principal" href="{{'itnprofessional/config' | url }}">Configuración</a>    
+            {% endif %}
+    </div>
     <div class="nav-way">
         <p>
-        <a class=".btn .btn-primary" href="{{'admin' | url }}">Home</a> &nbsp; | &nbsp; Docentes
+            {% if etn %}
+                <a class=".btn .btn-primary" href="{{'etnprofessional' | url }}">Home</a> &nbsp; | &nbsp; Áreas de interés
+            {% else %}
+                <a class=".btn .btn-primary" href="{{'itnprofessional' | url }}">Home</a> &nbsp; | &nbsp; Áreas de interés
+            {% endif %}
         </p>
     </div>
 {% endblock %}
@@ -33,41 +44,45 @@
                     <div class="wrapper-form">
                         <div class="table-wrapper">
                             <div class="menu-actions">
-                                <p>Docentes UMSS registrados</p>
-                                <div class="actions">
-                                    <a href="{{ 'admin/teachers/create' | url }}">Nuevo Docente</a>
-                                    <a href="{{ 'admin/teachers/import' | url }}">Importar Por lote</a>
-                                </div>
+                                <h2>Mis áreas de conocimiento</h2>
                             </div>
                             <table id="tabla_docentes">
                                 <thead>
                                     <tr>
-                                        <th>Nombre Docente</th>
-                                        <th>Correo Electronico</th>
-                                        <th>Teléfono</th>
-                                        <th>Dirección</th>
-                                        <th>Carga Horaria</th>
-                                        <th>Acciones</th>
+                                        <th>Nombre de área</th>
+                                        <th>Adicionarme</th>
                                     </tr>
                                 </thead>
-                                <tbody id="content_table">
-                                {% for docente in docentes %}
-                                    <tr>
-                                        <td>{{ docente.full_name }}</td>
-                                        <td>{{ docente.email }}</td>
-                                        <td>{{ docente.phone }}</td>
-                                        <td>{{ docente.address }}</td>
-                                        <td>{{ docente.name_wl }}</td>
+                                <tbody id="arealist">
+                                    {% for area in vareas %}
+                                        <tr>
                                             <td>
+                                                {{ area.name }} {# {{ area.id == area.id_parent_area ? '<span class="algo">Tiene subareas</span>' : '' }} #}
+                                            </td>
+                                            <td width="20%">
                                                 <div class="menu-actions-tb">
-                                                <div class="actions">
-                                                    <a href="{{ 'admin/' | url }}{{docente.id}}">Ver Perfil</a>
-                                                    <a href="{{ 'admin/' | url }}">Inhabilitar</a>
-                                                </div>
+                                                    <div class="actions">
+                                                        {% if emptyarea %}
+                                                            <a href="{{ etn ? 'settle/' : 'itnprofessional/settle/' | url }}{{ area.id }}">agrear</a>
+                                                        {% else %}
+
+                                                            {% set condition = true %}
+                                                            
+                                                            {% for profarea in profareas if condition %}
+                                                                {% if area.id == profarea.id_area %}
+                                                                    <a href="{{ etn ? 'remove/' : 'itnprofessional/remove/' | url }}{{ profarea.id }}">Quitar</a>
+                                                                    {% set condition = false %}
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                            {% if condition %}
+                                                                    <a href="{{ etn ? 'settle/' : 'itnprofessional/settle/' | url }}{{ area.id }}">Añadir</a>
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    </div>
                                                 </div>
                                             </td>
-                                    </tr>
-                                {% endfor %}
+                                        </tr>
+                                    {% endfor %}
                                 </tbody>
                             </table>
                         </div>
@@ -88,4 +103,10 @@
     <script src='../../public/assets/js/skel.min.js'></script>
     <script src='../../public/assets/js/util.js'></script>
     <script src='../../public/assets/js/main.js'></script>
+
+    {# <script src="https://code.jquery.com/jquery-2.2.4.min.js" 
+        integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+        crossorigin="anonymous">
+    </script> #}
+
 {% endblock %}

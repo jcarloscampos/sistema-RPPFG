@@ -8,26 +8,47 @@ use AppPHP\Models\ProfessionalUmss;
 use AppPHP\Models\ADegree;
 use AppPHP\Models\Workload;
 use AppPHP\Models\Area;
+use AppPHP\Models\ItnProfArea;
 use AppPHP\Controllers\Common\Validation;
 use AppPHP\Controllers\Common\ServerConnection;
+use AppPHP\Controllers\Common\SettingData;
 
-class ItnConfigController extends BaseController
+
+class ItnController extends BaseController
 {
     public function getIndex()
     {
-        if (isset($_SESSION['profID'])) {
-            $user = ProfessionalUmss::where('id_account', $_SESSION['profID'])->first();
+        $inforeg = false;
+        $etn = false;
+        $generate = new SettingData();
+
+        if (isset($_SESSION['iprofID'])) {
+            $userprofile = ProfessionalUmss::where('id_account', $_SESSION['iprofID'])->first();
+            if (isset($userprofile)) {
+                $inforeg = $generate->valItn($userprofile);
+                return $this->render('professional/index.twig', ['inforeg'=>$inforeg, 'vPerfil'=>$userprofile, 'etn' => $etn]);
+            }
+        }
+        header('Location: ' . BASE_URL . '');
+    }
+    
+
+    public function getConfig()
+    {
+        if (isset($_SESSION['iprofID'])) {
+            $etn = false;
+            $user = ProfessionalUmss::where('id_account', $_SESSION['iprofID'])->first();
             $title = ADegree::query()->get();
             $work = Workload::query()->get();
             return $this->render('professional/itn-config.twig', ['vPerfil' => $user, 'vTitles'=>$title, 'vWorks'=>$work]);
         }
     }
 
-
-    public function postIndex()
+    public function postConfig()
     {
         $errors = [];
         $result = false;
+        $etn = false;
         $validator = new Validator();
         $validation = new Validation();
         $makeDB = new ServerConnection();
@@ -58,14 +79,11 @@ class ItnConfigController extends BaseController
         if (isset($_POST['wload'])) {
             $userprofile['id_wl'] = $_POST['wload'];
         }
-        //(isset($_POST['wload'])) ? $userprofile['workload'] = $_POST['wload'] : $userprofile['workload'] = $user->workload;
-
+       
         if ($validator->validate($_POST)) {    
             if (isset($_POST['pwd']) && $_POST['pwd'] != "") {
-                # los campos de pwd fueron modificados
                 $result = $makeDB->updateAccount($user, $_POST['pwd']);
             }
-            # solo actualiza datos
             $result = $makeDB->updateUser($user, $userprofile, $makeDB);
         }else{
             $errors = $validator->getMessages();
@@ -83,10 +101,46 @@ class ItnConfigController extends BaseController
 
     public function getInterestareas()
     {
-        if (isset($_SESSION['profID'])) {
-            $user = ProfessionalUmss::where('id_account', $_SESSION['profID'])->first();
-            $areas = Area::query()->get();
-            return $this->render('professional/interest-areas.twig', ['vPerfil' => $user, 'vareas' => $areas]);
+        if (isset($_SESSION['iprofID'])) {
+            $etn = false;
+            $emptyarea = true;
+            $user = ProfessionalUmss::where('id_account', $_SESSION['iprofID'])->first();
+            $profarea = ItnProfArea::all();
+            $val = ItnProfArea::all()->toArray();
+            $areas = Area::query()->orderBy('name')->get();
+
+            if (!empty($val)){
+                $emptyarea = false;
+            }
+            return $this->render('professional/interest-areas.twig',
+            ['vPerfil' => $user, 'vareas' => $areas, 'profareas' => $profarea, 'emptyarea' => $emptyarea]);
+        }
+    }
+
+    public function getSettle($id)
+	{
+        if (isset($id)) {
+            $repeated = ItnProfArea::where('id_area', '=', $id)->get()->toArray();
+            if (empty($repeated)){
+                $area = Area::find($id);
+                $user = ProfessionalUmss::where('id_account', $_SESSION['iprofID'])->first();
+
+                $profarea = new ItnProfArea([
+                    'id_prof' => $user->id,
+                    'id_area' => $area->id
+                ]);
+                $profarea->save();
+            }
+        }
+        header('Location:' . BASE_URL . 'itnprofessional/interestareas');	
+    }
+    
+    public function getRemove($id)
+	{
+        if (isset($id)) {
+            $profarea = ItnProfArea::find($id);
+            $profarea->delete();
+            header('Location:' . BASE_URL . 'itnprofessional/interestareas');	
         }
     }
 }

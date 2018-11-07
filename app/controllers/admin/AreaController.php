@@ -125,20 +125,6 @@ class AreaController extends BaseController
         header('Location:' . BASE_URL . 'admin/area');	
     }
 
-    
-
-
-
-
-
-
-
-
-
-
-
-    // ####################################################################################################
-    
     public function getCreatesubarea()
 	{   
         $admin = Administrator::where('id_account', $_SESSION['admID'])->first();

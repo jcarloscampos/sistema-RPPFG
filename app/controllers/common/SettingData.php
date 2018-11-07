@@ -64,4 +64,20 @@ class SettingData
         }
         return $uname;
     }
+
+    public function valEtn($uProfile){
+        $val = false;
+        if ($uProfile->name == "" || $uProfile->l_name == "" || $uProfile->ci == 0 || $uProfile->email == "") {
+            $val = true;
+        }
+        return $val;
+    }
+
+    public function valItn($uProfile){
+        $val = false;
+        if ($uProfile->name == "" || $uProfile->l_name == "" || $uProfile->ci == 0 || $uProfile->email == "" || $uProfile->cod_sis == 0) {
+            $val = true;
+        }
+        return $val;
+    }
 }
