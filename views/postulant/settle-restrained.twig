@@ -1,0 +1,147 @@
+{% extends 'layout.twig' %}
+
+{% block csslink %}
+    <link rel='stylesheet' href='../../../public/assets/css/app.css'>
+{% endblock %}
+
+{% block namepage %}
+    Perfil de postulante en SRPPFG
+{% endblock %}
+
+{% block title %}
+    Postulante:  {{ vPerfil.name }} {{ vPerfil.l_name }} {{ vPerfil.ml_name }}
+{% endblock %}
+
+{% block menu %}
+    {% include('remnant/nav-postulant.twig') %}
+{% endblock %}
+
+{% block configpersonal %}
+    <div class="configpersonal">
+        <a class=".btn .btn-primary" href="{{'logout' | url }}">Salir</a>
+        <a class="principal" href="{{'postulant/ressources' | url }}">Configuración</a>
+    </div>
+    <div class="nav-way">
+        <p>
+        <a class=".btn .btn-primary" href="{{'postulant' | url }}">Home</a> &nbsp; | &nbsp; Perfil
+        </p>
+    </div>
+{% endblock %}
+
+{% block content %}
+<article id="main">
+        <section class="wrapper style5">
+            <div class="inner">
+                <section class="content-main">
+                    <div>
+                        <h4 style="text-align: center;">Definición de Perfil</h4>
+                        {# <p style="text-align: left; color: red">Verifique sus datos personales, si tiene algún error puede cambiar desde la <a class="principal" href="{{'postulant/ressources' | url }}">configuración</a> de su cuenta antes de definir su perfil. </p>
+                        <p style="text-align: left; color: red">Si todo está en orden puede iniciar con la definición de su perfil.</p>  #}
+                        <div class="wrapper-form">
+                            <div class="message-box">
+                                {% include 'remnant/errors.twig' %}
+                                {% include 'remnant/success.twig' %}
+                            </div>
+                            <form method="post" action="#">
+                                <input type="hidden" name="id" value="{{ vPerfil.id }}">
+
+                                <div class="row uniform">
+                                    <div class="6u 12u$(xsmall)">
+                                        <label>Docente de materia</label>
+                                        <select name="psmatter" id="psmatter">
+                                            <option value=""disabled selected>- Selecciones su Docente -</option>
+                                            {% for prof in profs %}
+                                                {% for pmatter in pmatters %}
+                                                    {% if prof.id == pmatter.id_prof %}
+                                                        <option value="{{prof.id}}">{{ prof.name }} {{ prof.l_name }} {{ prof.ml_name }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% endfor %}
+                                        </select>    
+                                    </div>
+                                    <div class="6u$ 12u$(xsmall)">
+                                        <label>Formulario de aprobación</label>
+                                        <select name="adegree" id="adegree">
+                                            <option value=""disabled selected>-  -</option>
+                                        </select>    
+                                    </div>
+                                    <div class="6u 12u$(xsmall)">
+                                        <label>Tutor</label>
+                                        <select name="adegree" id="adegree">
+                                            {% for title in vTitles %}
+                                                {% if title.id == vPerfil.id_ad %}
+                                                    <option value=""disabled selected>- {{title.name_ad}} -</option>
+                                                {% endif %}
+                                            {% endfor %}
+
+                                            {% for title in vTitles %}
+                                            {% endfor %}
+                                                <option value="{{title.id}}">Ambientes autión de software</option>
+                                        </select>    
+                                    </div>
+                                    <div class="6u$ 12u$(xsmall)">
+                                        <label>Segundo tutor (opcional)</label>
+                                        <select name="adegree" id="adegree">
+                                            {% for title in vTitles %}
+                                                {% if title.id == vPerfil.id_ad %}
+                                                    <option value=""disabled selected>- {{title.name_ad}} -</option>
+                                                {% endif %}
+                                            {% endfor %}
+
+                                            {% for title in vTitles %}
+                                            {% endfor %}
+                                                <option value="{{title.id}}">Ambientes autooftware</option>
+                                        </select>    
+                                    </div>
+                                <br>
+                                <div class="12u 12u$(xsmall)">
+                                    <ul class="actions" style="text-align: center">
+                                        <li>
+                                        <button class="principal" type="submit">TErminar</button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </form>
+                        </div>
+                        {# <div class="configpersonal" style="text-align: center; margin-top: 3em;">
+                            <a class=".btn .btn-primary"  style="border: 1px solid #1a237e;" href="{{'postulant' | url }}">Cancelar</a> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                            <a class="principal"  style="border: 1px solid #1a237e;" href="{{'postulant/ressources' | url }}">Iniciar</a>
+                        </div> #}
+                    </div>
+
+
+
+
+
+
+
+
+                    
+                    <div class="status-defprofile">
+                        <div class="status">
+                            <p>1</p>
+                        </div>
+                        <div class="status">
+                            <p>2</p>
+                        </div>
+                        <div class="status">
+                            <p>3</p>
+                        </div>
+                        <div class="status">
+                            <p class="active">4</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </section>
+    </article>
+{% endblock %}
+
+{% block jslink %}
+    <script src='../../../public/assets/js/jquery.min.js'></script>
+    <script src='../../../public/assets/js/jquery.scrollex.min.js'></script>
+    <script src='../../../public/assets/js/jquery.scrolly.min.js'></script>
+    <script src='../../../public/assets/js/skel.min.js'></script>
+    <script src='../../../public/assets/js/util.js'></script>
+    <script src='../../../public/assets/js/main.js'></script>
+{% endblock %}

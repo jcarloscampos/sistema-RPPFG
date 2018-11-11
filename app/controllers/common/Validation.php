@@ -105,5 +105,33 @@ class Validation
         ));
         return $validator;
     }
+
+    public function setRuleDefOne($validator)
+    {
+        $validator->add(array(
+            'modality:Modalidad de titulación: '=>'required',
+            'career:Carrera al que pertenece: '=>'required',
+            'area:Área del perfil: '=>'required'         
+        ));
+        return $validator;
+    }
+
+    public function setRuleCompany($validator)
+    {
+        $validator->add(array(
+            'company_d:Información de la Empresa que colabora en su perfil: '=>'required'       
+        ));
+        return $validator;
+    }
+
+    public function setRuleJworkpost($validator)
+    {
+        $validator->add(array(
+            'jworkpost:Datos del estudiante que acompaña el perfil: '=>'required'       
+        ));
+        return $validator;
+    }
+    
+    
     
 }

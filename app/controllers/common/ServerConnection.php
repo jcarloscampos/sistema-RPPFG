@@ -9,6 +9,7 @@ use AppPHP\Models\UserRol;
 use AppPHP\Models\ProfessionalUmss;
 use AppPHP\Models\ProfessionalExt;
 use AppPHP\Models\Postulant;
+use AppPHP\Models\Period;
 
 /**
  * Clase controlador de inicio para Director de Carrera.
@@ -22,6 +23,37 @@ class ServerConnection extends BaseController
         $_SESSION[$name] = $user->id;
         header('Location:' . BASE_URL . 'signin');
         return null;
+    }
+
+    /**
+     * genera un periodo de tiempo a partir de la fecha actual
+     * @return object $nPeriod : Nuevo periodo
+     */
+    public function makePeriod()
+    {
+        $nPeriod = null;
+        ini_set('date.timezone', 'America/La_Paz');
+        $startdate = date_create(date('Y-m-d', time()));
+        $enddate = date_add($startdate, date_interval_create_from_date_string('100 days'));
+        
+        $currentdate = strtotime(date('Y-m-d', time()));
+        $period = (int)date("m", $currentdate);
+
+        $periodData = [
+            'start_date' => $startdate,
+            'end_date' => $enddate
+        ];
+        
+        $period <= 6 ? $periodData['period'] = 1 : $periodData['period'] = 2;
+
+        $nPeriod = new Period([
+            'start_date'=> $periodData['start_date'],
+            'end_date'=> $periodData['end_date'],
+            'period'=> $periodData['period']
+        ]);
+        $nPeriod->save();
+        
+        return $nPeriod;
     }
 
     /**

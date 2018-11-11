@@ -86,6 +86,12 @@ $router->group(['before' => 'adm'], function($router){
 $router->controller('/postulant', AppPHP\Controllers\Postulant\IndexController::class);
 $router->group(['before' => 'pst'], function($router){
     $router->controller('/postulant/ressources', AppPHP\Controllers\Postulant\RessourceController::class);
+    $router->controller('/postulant/actualize', AppPHP\Controllers\Postulant\ActualizeProfileController::class);
+    $router->controller('/postulant/settle', AppPHP\Controllers\Postulant\SettleController::class);
+    $router->controller('/postulant/settle/heading', AppPHP\Controllers\Postulant\Defprofile\HeadingController::class);
+    $router->controller('/postulant/settle/essence', AppPHP\Controllers\Postulant\Defprofile\EssenceController::class);
+    $router->controller('/postulant/settle/restrained', AppPHP\Controllers\Postulant\Defprofile\RestrainedController::class);
+
 });
 
 

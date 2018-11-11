@@ -1,0 +1,122 @@
+{% extends 'layout.twig' %}
+
+{% block csslink %}
+    <link rel='stylesheet' href='../../public/assets/css/app.css'>
+{% endblock %}
+
+{% block namepage %}
+    Perfil de postulante en SRPPFG
+{% endblock %}
+
+{% block title %}
+    Postulante:  {{ vPerfil.name }} {{ vPerfil.l_name }} {{ vPerfil.ml_name }}
+{% endblock %}
+
+{% block menu %}
+    {% include('remnant/nav-postulant.twig') %}
+{% endblock %}
+
+{% block configpersonal %}
+    <div class="configpersonal">
+        <a class=".btn .btn-primary" href="{{'logout' | url }}">Salir</a>
+        <a class="principal" href="{{'postulant/ressources' | url }}">Configuración</a>
+    </div>
+    <div class="nav-way">
+        <p>
+        <a class=".btn .btn-primary" href="{{'postulant' | url }}">Home</a> &nbsp; | &nbsp; Configuración
+        </p>
+    </div>
+{% endblock %}
+
+{% block content %}
+<article id="main">
+        <section class="wrapper style5">
+            <div class="inner">
+                <section>
+                    <h4 style="text-align: center;">Actualización de perfil de grado</h4>
+                    <div class="wrapper-form">
+                        <div class="message-box">
+                            {% include 'remnant/errors.twig' %}
+                            {% include 'remnant/success.twig' %}
+                        </div>
+                        {# <form method="post" action="#">
+							<input type="hidden" name="id" value="{{ vPerfil.id }}">
+                            <input type="hidden" name="id_account" value="{{ vPerfil.id_account }}">
+                            <div class="row uniform">
+                               <div class="6u 12u$(xsmall)">
+                                    <label>Nombre completo</label>
+                                    <input type="text" name="name" id="name" value="{{vPerfil.name}}" placeholder="Nombre completo" />
+                                </div>
+
+                                <div class="3u 12u$(xsmall)">
+                                    <label>Apellido paterno</label>
+                                    <input type="text" name="lname" id="lname" value="{{vPerfil.l_name}}" placeholder="Apellido paterno" />
+                                </div>
+                                <div class="3u$ 12u$(xsmall)">
+                                    <label>Apellido materno</label>
+                                    <input type="text" name="mlname" id="mlname" value="{{vPerfil.ml_name}}" placeholder="Apellido materno" />
+                                </div>
+                                <div class="3u 12u$(xsmall)">
+                                    <label>CI</label>
+                                    <input type="text" name="ci" id="ci" value="{{vPerfil.ci}}" placeholder="CI" />
+                                </div>
+                                <div class="6u 12u$(xsmall)">
+                                    <label>Email</label>
+                                    <input type="text" name="email" id="email" value="{{vPerfil.email}}" placeholder="Email" />
+                                </div>
+                                <div class="3u$ 12u$(xsmall)">
+                                    <label>Teléfono / celular</label>
+                                    <input type="text" name="phone" id="phone" value="{{vPerfil.phone}}" placeholder="Teléfono / celular" />
+                                </div>
+
+
+                                <div class="3u 12u$(xsmall)">
+                                    <label>Código SIS</label>
+                                    <input type="text" name="codsis" id="codsis" value="{{vPerfil.cod_sis}}" placeholder="Código SIS" />
+                                </div>
+
+
+                                <div class="5u 12u$(xsmall)">
+                                    <label>Dirección</label>
+                                    <input type="text" name="address" id="address" value="{{vPerfil.address}}" placeholder="Dirección" />
+                                </div>
+                                <div class="4u$ 12u$(xsmall)">
+                                    <label>Foto de perfil</label>
+                                    <input type="text" name="avatar" id="avatar" value="{{vPerfil.avatar}}" placeholder="Avatar..." />
+                                </div>
+
+                                <div class="6u 12u$(xsmall)">
+                                    <label>Contraseña</label>
+                                    <input type="password" name="pwd" id="pwd" value="" placeholder="Contraseña" />
+                                </div>
+                                <div class="6u 12u$(xsmall)">
+                                    <label>Confirmar contraseña</label>
+                                    <input type="password" name="pwdc" id="pwdc" value="" placeholder="Confirme la contraseña" />
+                                </div>
+
+                            <br>
+                            <div class="12u 12u$(xsmall)">
+                                <ul class="actions" style="text-align: center">
+                                    <li><button class="principal" type="submit">Guardar los cambios</button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </form> #}
+                    </div>
+                </section>
+                <br> 
+                <br>
+                <br>
+            </div>
+        </section>
+    </article>
+{% endblock %}
+
+{% block jslink %}
+    <script src='../../public/assets/js/jquery.min.js'></script>
+    <script src='../../public/assets/js/jquery.scrollex.min.js'></script>
+    <script src='../../public/assets/js/jquery.scrolly.min.js'></script>
+    <script src='../../public/assets/js/skel.min.js'></script>
+    <script src='../../public/assets/js/util.js'></script>
+    <script src='../../public/assets/js/main.js'></script>
+{% endblock %}

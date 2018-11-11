@@ -1846,7 +1846,8 @@ button:disabled,
 /* Wrapper */
 .wrapper {
   padding: 2em;
-  min-height: 500px; }
+  min-height: 265px; }
+
 
 .wrapper > .inner {
   width: 60em;
@@ -2997,3 +2998,35 @@ MEDIA QUERY CLASSES
   align-items: center;
   justify-content: center;
   display: table; }
+  .status-defprofile{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 3em;
+  }
+  .status{
+    text-align: center;
+    width: 50px;
+    height: 50px;
+    background: #f8d7da;
+    border-radius: 50%;
+    color: #8E8892;
+  }
+  .status>p{
+    font-size: 2em;
+    margin-top: .3em;
+    font-weight: bold;
+  }
+
+  .active{
+    color: #ef5e4a;
+  }
+  .content-main{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 400px;
+  }

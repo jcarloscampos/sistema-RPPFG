@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block title %}
-    Postulante:  {{ vPerfil.name }} {{ vPerfil.l_name }}
+    Postulante:  {{ vPerfil.name }} {{ vPerfil.l_name }} {{ vPerfil.ml_name }}
 {% endblock %}
 
 {% block csslink %}
@@ -22,11 +22,11 @@
         <a class=".btn .btn-primary" href="{{'logout' | url }}">Salir</a>
         <a class="principal" href="{{'postulant/ressources' | url }}">Configuración</a>
     </div>
-    <div class="nav-way">
+    {# <div class="nav-way">
         <p>
         Home
         </p>
-    </div>
+    </div> #}
 
 
 {% endblock %}
