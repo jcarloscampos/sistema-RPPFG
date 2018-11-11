@@ -8,6 +8,8 @@ use Sirius\Validation\Validator;
 use AppPHP\Models\Administrator;
 use AppPHP\Controllers\Common\Validation;
 use AppPHP\Controllers\Common\ServerConnection;
+use AshleyDawson\SimplePagination\Paginator;
+
 
 /**
  * Clase controlador para lectura, inserción, eliminación y actualización de datos de la tabla área
@@ -22,11 +24,29 @@ class AreaController extends BaseController
      * @return la vista con la lista de áreas que están en la BD
      */
     public function getIndex()
-    {
+    {       
         if (isset($_SESSION['admID'])) {
             $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
-            $areas = Area::query()->orderBy('name')->get();
-            return $this->render('admin/list-area.twig', ['areas' => $areas, 'vadmin' => $admin]);
+            $areas = Area::query()->orderBy('name')->get()->toArray();
+            $params = null; 
+            $page = 1;
+            $myUrl=parse_url($_SERVER['REQUEST_URI']);
+            if(isset($myUrl['query'])){
+                parse_str(parse_url($_SERVER['REQUEST_URI'])['query'], $params);
+                $page = (int)$params['page'];          
+            }
+            $paginator = new Paginator();
+            $paginator->setItemsPerPage(5)->setPagesInRange(5);
+            $paginator->setItemTotalCallback(function () use ($areas) {
+                return count($areas);
+            });
+            $length = $paginator->getItemsPerPage();
+            $offset =  $page * $length;
+            $paginator->setSliceCallback(function ($offset, $length) use ($areas) {
+                return array_slice($areas, $offset, $length);
+            });
+            $pagination = $paginator->paginate($page);
+            return $this->render('admin/list-area.twig', ['areas' => $pagination->getItems(), 'pagination'=>$pagination, 'page'=>$page, 'vadmin' => $admin]);
         }
     }
 

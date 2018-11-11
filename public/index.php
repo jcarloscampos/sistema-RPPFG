@@ -25,7 +25,7 @@ $capsule = new Capsule;
 $capsule->addConnection([
     'driver'    => 'mysql',
     'host'      => 'localhost',
-    'database'  => 'sistema-rppfg',
+    'database'  => 'sistema',
     'username'  => 'root',
     'password'  => '',
     'charset'   => 'utf8',
@@ -102,7 +102,7 @@ $router->controller('/director', AppPHP\Controllers\Director\IndexController::cl
 $router->controller('/signup', AppPHP\Controllers\Accounts\SignupController::class);
 $router->controller('/signin', AppPHP\Controllers\Accounts\SigninController::class);
 $router->controller('/logout', AppPHP\Controllers\Accounts\LogoutController::class);
-
+$router->controller('/forgotpass', AppPHP\Controllers\Accounts\ForgotPassController::class);
 
 
 
