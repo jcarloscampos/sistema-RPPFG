@@ -1,0 +1,72 @@
+{% extends 'layout.twig' %}
+
+{% block namepage %}
+    Sistema de registro de perfiles 
+{% endblock %}
+
+{% block title %}
+    SRPPFG
+{% endblock %}
+
+{% block csslink %}
+    <link rel='stylesheet' href='../public/assets/css/background1.css'>
+    <link rel='stylesheet' href='../public/assets/css/app.css'>
+{% endblock %}
+
+{% block menu %}
+    <nav id="nav">
+        <ul>
+            <li class="special">
+                <a href="#menu" class="menuToggle"><span>Menu</span></a>
+                <div id="menu">
+                    <ul>
+                        <li>SRPPFG</li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <h5>Bienvenido visitante</h5>
+    <a href="{{'logout' | url }}">Salir</a>
+
+
+    <h3>Pasos previos al registro
+	<div>
+	<p>
+	<a href="#">1. Formulario Postulante</a>
+Este <a href="#">formulario</a> usted debe bajarlo de acuerdo a la modalidad de su perfil. Para proyecto de grado ó tesis usar este formulario. Si se trata de trabajo dirigido o adcripción usar este formulario.
+
+Este formulario debe ser llenado de manera que entre en una sola página.
+Para llevar a cabo el registro del tema de perfil el postulante debe presentar 3 originales del formulario correctamente llenados.
+
+Los formularios tambien estan disponibles en formato .ODT para los que utilizan otro procesador de texto distinto a Microsoft Office!!! Para proyecto de grado ó tesis usar este formulario. Si se trata de trabajo dirigido o adcripción usar este formulario.
+<a href="#">2. Revisión del Formulario</a>
+Una vez que el formulario este llenado debe ser revisado por el docente de la materia y los tutores respectivos.
+
+Hasta este punto el formulario deberia estar firmado por el estudiante, docente de la materia y el tutor.
+
+<a href="#">3. Registro en el Sistema</a>
+Teniendo las tres firmas mencionadas en el paso anterior aproximarse al Laboratorio de Desarrollo de Software en el Departamento de Informatica y Sistemas para que el encargado de registro de perfiles le otorgue el "Login y Password" para que el estudiante pueda registrar su tema de perfil.
+
+A continuación se detallan los pasos a seguir
+Registrar el perfil en el sistema, con el login y password, que le ha proporcionado el encargado de la pagina en el laboratorio de desarrollo CIDAI. Registro de perfiles
+En este registro se debe subir el digital de se formulario(sin firmas) con extension ".pdf", este documento debe ser de una sola pagina, se les ruega la verificacion del mismo. En ocasiones el conversor a pdf de microsoft word pone un fondo celeste el cual es un error, tener en cuenta este punto en la creacion de su formulario en pdf.
+Una vez hecho el registro se debe pasar por el Laboratorio de Desarrollo - CIDAI, donde se verificará el registro de su perfil en el sistema y se le otorgara un identificador a su formulario.
+El formulario de aprobación y sus copias serán firmadas por el encargado como constancia del registro de su perfil en el sistema. 
+Los horarios de atención son solo de 16:00 a 17:00 Hrs. (No insistir en otros horarios)
+Tomar nota que el registro de su perfil en el sistema mientras no complete todos los pasos de este proceso (Paso 5. Proceso Final), solo es temporal
+<a href="#">4. Completar Formulario</a>
+Teniendo la firma del encargado de registro de perfiles se debe de llevar los formularios a secretaria para su aprobacion.
+En secretaría de las carreras de Informática y Sistemas su formulario será firmado por el director de carrera respectivo, sellado y archivado, quedandose un ejemplar en estos ambientes. 
+Su formulario ahora esta completo
+<a href="#">5. Proceso Final</a>
+Una vez que su formulario este completo, se debe dejar un ejemplar del mismo en el Laboratorio de Desarrollo - CIDAI para su registro final en en el sistema. En caso de no dejar un formulario completo al encargado, su registro sera descartado!!! 
+	</p>
+	</div>
+    </h3>
+
+    
+{% endblock %}
