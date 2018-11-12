@@ -104,8 +104,10 @@ class RestrainedController extends BaseController
                 }
 
                 if ($doc && $ftutor) {
-                    header('Location: ' . BASE_URL . 'postulant');
-                    return null;
+                    //header('Location: ' . BASE_URL . 'postulant');
+                    //return null;
+                    $msg = 2;
+                    return $this->render('postulant/messages.twig', ['vPerfil' => $user, 'msg' => $msg]);
                 } else
                     $makeDB->removeProfile($currentpfl);
             } else {
