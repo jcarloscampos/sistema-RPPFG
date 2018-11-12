@@ -35,8 +35,6 @@
                 <section class="content-main">
                     <div>
                         <h4 style="text-align: center;">Definición de Perfil</h4>
-                        {# <p style="text-align: left; color: red">Verifique sus datos personales, si tiene algún error puede cambiar desde la <a class="principal" href="{{'postulant/ressources' | url }}">configuración</a> de su cuenta antes de definir su perfil. </p>
-                        <p style="text-align: left; color: red">Si todo está en orden puede iniciar con la definición de su perfil.</p>  #}
                         <div class="wrapper-form">
                             <div class="message-box">
                                 {% include 'remnant/errors.twig' %}
@@ -47,50 +45,61 @@
 
                                 <div class="row uniform">
                                     <div class="6u 12u$(xsmall)">
-                                        <label>Docente de materia</label>
+                                        <label><strong style="color:red">(*) </strong> Docente de materia</label>
                                         <select name="psmatter" id="psmatter">
                                             <option value=""disabled selected>- Selecciones su Docente -</option>
-                                            {% for prof in profs %}
+                                            {% for itnp in iprofessionals %}
                                                 {% for pmatter in pmatters %}
-                                                    {% if prof.id == pmatter.id_prof %}
-                                                        <option value="{{prof.id}}">{{ prof.name }} {{ prof.l_name }} {{ prof.ml_name }}</option>
+                                                    {% if itnp.id == pmatter.id_prof %}
+                                                        <option value="{{itnp.id}}">{{ itnp.name }} {{ itnp.l_name }} {{ itnp.ml_name }}</option>
                                                     {% endif %}
                                                 {% endfor %}
                                             {% endfor %}
                                         </select>    
                                     </div>
                                     <div class="6u$ 12u$(xsmall)">
-                                        <label>Formulario de aprobación</label>
-                                        <select name="adegree" id="adegree">
-                                            <option value=""disabled selected>-  -</option>
-                                        </select>    
+                                        <label><strong style="color:red">(*) </strong> Formulario de aprobación</label>
+                                        <input type="file" accept=".pdf" name="approvedProfile" id="approvedProfile">
                                     </div>
                                     <div class="6u 12u$(xsmall)">
-                                        <label>Tutor</label>
-                                        <select name="adegree" id="adegree">
-                                            {% for title in vTitles %}
-                                                {% if title.id == vPerfil.id_ad %}
-                                                    <option value=""disabled selected>- {{title.name_ad}} -</option>
-                                                {% endif %}
+                                        <label><strong style="color:red">(*) </strong> Tutor</label>
+                                        {# 'aProfile' => $aProfile, 'itnPA' => $itnPA, 'etnPA' => $etnPA]);   [etnps, itnps] #}
+                                        <select name="tutor" id="tutor">
+                                            <option value=""disabled selected>- Seleccione al tutor titular -</option>
+                                            {% for iprof in iprofessionals %}
+                                                {% for itutor in itutors %}
+                                                    {% if iprof.id == itutor %}
+                                                        <option value="{{iprof.id_account}}">{{ iprof.name }} {{ iprof.l_name }} {{ iprof.ml_name }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
                                             {% endfor %}
-
-                                            {% for title in vTitles %}
+                                            {% for eprof in eprofessionals %}
+                                                {% for etutor in etutors %}
+                                                    {% if eprof.id == etutor %}
+                                                        <option value="{{eprof.id_account}}">{{ eprof.name }} {{ eprof.l_name }} {{ eprof.ml_name }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
                                             {% endfor %}
-                                                <option value="{{title.id}}">Ambientes autión de software</option>
                                         </select>    
                                     </div>
                                     <div class="6u$ 12u$(xsmall)">
                                         <label>Segundo tutor (opcional)</label>
-                                        <select name="adegree" id="adegree">
-                                            {% for title in vTitles %}
-                                                {% if title.id == vPerfil.id_ad %}
-                                                    <option value=""disabled selected>- {{title.name_ad}} -</option>
-                                                {% endif %}
+                                        <select name="stutor" id="stutor">
+                                            <option value=""disabled selected>- Seleccione al segundo tutor -</option>
+                                            {% for iprof in iprofessionals %}
+                                                {% for itutor in itutors %}
+                                                    {% if iprof.id == itutor %}
+                                                        <option value="{{iprof.id_account}}">{{ iprof.name }} {{ iprof.l_name }} {{ iprof.ml_name }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
                                             {% endfor %}
-
-                                            {% for title in vTitles %}
+                                            {% for eprof in eprofessionals %}
+                                                {% for etutor in etutors %}
+                                                    {% if eprof.id == etutor %}
+                                                        <option value="{{eprof.id_account}}">{{ eprof.name }} {{ eprof.l_name }} {{ eprof.ml_name }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
                                             {% endfor %}
-                                                <option value="{{title.id}}">Ambientes autooftware</option>
                                         </select>    
                                     </div>
                                 <br>

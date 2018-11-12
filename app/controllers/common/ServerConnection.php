@@ -10,6 +10,9 @@ use AppPHP\Models\ProfessionalUmss;
 use AppPHP\Models\ProfessionalExt;
 use AppPHP\Models\Postulant;
 use AppPHP\Models\Period;
+use AppPHP\Models\AreaProfile;
+use AppPHP\Models\PostulantProfile;
+use AppPHP\Models\TypeResponsable;
 
 /**
  * Clase controlador de inicio para Director de Carrera.
@@ -101,6 +104,31 @@ class ServerConnection extends BaseController
         ]);
         $account->save();
         return $account;
+    }
+
+    public function removeProfile($profile)
+    {
+        $pa = AreaProfile::where('id_profile', $profile->id)->first();
+        $pp = PostulantProfile::where('id_profile', $profile->id)->first();
+        $per = Period::where('id', $pp->id_period)->first();
+
+        $pa->delete();
+        $per->delete();
+        $pp->delete();
+        $profile->delete();
+        
+        $msg = 0;
+        return $this->render('postulant/messages.twig', ['vPerfil' => $user, 'msg' => $msg]);
+    }
+
+    public function getTypeResponsable($name)
+    {
+        $result = 0;
+
+        $tp = TypeResponsable::where('name', $name)->first();
+        $result = $tp->id;
+
+        return $result;
     }
 
     /**
@@ -286,4 +314,23 @@ class ServerConnection extends BaseController
             $user::where('id', $user->id)->update(array('id_parent_area' => $arg));
         }
     }
+    public function title($user, $arg)
+    {
+        if (isset($user)) {
+            $user::where('id', $user->id)->update(array('title' => $arg));
+        }
+    }
+    public function g_objective($user, $arg)
+    {
+        if (isset($user)) {
+            $user::where('id', $user->id)->update(array('g_objective' => $arg));
+        }
+    }
+    public function s_objects($user, $arg)
+    {
+        if (isset($user)) {
+            $user::where('id', $user->id)->update(array('s_objects' => $arg));
+        }
+    }
+    
 }

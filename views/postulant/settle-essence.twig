@@ -35,8 +35,6 @@
                 <section class="content-main">
                     <div>
                         <h4 style="text-align: center;">Definición de Perfil</h4>
-                        {# <p style="text-align: left; color: red">Verifique sus datos personales, si tiene algún error puede cambiar desde la <a class="principal" href="{{'postulant/ressources' | url }}">configuración</a> de su cuenta antes de definir su perfil. </p>
-                        <p style="text-align: left; color: red">Si todo está en orden puede iniciar con la definición de su perfil.</p>  #}
                         <div class="wrapper-form">
                             <div class="message-box">
                                 {% include 'remnant/errors.twig' %}
@@ -48,19 +46,20 @@
                                 <div class="row uniform">
                                     <div class="12u 12u$(xsmall)">
                                         <label><strong style="color:red">(*) </strong> Titulo</label>
-                                        <input type="text" name="title" id="title" placeholder="Titulo del Perfil..." />
+                                        
+                                        <input type="text" name="title" id="title" value="{{ vpData.title }}" placeholder="Titulo del Perfil..." />
                                     </div>
                                     <div class="12u 12u$(xsmall)">
                                         <label><strong style="color:red">(*) </strong> Objetivo general</label>
-                                        <input type="text" name="gobj" id="gobj" placeholder="Objetivo general del Perfil..." />
+                                        <input type="text" name="gobj" id="gobj" value="{{ vpData.g_objective }}" placeholder="Objetivo general del Perfil..." />
                                     </div>
                                     <div class="12u 12u$(xsmall)">
                                         <label><strong style="color:red">(*) </strong> Objetivos específicos</label>
-                                        <textarea name="sobj" id="sobj" rows="2" placeholder="Objetivos específicos del Perfil..."></textarea>
+                                        <textarea name="sobj" id="sobj" rows="2" placeholder="Objetivos específicos del Perfil...">{{ vpData.s_objects }}</textarea>
                                     </div>
                                     <div class="12u 12u$(xsmall)">
                                         <label><strong style="color:red">(*) </strong> Descripción</label>
-                                        <textarea name="dcptn" id="dcptn" rows="2" placeholder="Descripción del Perfil..."></textarea>
+                                        <textarea name="dcptn" id="dcptn" rows="2" placeholder="Descripción del Perfil...">{{ vpData.description }}</textarea>
                                     </div>
 
                                 <br>

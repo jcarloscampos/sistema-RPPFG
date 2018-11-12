@@ -28,7 +28,7 @@ class SettleController extends BaseController
                 $user = Postulant::where('id_account', $userId)->first();
                 $aux = PostulantProfile::where('id_postulant', $user->id)->first();
                 if (!isset($aux)){
-                    return $this->render('postulant/settle.twig', ['inforeg'=>$inforeg, 'vPerfil'=>$user]);
+                    return $this->render('postulant/settle.twig', ['vPerfil'=>$user]);
                 } else {
                     $outer = true;
                     $status = Profile::where('id', $aux->id_profile)->first();

@@ -105,7 +105,7 @@ class HeadingController extends BaseController
                     $writingError = true;
 
                 if ($writingError) {
-                    $this->removeProfile($profile);
+                    $makeDB->removeProfile($profile);
                 } else {
                     header('Location: ' . BASE_URL . 'postulant/settle/essence');
                     return null;
@@ -183,20 +183,5 @@ class HeadingController extends BaseController
             $result = true;
         }
         return $result;
-    }
-
-    private function removeProfile($profile)
-    {
-        $ap = AreaProfile::where('id_profile', $profile->id)->first();
-        $pp = PostulantProfile::where('id_profile', $profile->id)->first();
-        $per = Period::where('id', $pp->id_period)->first();
-
-        $pa->delete();
-        $per->delete();
-        $pp->delete();
-        $profile->delete();
-        
-        $msg = 0;
-        return $this->render('postulant/messages.twig', ['vPerfil' => $user, 'msg' => $msg]);
     }
 }
