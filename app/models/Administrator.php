@@ -21,7 +21,6 @@ class Administrator extends Model
         'phone',
         'email',
         'address',
-        'avatar',
         'id_account'
     ];
 }

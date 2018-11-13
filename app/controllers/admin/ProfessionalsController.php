@@ -22,6 +22,7 @@ class ProfessionalsController extends BaseController
     {
         if (isset($_SESSION['admID'])) {
             $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
+            $uimage = substr($admin->name, 0, 1);
             //$title = ADegree::query()->get();
             $itn = ProfessionalUmss::query()->get();
             $etn = ProfessionalExt::query()->get();
@@ -29,7 +30,7 @@ class ProfessionalsController extends BaseController
             $urol = UserRol::query()->get();
             $rol = Rol::query()->get();
             return $this->render('admin/list-profesionals.twig',
-            ['vadmin' => $admin, 'vitns'=>$itn, 'vetns'=>$etn, 'vaccounts'=>$account, 'vurols'=>$urol, 'vrols'=>$rol]);
+            ['vadmin' => $admin, 'uimage'=>$uimage, 'vitns'=>$itn, 'vetns'=>$etn, 'vaccounts'=>$account, 'vurols'=>$urol, 'vrols'=>$rol]);
         }
     }
 
@@ -37,7 +38,8 @@ class ProfessionalsController extends BaseController
     {
         if (isset($_SESSION['admID'])) {
             $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
-            return $this->render('admin/insert-account.twig', ['vadmin' => $admin]);
+            $uimage = substr($admin->name, 0, 1);
+            return $this->render('admin/insert-account.twig', ['vadmin' => $admin, 'uimage'=>$uimage]);
         }
     }
 
@@ -81,7 +83,7 @@ class ProfessionalsController extends BaseController
             $errors = $validator->getMessages();
             return $this->render(
                 'admin/insert-account.twig', 
-                ['vadmin' => $admin, 'errors' => $errors, 'vPerfil'=>$userprofile]);
+                ['vadmin' => $admin, 'errors' => $errors, 'vadmin'=>$userprofile]);
             return null;
         }
         return $this->render(

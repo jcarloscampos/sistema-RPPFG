@@ -9,18 +9,18 @@
 {% endblock %}
 
 {% block title %}
-    Administrador:  {{ vPerfil.name }} {{ vPerfil.l_name }}
+    Secretaria:  {{ vPerfil.name }} {{ vPerfil.l_name }} {{ vPerfil.l_name }}
 {% endblock %}
 
 {% block menu %}
-    {% include('remnant/nav-admin.twig') %}
+    {% include('remnant/nav-secretary.twig') %}
 {% endblock %}
 
 {% block configpersonal %}
     {% include('remnant/sub-nav.twig') %}
     <div class="nav-way">
         <p>
-        <a class=".btn .btn-primary" href="{{'admin' | url }}">Home</a> &nbsp; | &nbsp; Configuración
+        <a class=".btn .btn-primary" href="{{'secretary' | url }}">Home</a> &nbsp; | &nbsp; Configuración
         </p>
     </div>
 
@@ -62,10 +62,6 @@
                                     <label>Email</label>
                                     <input type="text" name="email" id="email" value="{{vPerfil.email}}" placeholder="Email..." />
                                 </div>
-
-
-
-
                                 <div class="5u 12u$(xsmall)">
                                     <label>Dirección</label>
                                     <input type="text" name="address" id="address" value="{{vPerfil.address}}" placeholder="Dirección..." />

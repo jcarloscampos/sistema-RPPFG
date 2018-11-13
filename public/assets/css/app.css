@@ -2350,9 +2350,12 @@ body.is-menu-visible #menu {
   line-height: 3em;
   position: fixed;
   top: 0;
+  padding-left: 1em;
   width: 100%;
   z-index: 10000; }
-
+#header>p {
+  color: white;
+}
 #header h1 {
   -moz-transition: opacity 0.2s ease;
   -webkit-transition: opacity 0.2s ease;
@@ -2930,7 +2933,28 @@ MEDIA QUERY CLASSES
   height: 80px;
   margin: 0 auto;
   border-radius: 50%; }
-
+.avatar{
+  position: relative; 
+  border-radius:50%; 
+  border:solid 1px #2980b9; 
+  background: #778beb; 
+  margin-bottom: .5em;
+}
+.avatar>p{
+  text-align: center;
+  color: white;
+  position: absolute;
+  text-transform: uppercase;
+  font-size: 2.5em;
+  margin: 0;
+  padding: 0;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
+}
+.sname{
+  color: #2980b9;
+}
 .config {
   width: 100%;
   height: auto;
@@ -3013,11 +3037,17 @@ MEDIA QUERY CLASSES
     background: #f8d7da;
     border-radius: 50%;
     color: #8E8892;
+    position: relative
   }
   .status>p{
     font-size: 2em;
-    margin-top: .3em;
     font-weight: bold;
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
   }
 
   .active{

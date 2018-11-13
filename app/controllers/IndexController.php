@@ -53,8 +53,11 @@ class IndexController extends BaseController
                             # sesión para un administrador
                             $nameSes = 'admID';
                             $this->setSession($user, $nameSes);
-
-                        } elseif ($rol->name_rol == 'director') {
+                        } elseif ($rol->name_rol == 'secretary') {
+                             # sesión para la secretaria
+                             $nameSes = 'staryID';
+                             $this->setSession($user, $nameSes);
+                        }elseif ($rol->name_rol == 'director') {
                             # sesión para un director de carrera
                             $nameSes = 'dirID';
                             $this->setSession($user, $nameSes);

@@ -24,9 +24,10 @@ class ItnController extends BaseController
 
         if (isset($_SESSION['iprofID'])) {
             $userprofile = ProfessionalUmss::where('id_account', $_SESSION['iprofID'])->first();
+            $uimage = substr($userprofile->name, 0, 1);
             if (isset($userprofile)) {
                 $inforeg = $generate->valItn($userprofile);
-                return $this->render('professional/index.twig', ['inforeg'=>$inforeg, 'vPerfil'=>$userprofile, 'etn' => $etn]);
+                return $this->render('professional/index.twig', ['inforeg'=>$inforeg, 'vPerfil'=>$userprofile, 'uimage'=>$uimage, 'etn' => $etn]);
             }
         }
         header('Location: ' . BASE_URL . '');
@@ -38,9 +39,10 @@ class ItnController extends BaseController
         if (isset($_SESSION['iprofID'])) {
             $etn = false;
             $user = ProfessionalUmss::where('id_account', $_SESSION['iprofID'])->first();
+            $uimage = substr($user->name, 0, 1);
             $title = ADegree::query()->get();
             $work = Workload::query()->get();
-            return $this->render('professional/itn-config.twig', ['vPerfil' => $user, 'vTitles'=>$title, 'vWorks'=>$work]);
+            return $this->render('professional/itn-config.twig', ['vPerfil' => $user, 'uimage'=>$uimage, 'vTitles'=>$title, 'vWorks'=>$work]);
         }
     }
 
@@ -53,11 +55,13 @@ class ItnController extends BaseController
         $validation = new Validation();
         $makeDB = new ServerConnection();
         $user = ProfessionalUmss::find($_POST['id']);
+        $uimage = substr($user->name, 0, 1);
         $title = ADegree::query()->get();
         $work = Workload::query()->get();
         
         $validation->setRuleBasic($validator);
         $validation->setRuleCodeSis($validator);
+        $validation->setRuleCI($validator);
        
         $userprofile = [
             'name' => $_POST['name'],
@@ -68,7 +72,6 @@ class ItnController extends BaseController
             'cod_sis'=> $_POST['codsis'],
             'phone'=> $_POST['phone'],
             'address'=> $_POST['address'],
-            'avatar'=> $_POST['avatar'],
             'profile'=> $_POST['profile']
         ];
 
@@ -92,6 +95,7 @@ class ItnController extends BaseController
         return $this->render(
             'professional/itn-config.twig',
             ['vPerfil' => $user,
+            'uimage' => $uimage,
             'errors' => $errors,
             'result' => $result,
             'vTitles'=>$title,
@@ -105,6 +109,7 @@ class ItnController extends BaseController
             $etn = false;
             $emptyarea = true;
             $user = ProfessionalUmss::where('id_account', $_SESSION['iprofID'])->first();
+            $uimage = substr($user->name, 0, 1);
             $profarea = ItnProfArea::all();
             $val = ItnProfArea::all()->toArray();
             $areas = Area::query()->orderBy('name')->get();
@@ -113,7 +118,7 @@ class ItnController extends BaseController
                 $emptyarea = false;
             }
             return $this->render('professional/interest-areas.twig',
-            ['vPerfil' => $user, 'vareas' => $areas, 'profareas' => $profarea, 'emptyarea' => $emptyarea]);
+            ['vPerfil' => $user, 'uimage'=>$uimage,'vareas' => $areas, 'profareas' => $profarea, 'emptyarea' => $emptyarea]);
         }
     }
 
@@ -124,7 +129,7 @@ class ItnController extends BaseController
             if (empty($repeated)){
                 $area = Area::find($id);
                 $user = ProfessionalUmss::where('id_account', $_SESSION['iprofID'])->first();
-
+                
                 $profarea = new ItnProfArea([
                     'id_prof' => $user->id,
                     'id_area' => $area->id

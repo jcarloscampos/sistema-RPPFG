@@ -24,10 +24,11 @@ class EtnController extends BaseController
 
         if (isset($_SESSION['eprofID'])) {
             $userprofile = ProfessionalExt::where('id_account',  $_SESSION['eprofID'])->first();
+            $uimage = substr($userprofile->name, 0, 1);
             if (isset($userprofile)) {
                 # Es un profecional de Ext
                 $inforeg = $generate->valEtn($userprofile);
-                return $this->render('professional/index.twig', ['inforeg'=>$inforeg, 'vPerfil'=>$userprofile, 'etn' =>$etn]);
+                return $this->render('professional/index.twig', ['inforeg'=>$inforeg, 'vPerfil'=>$userprofile, 'uimage'=>$uimage, 'etn' =>$etn]);
             }  
         }
         header('Location: ' . BASE_URL . '');
@@ -39,8 +40,9 @@ class EtnController extends BaseController
         if (isset($_SESSION['eprofID'])) {
             $etn = true;
             $userprofile = ProfessionalExt::where('id_account', $_SESSION['eprofID'])->first();
+            $uimage = substr($userprofile->name, 0, 1);
             $title = ADegree::query()->get();
-            return $this->render('professional/etn-config.twig', ['vPerfil' => $userprofile, 'vTitles'=>$title, 'etn' =>$etn]);
+            return $this->render('professional/etn-config.twig', ['vPerfil' => $userprofile, 'uimage'=>$uimage, 'vTitles'=>$title, 'etn' =>$etn]);
         }
     }
     
@@ -53,10 +55,12 @@ class EtnController extends BaseController
         $validation = new Validation();
         $makeDB = new ServerConnection(); 
         $user = ProfessionalExt::find($_POST['id']);
+        $uimage = substr($user->name, 0, 1);
         $title = ADegree::query()->get();
         
         $validation->setRuleBasic($validator);
-
+        $validation->setRuleCI($validator);
+        
         $userprofile = [
             'name' => $_POST['name'],
             'l_name' => $_POST['lname'],
@@ -65,7 +69,6 @@ class EtnController extends BaseController
             'email'=> $_POST['email'],
             'phone'=> $_POST['phone'],
             'address'=> $_POST['address'],
-            'avatar'=> $_POST['avatar'],
             'profile'=> $_POST['profile']
         ];
         if (isset($_POST['adegree'])) {
@@ -83,6 +86,7 @@ class EtnController extends BaseController
         $user = ProfessionalExt::find($_POST['id']);
         return $this->render('professional/etn-config.twig',
             ['vPerfil' => $user,
+            'uimage' => $uimage,
             'errors' => $errors,
             'result' => $result,
             'vTitles'=>$title,
@@ -100,6 +104,7 @@ class EtnController extends BaseController
             $etn = true;
             $emptyarea = true;
             $user = ProfessionalExt::where('id_account', $_SESSION['eprofID'])->first();
+            $uimage = substr($user->name, 0, 1);
             $profarea = EtnProfArea::all();
             $val = EtnProfArea::all()->toArray();
             $areas = Area::query()->orderBy('name')->get();
@@ -108,7 +113,7 @@ class EtnController extends BaseController
                 $emptyarea = false;
             }
             return $this->render('professional/interest-areas.twig',
-            ['vPerfil' => $user, 'vareas' => $areas, 'profareas' => $profarea, 'emptyarea' => $emptyarea, 'etn' => $etn]);
+            ['vPerfil' => $user, 'uimage'=>$uimage, 'vareas' => $areas, 'profareas' => $profarea, 'emptyarea' => $emptyarea, 'etn' => $etn]);
         }
     }
 

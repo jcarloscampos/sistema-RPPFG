@@ -36,10 +36,10 @@ class ServerConnection extends BaseController
     {
         $nPeriod = null;
         ini_set('date.timezone', 'America/La_Paz');
-        $startdate = date_create(date('Y-m-d', time()));
-        $enddate = date_add($startdate, date_interval_create_from_date_string('100 days'));
+        $startdate = date_create(date('d-m-Y', time()));
+        $enddate = date_add($startdate, date_interval_create_from_date_string('10 days'));
         
-        $currentdate = strtotime(date('Y-m-d', time()));
+        $currentdate = strtotime(date('d-m-Y', time()));
         $period = (int)date("m", $currentdate);
 
         $periodData = [

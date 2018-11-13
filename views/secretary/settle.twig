@@ -1,0 +1,155 @@
+{% extends 'layout.twig' %}
+
+{% block csslink %}
+    <link rel='stylesheet' href='../../public/assets/css/app.css'>
+{% endblock %}
+
+{% block namepage %}
+    Perfil de administración en SRPPFG
+{% endblock %}
+
+{% block title %}
+    Secretaria:  {{ vPerfil.name }} {{ vPerfil.l_name }} {{ vPerfil.l_name }}
+{% endblock %}
+
+{% block menu %}
+    {% include('remnant/nav-secretary.twig') %}
+{% endblock %}
+
+{% block configpersonal %}
+    {% include('remnant/sub-nav.twig') %}
+    <div class="nav-way">
+        <p>
+        <a class=".btn .btn-primary" href="{{'secretary' | url }}">Home</a> &nbsp; | &nbsp; Permisos
+        </p>
+    </div>
+
+
+{% endblock %}
+
+{% block content %}
+<article id="main">
+        <section class="wrapper style5">
+            <div class="inner">
+                <section>
+                    <h4 style="text-align: center;">Perfiles</h4>
+                    <div class="message-box">
+                        {% include 'remnant/errors.twig' %}
+                        {% include 'remnant/success.twig' %}
+                    </div>
+                    
+                    <table id="tabla_perfiles">
+                                <thead>
+                                    <tr>
+                                        <th>Título</th>
+                                        <th>Modalidad</th>
+                                        <th>Tutor(es)</th>
+                                        <th>Postulante(s)</th>
+                                        <th>Estado</th>
+                                        <th>Periodo</th>
+                                        <th>Acción</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="arealist">
+                                    {% for profile in profiles %}
+                                        <tr>
+                                            <td>
+                                                {{ profile.title }}
+                                            </td>
+
+                                            <td>
+                                                {% for modality in modalities %}
+                                                    {% if modality.id == profile.id_mod %}
+                                                        {{ modality.name_mod }}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </td>
+
+                                            <td>
+                                                {% for etntutor in etntutors %}
+                                                    {% if etntutor.id_profile == profile.id %}
+                                                        {# {{ etntutor.id_entprof }} #}
+                                                        {% for eprof in eprofs %}
+                                                            {% if eprof.id == etntutor.id_entprof %}
+                                                                *{{ eprof.name }} {{ eprof.l_name }} {{ eprof_mlname }}
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                {% endfor %}
+                                                {% for itntutor in responsables %}
+                                                    {% if profile.id == itntutor.id_profile and itntutor.id_type_resp == 2 %}
+                                                        {% for iprof in iprofs %}
+                                                            {% if iprof.id == itntutor.id_intprof %}
+                                                                *{{ iprof.name }} {{ iprof.l_name }} {{ iprof.ml_name}}
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </td>
+
+                                            <td>
+                                                {% for postperf in postperfs %}
+                                                    {% if postperf.id_profile == profile.id %}
+                                                        {% for post in posts %}
+                                                            {% if post.id == postperf.id_postulant %}
+                                                                *{{ post.name }} {{ post.l_name }} {{ post.ml_name}}
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </td>
+
+                                            <td>
+                                                {% for state in status %}
+                                                    {% if state.id == profile.id_status %}
+                                                        {{ state.name }}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </td>
+                                            
+                                            <td width=15%>
+                                            {% set condition = true %}
+                                            {% for postperf in postperfs %}
+                                                {% if postperf.id_profile == profile.id %}
+                                                    {% for period in periods %}
+
+                                                        {% if period.id == postperf.id_period and condition %}
+                                                            {{ period.start_date}}; {{ period.end_date }} ({{period.period}})
+                                                            {% set condition = false %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% endif %}
+                                            {% else %}
+                                                
+                                            {% endfor %}
+                                            </td>
+
+                                            <td>
+                                                <div class="menu-actions-tb">
+                                                    <div class="actions">
+                                                        <a href="{{'secretary/settle/edit/' | url }}{{ profile.id }}">Editar</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                    
+                </section>
+                <br> 
+                <br>
+                <br>
+            </div>
+        </section>
+    </article>
+{% endblock %}
+
+{% block jslink %}
+    <script src='../../public/assets/js/jquery.min.js'></script>
+    <script src='../../public/assets/js/jquery.scrollex.min.js'></script>
+    <script src='../../public/assets/js/jquery.scrolly.min.js'></script>
+    <script src='../../public/assets/js/skel.min.js'></script>
+    <script src='../../public/assets/js/util.js'></script>
+    <script src='../../public/assets/js/main.js'></script>
+{% endblock %}

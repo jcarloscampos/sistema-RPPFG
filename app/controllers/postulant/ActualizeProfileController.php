@@ -22,10 +22,11 @@ class ActualizeProfileController extends BaseController
             if ($userId) {
                 # si existe la cuenta en la BD
                 $user = Postulant::where('id_account', $userId)->first();
+                $uimage = substr($user->name, 0, 1);
                 if ($user->cod_sis == "") {
                     $inforeg = true;
                 }
-                return $this->render('postulant/actualize-profile.twig', ['vPerfil'=>$user]);
+                return $this->render('postulant/actualize-profile.twig', ['vPerfil'=>$user, 'uimage'=>$uimage]);
             }
         }
         header('Location: ' . BASE_URL . '');

@@ -22,7 +22,6 @@ class ProfessionalUmss extends Model
         'email',
         'phone',
         'address',
-        'avatar',
         'cod_sis',
         'active',
         'a_degree',

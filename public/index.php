@@ -76,16 +76,22 @@ $router->controller('/', AppPHP\Controllers\IndexController::class);
 $router->controller('/admin', AppPHP\Controllers\Admin\IndexController::class);
 $router->group(['before' => 'adm'], function($router){
     $router->controller('/admin/area', AppPHP\Controllers\Admin\AreaController::class);
-    //$router->controller('/admin/subarea', AppPHP\Controllers\Admin\SubareaController::class);
+    $router->controller('/admin/config', AppPHP\Controllers\Admin\ConfigController::class);
     $router->controller('/admin/professionals', AppPHP\Controllers\Admin\ProfessionalsController::class);
     $router->controller('/admin/postulants', AppPHP\Controllers\Admin\PostulantsController::class);
     $router->controller('/admin/projects', AppPHP\Controllers\Admin\ProjectsController::class);
 });
 
+$router->controller('/secretary', AppPHP\Controllers\Secretary\IndexController::class);
+$router->group(['before' => 'sct'], function($router){
+    $router->controller('/secretary/config', AppPHP\Controllers\secretary\configController::class);
+    $router->controller('/secretary/settle', AppPHP\Controllers\secretary\SettleController::class);
+});
+
 
 $router->controller('/postulant', AppPHP\Controllers\Postulant\IndexController::class);
 $router->group(['before' => 'pst'], function($router){
-    $router->controller('/postulant/ressources', AppPHP\Controllers\Postulant\RessourceController::class);
+    $router->controller('/postulant/config', AppPHP\Controllers\Postulant\ConfigController::class);
     $router->controller('/postulant/actualize', AppPHP\Controllers\Postulant\ActualizeProfileController::class);
     $router->controller('/postulant/settle', AppPHP\Controllers\Postulant\SettleController::class);
     $router->controller('/postulant/settle/heading', AppPHP\Controllers\Postulant\Defprofile\HeadingController::class);

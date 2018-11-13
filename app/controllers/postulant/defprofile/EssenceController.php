@@ -23,13 +23,14 @@ class EssenceController extends BaseController
     {
         if (isset($_SESSION['postID'])) {
             $user = Postulant::where('id_account', $_SESSION['postID'])->first();
+            $uimage = substr($user->name, 0, 1);
             $aux = PostulantProfile::where('id_postulant', $user->id)->first();
             if (!isset($aux) || $this->isUnfinished($aux->id_profile)){
-                return $this->render('postulant/settle-essence.twig', ['vPerfil'=>$user]);
+                return $this->render('postulant/settle-essence.twig', ['vPerfil'=>$user, 'uimage'=>$uimage]);
             } else {
                 $status = Profile::where('id', $aux->id_profile)->first();
                 $msg = $status->id_status;
-                return $this->render('postulant/messages.twig', ['vPerfil' => $user, 'msg' => $msg]);
+                return $this->render('postulant/messages.twig', ['vPerfil' => $user, 'uimage'=>$uimage, 'msg' => $msg]);
             }
         }
         header('Location: ' . BASE_URL . '');
@@ -39,6 +40,7 @@ class EssenceController extends BaseController
     {
         if (isset($_SESSION['postID'])) {
             $user = Postulant::where('id_account', $_SESSION['postID'])->first();
+            $uimage = substr($user->name, 0, 1);
             $makeDB = new ServerConnection(); 
             $validation = new Validation();
             $validator = new Validator();
@@ -62,7 +64,7 @@ class EssenceController extends BaseController
                     $makeDB->removeProfile($currentpfl);
             } else {
                 $errors = $validator->getMessages();
-                return $this->render('postulant/settle-essence.twig', ['vPerfil'=>$user, 'errors' => $errors, 'vpData' => $profileData]);
+                return $this->render('postulant/settle-essence.twig', ['vPerfil'=>$user, 'uimage'=>$uimage, 'errors' => $errors, 'vpData' => $profileData]);
 
             }
         }

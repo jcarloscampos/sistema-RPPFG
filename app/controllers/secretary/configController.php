@@ -1,10 +1,10 @@
 <?php
 
-namespace AppPHP\Controllers\Admin;
+namespace AppPHP\Controllers\Secretary;
 
 use AppPHP\Controllers\BaseController;
 use Sirius\Validation\Validator;
-use AppPHP\Models\Administrator;
+use AppPHP\Models\Secretary;
 use AppPHP\Models\Account;
 use AppPHP\Controllers\Common\Validation;
 use AppPHP\Controllers\Common\ServerConnection;
@@ -13,10 +13,10 @@ class configController extends BaseController
 {
     public function getIndex()
     {
-        if (isset($_SESSION['admID'])) {
-            $userprofile = Administrator::where('id_account', $_SESSION['admID'])->first();
-            $uimage = substr($userprofile->name, 0, 1);
-            return $this->render('admin/config.twig', ['vPerfil' => $userprofile, 'uimage'=>$uimage]);
+        if (isset($_SESSION['staryID'])) {
+            $user = Secretary::where('id_account', $_SESSION['staryID'])->first();
+            $uimage = substr($user->name, 0, 1);
+            return $this->render('secretary/config.twig', ['vPerfil' => $user, 'uimage'=>$uimage]);
         }
     }
 
@@ -27,8 +27,8 @@ class configController extends BaseController
         $validator = new Validator();
         $validation = new Validation();
         $makeDB = new ServerConnection(); 
-        $user = Administrator::find($_POST['id']);
-        
+        $user = Secretary::find($_POST['id']);
+        $uimage = substr($user->name, 0, 1);
         $validation->setRuleBasic($validator);
         $validation->setRuleCI($validator);
 
@@ -52,9 +52,8 @@ class configController extends BaseController
         }else{
             $errors = $validator->getMessages();
         }
-        $user = Administrator::find($_POST['id']);
-        $uimage = substr($user->name, 0, 1);
-        return $this->render('admin/config.twig',
+        $user = Secretary::find($_POST['id']);
+        return $this->render('secretary/config.twig',
             ['errors' => $errors, 'vPerfil' => $user, 'uimage'=>$uimage, 'result' => $result
         ]);
     }

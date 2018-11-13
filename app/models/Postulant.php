@@ -21,7 +21,6 @@ class Postulant extends Model
         'email',
         'phone',
         'address',
-        'avatar',
         'cod_sis',
         'id_account'
     ];

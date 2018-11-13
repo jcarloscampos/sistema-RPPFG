@@ -29,6 +29,7 @@ class HeadingController extends BaseController
         if (isset($_SESSION['postID'])) {
             $user = Postulant::where('id_account', $_SESSION['postID'])->first();
             $aux = PostulantProfile::where('id_postulant', $user->id)->first();
+            $uimage = substr($user->name, 0, 1);
             if (!isset($aux)){
                 $postulants = Postulant::all();
                 $modalities = Modality::all();
@@ -37,13 +38,13 @@ class HeadingController extends BaseController
                 $company = Company::all();
                 
                 return $this->render('postulant/settle-heading.twig',
-                ['vPerfil' => $user, 'modalities'=>$modalities, 'careers' => $career, 'areas' => $areas,
+                ['vPerfil' => $user, 'uimage'=>$uimage, 'modalities'=>$modalities, 'careers' => $career, 'areas' => $areas,
                 'postulants' => $postulants, 'companies' => $company
                 ]);
             } else {
                 $status = Profile::where('id', $aux->id_profile)->first();
                 $msg = $status->id_status;
-                return $this->render('postulant/messages.twig', ['vPerfil' => $user, 'msg' => $msg]);
+                return $this->render('postulant/messages.twig', ['vPerfil' => $user, 'uimage'=>$uimage, 'msg' => $msg]);
             }
         }
         header('Location: ' . BASE_URL . '');
@@ -53,6 +54,7 @@ class HeadingController extends BaseController
     {
         if (isset($_SESSION['postID'])) {
             $user = Postulant::where('id_account', $_SESSION['postID'])->first();
+            $uimage = substr($user->name, 0, 1);
             $stts = Status::where('name', 'inhabilitado')->first();
             $makeDB = new ServerConnection(); 
             $validation = new Validation();
@@ -119,7 +121,7 @@ class HeadingController extends BaseController
                 $errors = $validator->getMessages();
 
                 return $this->render('postulant/settle-heading.twig',
-                ['vPerfil' => $user, 'errors' => $errors, 'modalities'=>$modalities, 'careers' => $career,
+                ['vPerfil' => $user, 'uimage'=>$uimage, 'errors' => $errors, 'modalities'=>$modalities, 'careers' => $career,
                 'areas' => $areas, 'postulants' => $postulants, 'companies' => $company
                 ]);
             }

@@ -5,12 +5,9 @@
             <div id="menu">
                 <div class="content-avatar">
                     <div class="avatar">
-                        <figure>
-                            <a href="{{'admin' | url }}"><img src='images/avatar/a1.png' alt="Administrador" srcset=""></a>
-                            
-                        </figure>
+                        <p>{{uimage}}</p>
                     </div>
-                    <p> {{ vPerfil.name }} {{ vPerfil.l_name }} </p>
+                    <p class="sname"> {{ vadmin.name }} {{ vadmin.l_name }} {{ vadmin.ml_name }}</p>
                 </div>
                 
                 <br><br><br>
@@ -19,7 +16,7 @@
                         <a href="{{'admin/area' | url }}">Administrar áreas</a>
                     </li>
                     <li>
-                        <a href="{{'admin/professionals' | url }}">Administrar Profecionales</a>
+                        <a href="{{'admin/professionals' | url }}">Administrar Profesionales</a>
                     </li>
                     <li>
                         <a href="{{'admin/postulants' | url }}">Administrar cuenta de Estudiantes</a>

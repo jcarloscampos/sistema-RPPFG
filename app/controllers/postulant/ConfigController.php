@@ -9,13 +9,14 @@ use AppPHP\Models\Account;
 use AppPHP\Controllers\Common\Validation;
 use AppPHP\Controllers\Common\ServerConnection;
 
-class RessourceController extends BaseController
+class ConfigController extends BaseController
 {
     public function getIndex()
     {
         if (isset($_SESSION['postID'])) {
             $user = Postulant::where('id_account', $_SESSION['postID'])->first();
-            return $this->render('postulant/config.twig', ['vPerfil' => $user]);
+            $uimage = substr($user->name, 0, 1);
+            return $this->render('postulant/config.twig', ['vPerfil' => $user,'uimage'=>$uimage]);
         }
     }
 
@@ -30,6 +31,7 @@ class RessourceController extends BaseController
         
         $validation->setRuleBasic($validator);
         $validation->setRuleCodeSis($validator);
+        $validation->setRuleCI($validator);
         
         $userprofile = [
             'name' => $_POST['name'],
@@ -39,8 +41,7 @@ class RessourceController extends BaseController
             'cod_sis'=> $_POST['codsis'],
             'phone'=> $_POST['phone'],
             'email'=> $_POST['email'],
-            'address'=> $_POST['address'],
-            'avatar'=> $_POST['avatar']
+            'address'=> $_POST['address']
         ];
         
         if ($validator->validate($_POST)) {
@@ -54,9 +55,10 @@ class RessourceController extends BaseController
             $errors = $validator->getMessages();
         }
         $user = Postulant::find($_POST['id']);
+        $uimage = substr($user->name, 0, 1);
         return $this->render(
             'postulant/config.twig',
-            ['vPerfil' => $user, 'errors' => $errors, 'result' => $result
+            ['vPerfil' => $user, 'uimage'=>$uimage, 'errors' => $errors, 'result' => $result
             ]
         );
     }

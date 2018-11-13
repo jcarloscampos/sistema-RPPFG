@@ -5,12 +5,9 @@
             <div id="menu">
                 <div class="content-avatar">
                     <div class="avatar">
-                        <figure>
-                            <a href="{{'professional' | url }}"><img src='../images/avatar/a1.png' alt="Docente" srcset=""></a>
-                            
-                        </figure>
+                        <p>{{uimage}}</p>
                     </div>
-                    <p> {{ vPerfil.name }} {{ vPerfil.l_name }} </p>
+                    <p class="sname"> {{ vPerfil.name }} {{ vPerfil.l_name }} {{ vPerfil.ml_name }}</p>
                 </div>
                 
                 <br><br><br>
@@ -23,18 +20,12 @@
                         <li>
                             <a href="{{'etnprofessional' | url }}">Proyectos de asistencia  como tutor</a>
                         </li>
-                        <li>
-                            <a href="{{'etnprofessional' | url }}">Proyectos de  asistencia como docente</a>
-                        </li>
                     {% else %}
                         <li>
                             <a href="{{'itnprofessional/interestareas' | url }}">Seleccionar áreas de interés</a>
                         </li>
                         <li>
                             <a href="{{'itnprofessional' | url }}">Proyectos de asistencia  como tutor</a>
-                        </li>
-                        <li>
-                            <a href="{{'itnprofessional' | url }}">Proyectos de  asistencia como docente</a>
                         </li>
                     {% endif %}
                     

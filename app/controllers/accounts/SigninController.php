@@ -23,7 +23,12 @@ class SigninController extends BaseController
             # la cuenta es de un administrador
             header('Location:' . BASE_URL . 'admin');
             return null;
-        } elseif (isset($_SESSION['dirID'])) {
+        } elseif (isset($_SESSION['staryID'])) {
+            # la cuenta es director de carrera
+            header('Location:' . BASE_URL . 'secretary');
+            return null;
+        }
+        elseif (isset($_SESSION['dirID'])) {
             # la cuenta es director de carrera
             header('Location:' . BASE_URL . 'director');
             return null;

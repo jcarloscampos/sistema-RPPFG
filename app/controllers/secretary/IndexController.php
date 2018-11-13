@@ -1,9 +1,9 @@
 <?php
 
-namespace AppPHP\Controllers\Director;
+namespace AppPHP\Controllers\Secretary;
 
 use AppPHP\Controllers\BaseController;
-use AppPHP\Models\ProfessionalUmss;
+use AppPHP\Models\Secretary;
 
 /**
  * Clase controlador de inicio para Director de Carrera.
@@ -14,15 +14,15 @@ class IndexController extends BaseController
 {
     public function getIndex()
     {
-        if (isset($_SESSION['dirID'])) {
-            $userId = $_SESSION['dirID'];
+        if (isset($_SESSION['staryID'])) {
+            $userId = $_SESSION['staryID'];
            // $director = ProfessionalUmss->
-            $user = ProfessionalUmss::where('id_account', $userId)->first();
+            $user = Secretary::where('id_account', $userId)->first();
             $uimage = substr($user->name, 0, 1);
 
-            if ($director) {
+            if ($user) {
                 # si existe la cuenta en la BD
-                return $this->render('director/index.twig', ['account'=>$user, 'uimage'=>$uimage]);
+                return $this->render('secretary/index.twig', ['vPerfil'=>$user, 'uimage'=>$uimage]);
 
             }
         }

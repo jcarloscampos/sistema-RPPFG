@@ -38,6 +38,7 @@ class RestrainedController extends BaseController
     {
         if (isset($_SESSION['postID'])) {
             $user = Postulant::where('id_account', $_SESSION['postID'])->first();
+            $uimage = substr($user->name, 0, 1);
             $aux = PostulantProfile::where('id_postulant', $user->id)->first();
             
             if (!isset($aux) || $this->isUnfinished($aux->id_profile)){
@@ -54,12 +55,12 @@ class RestrainedController extends BaseController
                 $etutors = $generate->getTutors($areaprofiles, $etnprofareas, $eprofessionals);
 
                 return $this->render('postulant/settle-restrained.twig',
-                ['vPerfil'=>$user, 'matter' => $matter, 'pmatters' => $pmatter, 'iprofessionals'=> $iprofessionals, 
+                ['vPerfil'=>$user, 'uimage'=>$uimage, 'matter' => $matter, 'pmatters' => $pmatter, 'iprofessionals'=> $iprofessionals, 
                 'eprofessionals' => $eprofessionals, 'itutors' => $itutors, 'etutors' => $etutors]);
             } else {
                 $status = Profile::where('id', $aux->id_profile)->first();
                 $msg = $status->id_status;
-                return $this->render('postulant/messages.twig', ['vPerfil' => $user, 'msg' => $msg]);
+                return $this->render('postulant/messages.twig', ['vPerfil' => $user, 'uimage'=>$uimage, 'msg' => $msg]);
             }
         }
         header('Location: ' . BASE_URL . '');
@@ -69,6 +70,7 @@ class RestrainedController extends BaseController
     {
         if (isset($_SESSION['postID'])) {
             $user = Postulant::where('id_account', $_SESSION['postID'])->first();
+            $uimage = substr($user->name, 0, 1);
             $matter = SubjectMatter::where('sigla', '2010214')->first();
             $pmatter = ProfSmatter::where("id_smatter", "=", $matter->id)->get()->toArray();
             
@@ -107,7 +109,7 @@ class RestrainedController extends BaseController
                     //header('Location: ' . BASE_URL . 'postulant');
                     //return null;
                     $msg = 2;
-                    return $this->render('postulant/messages.twig', ['vPerfil' => $user, 'msg' => $msg]);
+                    return $this->render('postulant/messages.twig', ['vPerfil' => $user, 'uimage'=>$uimage, 'msg' => $msg]);
                 } else
                     $makeDB->removeProfile($currentpfl);
             } else {
@@ -115,7 +117,7 @@ class RestrainedController extends BaseController
                 $itutors = $generate->getTutors($areaprofiles, $itnprofareas, $iprofessionals);
                 $etutors = $generate->getTutors($areaprofiles, $etnprofareas, $eprofessionals);
                 return $this->render('postulant/settle-restrained.twig', 
-                ['vPerfil'=>$user, 'errors' => $errors, 'matter' => $matter, 'pmatters' => $pmatter, 'iprofessionals'=> $iprofessionals,
+                ['vPerfil'=>$user, 'uimage'=>$uimage, 'errors' => $errors, 'matter' => $matter, 'pmatters' => $pmatter, 'iprofessionals'=> $iprofessionals,
                 'eprofessionals' => $eprofessionals, 'itutors' => $itutors, 'etutors' => $etutors
                 ]);
             }
