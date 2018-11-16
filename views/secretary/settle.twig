@@ -17,14 +17,15 @@
 {% endblock %}
 
 {% block configpersonal %}
-    {% include('remnant/sub-nav.twig') %}
+    <div class="configpersonal">
+        <a class=".btn .btn-primary" href="{{'logout' | url }}">Salir</a>
+        <a class="principal" href="{{'secretary/config' | url }}">Configuración</a>
+    </div>
     <div class="nav-way">
         <p>
-        <a class=".btn .btn-primary" href="{{'secretary' | url }}">Home</a> &nbsp; | &nbsp; Permisos
+        <a class=".btn .btn-primary" href="{{'secretary' | url }}">Home</a> &nbsp; | &nbsp; Perfiles
         </p>
     </div>
-
-
 {% endblock %}
 
 {% block content %}
@@ -39,103 +40,78 @@
                     </div>
                     
                     <table id="tabla_perfiles">
-                                <thead>
-                                    <tr>
-                                        <th>Título</th>
-                                        <th>Modalidad</th>
-                                        <th>Tutor(es)</th>
-                                        <th>Postulante(s)</th>
-                                        <th>Estado</th>
-                                        <th>Periodo</th>
-                                        <th>Acción</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="arealist">
-                                    {% for profile in profiles %}
-                                        <tr>
-                                            <td>
-                                                {{ profile.title }}
-                                            </td>
+                        <thead>
+                            <tr>
+                                <th>Título</th>
+                                <th>Modalidad</th>
+                                <th>Postulante(s)</th>
+                                <th>Estado</th>
+                                <th>Periodo</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="arealist">
+                            {% for profile in profiles %}
+                                <trwidth=35%>
+                                    <td>
+                                        {{ profile.title }}
+                                    </td>
 
-                                            <td>
-                                                {% for modality in modalities %}
-                                                    {% if modality.id == profile.id_mod %}
-                                                        {{ modality.name_mod }}
+                                    <td width=20%>
+                                        {% for modality in modalities %}
+                                            {% if modality.id == profile.id_mod %}
+                                                {{ modality.name_mod }}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                    <td width=15%>
+                                        {% for postperf in postperfs %}
+                                            {% if postperf.id_profile == profile.id %}
+                                                {% for post in posts %}
+                                                    {% if post.id == postperf.id_postulant %}
+                                                        *{{ post.name }} {{ post.l_name }} {{ post.ml_name}}
                                                     {% endif %}
                                                 {% endfor %}
-                                            </td>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </td>
 
-                                            <td>
-                                                {% for etntutor in etntutors %}
-                                                    {% if etntutor.id_profile == profile.id %}
-                                                        {# {{ etntutor.id_entprof }} #}
-                                                        {% for eprof in eprofs %}
-                                                            {% if eprof.id == etntutor.id_entprof %}
-                                                                *{{ eprof.name }} {{ eprof.l_name }} {{ eprof_mlname }}
-                                                            {% endif %}
-                                                        {% endfor %}
-                                                    {% endif %}
-                                                {% endfor %}
-                                                {% for itntutor in responsables %}
-                                                    {% if profile.id == itntutor.id_profile and itntutor.id_type_resp == 2 %}
-                                                        {% for iprof in iprofs %}
-                                                            {% if iprof.id == itntutor.id_intprof %}
-                                                                *{{ iprof.name }} {{ iprof.l_name }} {{ iprof.ml_name}}
-                                                            {% endif %}
-                                                        {% endfor %}
-                                                    {% endif %}
-                                                {% endfor %}
-                                            </td>
+                                    <td width=10>
+                                        {% for state in status %}
+                                            {% if state.id == profile.id_status %}
+                                                {{ state.name }}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                    
+                                    <td width=12%>
+                                    {% set condition = true %}
+                                    {% for postperf in postperfs %}
+                                        {% if postperf.id_profile == profile.id %}
+                                            {% for period in periods %}
 
-                                            <td>
-                                                {% for postperf in postperfs %}
-                                                    {% if postperf.id_profile == profile.id %}
-                                                        {% for post in posts %}
-                                                            {% if post.id == postperf.id_postulant %}
-                                                                *{{ post.name }} {{ post.l_name }} {{ post.ml_name}}
-                                                            {% endif %}
-                                                        {% endfor %}
-                                                    {% endif %}
-                                                {% endfor %}
-                                            </td>
-
-                                            <td>
-                                                {% for state in status %}
-                                                    {% if state.id == profile.id_status %}
-                                                        {{ state.name }}
-                                                    {% endif %}
-                                                {% endfor %}
-                                            </td>
-                                            
-                                            <td width=15%>
-                                            {% set condition = true %}
-                                            {% for postperf in postperfs %}
-                                                {% if postperf.id_profile == profile.id %}
-                                                    {% for period in periods %}
-
-                                                        {% if period.id == postperf.id_period and condition %}
-                                                            {{ period.start_date}}; {{ period.end_date }} ({{period.period}})
-                                                            {% set condition = false %}
-                                                        {% endif %}
-                                                    {% endfor %}
+                                                {% if period.id == postperf.id_period and condition %}
+                                                    {{period.period}}/{{ period.start_date}}; {{ period.end_date }}
+                                                    {% set condition = false %}
                                                 {% endif %}
-                                            {% else %}
-                                                
                                             {% endfor %}
-                                            </td>
-
-                                            <td>
-                                                <div class="menu-actions-tb">
-                                                    <div class="actions">
-                                                        <a href="{{'secretary/settle/edit/' | url }}{{ profile.id }}">Editar</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                        {% endif %}
+                                    {% else %}
+                                        
                                     {% endfor %}
-                                </tbody>
-                            </table>
-                    
+                                    </td>
+
+                                    <td width=8%>
+                                        <div class="menu-actions-tbs">
+                                            <div class="actions">
+                                                <a href="{{'secretary/settle/setpass/' | url }}{{ profile.id }}">Editar</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </section>
                 <br> 
                 <br>

@@ -12,7 +12,7 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
   border: 0;
   font-size: 100%;
   font: inherit;
-  vertical-align: baseline; }
+  vertical-align: baseline;}
 
 article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
   display: block; }
@@ -1474,7 +1474,7 @@ table tbody tr:nth-child(2n + 1) {
   background-color: rgba(144, 144, 144, 0.25); }
 
 table td {
-  padding: 0.75em 0.75em; }
+  padding: 0.5em 0.5em; }
 
 table th {
   color: #fff;
@@ -3060,3 +3060,32 @@ MEDIA QUERY CLASSES
     justify-content: space-between;
     min-height: 400px;
   }
+
+  #table_settle{
+    vertical-align: middle;
+    border: none;
+  }
+
+  #table_settle tbody tr:nth-child(2n + 1) {
+    background-color: white; }
+#table_settle tbody tr td {
+  border: solid 1px rgb(235, 227, 227);
+  border: solid 1px white;
+  padding: .2em;
+}
+
+#table_settle tbody tr td>p{
+  margin: 0;
+  padding: 0;
+}
+tbody tr td {
+  font: inherit;
+
+}
+#tabla_perfiles tbody tr td {
+  font-size: .75em;
+  vertical-align: baseline;
+}
+#table_settle tbody tr td {
+  font-size: .8em;
+}

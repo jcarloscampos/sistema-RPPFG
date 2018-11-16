@@ -28,8 +28,8 @@ use AppPHP\Controllers\Common\ServerConnection;
 use AppPHP\Controllers\Common\SettingData;
 
 /**
- * Clase controlador de inicio para Director de Carrera.
- * Mediante este controlador interactuan las opciones de configuracion del Director de Carrera.
+ * Clase controlador de inicio para Secretaria.
+ * Mediante este controlador interactuan las opciones de configuracion de Secretaria.
  */
 
 class SettleController extends BaseController
@@ -39,41 +39,215 @@ class SettleController extends BaseController
         if (isset($_SESSION['staryID'])) {
             $user = Secretary::where('id_account', $_SESSION['staryID'])->first();
             $uimage = substr($user->name, 0, 1);
-
+            $makeDB = new ServerConnection();
             $profiles = Profile::all();
             $modalities = Modality::all();
-            $etntutors = EtnTutor::all();
-            $responsables = Responsable::all();
-
-            $eprofs = ProfessionalExt::all();
-            $iprofs = ProfessionalUmss::all();
 
             $postperfs = PostulantProfile::all();
             $posts = Postulant::all();
 
             $status = Status::all();
             $periods = Period::all();
-
-            
             
             return $this->render('secretary/settle.twig',
-            ['vPerfil'=>$user, 'uimage'=>$uimage, 'profiles'=>$profiles, 'modalities'=>$modalities, 'etntutors'=>$etntutors,
-            'responsables'=>$responsables, 'eprofs'=>$eprofs, 'iprofs'=>$iprofs, 'postperfs'=>$postperfs, 'posts'=>$posts,
+            ['vPerfil'=>$user, 'uimage'=>$uimage, 'profiles'=>$profiles, 'modalities'=>$modalities,
+            'postperfs'=>$postperfs, 'posts'=>$posts,
             'status'=>$status, 'periods'=>$periods
             ]);
         }
         header('Location: ' . BASE_URL . '');
     }
-    public function getEdit($idprofile)
+
+    public function getSetpass($idprofile)
     {
         if (isset($_SESSION['staryID'])) {
             $user = Secretary::where('id_account', $_SESSION['staryID'])->first();
             $uimage = substr($user->name, 0, 1);
-
+            $makeDB = new ServerConnection();
+            $profile = Profile::where('id', $idprofile)->first();
+            $postulantProfiles = PostulantProfile::all();
+            $status = Status::all();
+            $areaprofiles = AreaProfile::all();
+            $responsables = Responsable::all();
             
-            return $this->render('secretary/index.twig', ['vPerfil'=>$user, 'uimage'=>$uimage]);
+            //Extrae los postulantes que trabajan en un perfil
+            $posts = $makeDB->getPostulants($postulantProfiles, $profile);
+            count($posts)>1 ? $group = true : $group = false; 
+            if ($group) {
+                $postf = $posts[0];
+                $posts = $posts[1];
+            }else
+                $postf = $posts[0];
+            
+            // Obtine carrera
+            $career = $makeDB->getCareer($postulantProfiles, $profile);
+            // Estdo actual del perfil
+            $cstate = $makeDB->getState($profile);
+            // periodo
+            $period = $makeDB->getPeriod($postulantProfiles, $profile);
+            $papproved = $period->period;
+            $sapproved = substr($period->start_date, 0, 4);
+            $approved = $papproved . '/' . $sapproved;
+            // status
+            $cstate = Status::where('id', $profile->id_status)->first();
+            
+            // Obtine los tutores del perfil
+            $tutors = $makeDB->getTutors($profile);
+            $twofold = false; 
+
+            if (count($tutors) == 1) {
+                $tutorfir = $tutors[0];
+                $tutorsec = null;
+            }elseif (count($tutors) == 2) {
+                $tutorfir = $tutors[0];
+                $tutorsec = $tutors[1];
+                $twofold = true;
+            }
+
+             // Modalidad de perfil
+            $modality = $makeDB->getModality($profile);
+            // Encargado de Empresa donde se realiza el trabajo dirigido
+            $attendant = $makeDB->getAttendant($profile);
+            // Director de carrera
+            $director = $makeDB->getDirector();
+            // Docente de materia
+            $teacher = $makeDB->getTeacher($profile, $responsables);
+            // Area y sub area
+            $areap = $makeDB->getAreap($profile, $areaprofiles);
+            $subareap = $makeDB->getSubAreap($profile, $areaprofiles);
+
+            if ($group) {
+                return $this->render('secretary/setpass.twig', 
+                    ['vPerfil'=>$user, 'uimage'=>$uimage, 'profile'=>$profile, 'group'=>$group, 'postf'=>$postf,
+                    'posts'=>$posts, 'modality'=>$modality, 'career'=>$career, 'period'=>$period, 'approved'=>$approved,
+                    'status'=>$status, 'cstate'=>$cstate, 'teacher'=>$teacher, 'tutorfir'=>$tutorfir, 'tutorsec'=>$tutorsec,
+                    'twofold'=>$twofold, 'areap'=>$areap, 'subareap'=>$subareap, 'director'=>$director, 'attendant'=>$attendant
+                    ]);
+            }
+            return $this->render('secretary/setpass.twig', 
+                ['vPerfil'=>$user, 'uimage'=>$uimage, 'profile'=>$profile, 'postf'=>$postf, 'modality'=>$modality,
+                'career'=>$career, 'status'=>$status, 'cstate'=>$cstate, 'period'=>$period,'approved'=>$approved,  
+                'teacher'=>$teacher, 'tutorfir'=>$tutorfir, 'tutorsec'=>$tutorsec, 'twofold'=>$twofold,
+                'areap'=>$areap, 'subareap'=>$subareap, 'director'=>$director,'attendant'=>$attendant
+                ]);
+
         }
         header('Location: ' . BASE_URL . '');
     }
 
+    public function postSetpass($idprofile)
+    {
+        if (isset($_SESSION['staryID'])) {
+            $user = Secretary::where('id_account', $_SESSION['staryID'])->first();
+            $uimage = substr($user->name, 0, 1);
+            $makeDB = new ServerConnection();
+            $profile = Profile::where('id', $idprofile)->first();
+            $prolonged = false;
+            $result = false;
+            
+            if (isset($_POST['statep'])) {
+                $nstatus = Status::where('id', $_POST['statep'])->first();
+
+                $statusdata = ['id_status' => $nstatus->id];
+
+                $result = $makeDB->updateUser($profile, $statusdata, $makeDB);
+            }
+
+            if (isset($_POST['enddatep'])) {
+                //1 o 2 extended
+                $postulantprofile = PostulantProfile::where('id_profile', $profile->id)->first();
+                $period = Period::where('id', $postulantprofile->id_period)->first();
+                $enddate = date($period->end_date);
+
+                if ($_POST['enddatep'] == 1) {
+                    # Si la solicitud es por prorroga de ampliacion
+                    if ($period->extended == 0 || $period->extended == 2){
+                        $nenddate = date("Y-m-d",strtotime($enddate."+ 6 month"));
+                        $extended = 1 + $period->extended;
+                        $periodData = ['end_date' => $nenddate, 'extended' => $extended];
+                        $result = $makeDB->updateUser($period, $periodData, $makeDB);
+                    } else 
+                        $prolonged = true;
+
+                } elseif ($_POST['enddatep'] == 2) {
+                    # Si la solicitud es por apliacion de caso extra ordinario
+                    if ($period->extended == 0 || $period->extended == 1) {
+                        $nenddate = date("Y-m-d",strtotime($enddate."+ 1 year"));
+                        $extended = 2 + $period->extended;
+                        $periodData = ['end_date' => $nenddate, 'extended' => $extended];
+                        $result = $makeDB->updateUser($period, $periodData, $makeDB);
+                    } else 
+                        $prolonged = true;
+                }
+            }
+
+            // Parea recargar de nuevo la vista
+            $profile = Profile::where('id', $idprofile)->first();
+            $postulantProfiles = PostulantProfile::all();
+            $status = Status::all();
+            $areaprofiles = AreaProfile::all();
+            $responsables = Responsable::all();
+            
+            //Extrae los postulantes que trabajan en un perfil
+            $posts = $makeDB->getPostulants($postulantProfiles, $profile);
+            count($posts)>1 ? $group = true : $group = false; 
+            if ($group) {
+                $postf = $posts[0];
+                $posts = $posts[1];
+            }else
+                $postf = $posts[0];
+            
+            // Obtine carrera
+            $career = $makeDB->getCareer($postulantProfiles, $profile);
+            // Estdo actual del perfil
+            $cstate = $makeDB->getState($profile);
+            // periodo
+            $period = $makeDB->getPeriod($postulantProfiles, $profile);
+            $papproved = $period->period;
+            $sapproved = substr($period->start_date, 0, 4);
+            $approved = $papproved . '/' . $sapproved;
+            $cstate = Status::where('id', $profile->id_status)->first();
+            
+            // Obtine los tutores del perfil
+            $tutors = $makeDB->getTutors($profile);
+            $twofold = false; 
+
+            if (count($tutors) == 1) {
+                $tutorfir = $tutors[0];
+                $tutorsec = null;
+            }elseif (count($tutors) == 2) {
+                $tutorfir = $tutors[0];
+                $tutorsec = $tutors[1];
+                $twofold = true;
+            }
+
+             // Modalidad de perfil
+            $modality = $makeDB->getModality($profile);
+            // Encargado de Empresa donde se realiza el trabajo dirigido
+            $attendant = $makeDB->getAttendant($profile);
+            // Director de carrera
+            $director = $makeDB->getDirector();
+            // Docente de materia
+            $teacher = $makeDB->getTeacher($profile, $responsables);
+            // Area y sub area
+            $areap = $makeDB->getAreap($profile, $areaprofiles);
+            $subareap = $makeDB->getSubAreap($profile, $areaprofiles);
+
+            if ($group) {
+                return $this->render('secretary/setpass.twig', 
+                    ['vPerfil'=>$user, 'uimage'=>$uimage, 'profile'=>$profile, 'group'=>$group, 'postf'=>$postf,
+                    'posts'=>$posts, 'modality'=>$modality, 'career'=>$career, 'period'=>$period, 'approved'=>$approved,
+                    'status'=>$status, 'cstate'=>$cstate, 'teacher'=>$teacher, 'tutorfir'=>$tutorfir, 'tutorsec'=>$tutorsec,
+                    'twofold'=>$twofold, 'areap'=>$areap, 'subareap'=>$subareap, 'director'=>$director, 'attendant'=>$attendant
+                    ]);
+            }
+            return $this->render('secretary/setpass.twig', 
+                ['vPerfil'=>$user, 'uimage'=>$uimage, 'profile'=>$profile, 'postf'=>$postf, 'modality'=>$modality,
+                'career'=>$career, 'status'=>$status, 'cstate'=>$cstate, 'period'=>$period,'approved'=>$approved,  
+                'teacher'=>$teacher, 'tutorfir'=>$tutorfir, 'tutorsec'=>$tutorsec, 'twofold'=>$twofold,
+                'areap'=>$areap, 'subareap'=>$subareap, 'director'=>$director,'attendant'=>$attendant, 
+                'prolonged'=>$prolonged, 'result'=>$result
+                ]);
+        }
+    }
 }

@@ -4,6 +4,7 @@ namespace AppPHP\Controllers\Common;
 
 use AppPHP\Controllers\BaseController;
 use AppPHP\Models\Account;
+use AppPHP\Models\Area;
 use AppPHP\Models\Rol;
 use AppPHP\Models\UserRol;
 use AppPHP\Models\ProfessionalUmss;
@@ -13,6 +14,12 @@ use AppPHP\Models\Period;
 use AppPHP\Models\AreaProfile;
 use AppPHP\Models\PostulantProfile;
 use AppPHP\Models\TypeResponsable;
+use AppPHP\Models\Company;
+use AppPHP\Models\Modality;
+use AppPHP\Models\Career;
+use AppPHP\Models\Status;
+use AppPHP\Models\EtnTutor;
+use AppPHP\Models\Responsable;
 
 /**
  * Clase controlador de inicio para Director de Carrera.
@@ -34,19 +41,26 @@ class ServerConnection extends BaseController
      */
     public function makePeriod()
     {
-        $nPeriod = null;
         ini_set('date.timezone', 'America/La_Paz');
-        $startdate = date_create(date('d-m-Y', time()));
-        $enddate = date_add($startdate, date_interval_create_from_date_string('10 days'));
+        // $currentdateDMY = date("d-m-Y");
+        // echo date("d-m-Y",strtotime($currentdateDMY)).'<br>'; 
+        // //sumo 12 meses
+        // echo date("d-m-Y",strtotime($currentdateDMY."+ 12 month")).'<br>'; 
+        // //sumo 5 anio
+        // echo date("d-m-Y",strtotime($currentdateDMY."+ 5 year"));
         
-        $currentdate = strtotime(date('d-m-Y', time()));
-        $period = (int)date("m", $currentdate);
+        $nPeriod = null;
+        $currentdateYMD = date("Y-m-d");
+        $startdate = date("Y-m-d",strtotime($currentdateYMD));
+        $enddate = date("Y-m-d",strtotime($currentdateYMD."+ 2 year"));
 
         $periodData = [
             'start_date' => $startdate,
             'end_date' => $enddate
         ];
         
+        $currentdate = strtotime(date('Y-m-d', time()));
+        $period = (int)date("m", $currentdate);
         $period <= 6 ? $periodData['period'] = 1 : $periodData['period'] = 2;
 
         $nPeriod = new Period([
@@ -54,6 +68,7 @@ class ServerConnection extends BaseController
             'end_date'=> $periodData['end_date'],
             'period'=> $periodData['period']
         ]);
+
         $nPeriod->save();
         
         return $nPeriod;
@@ -196,6 +211,252 @@ class ServerConnection extends BaseController
         }
         return $result;
     }
+    public function getAreap($profile, $areaprofiles)
+    {
+        $areap = null;
+        $areas = Area::all();
+
+        foreach ($areaprofiles as $key => $valap) {
+            if ($valap->id_profile == $profile->id) {
+                foreach ($areas as $key => $area) {
+                    if(($area->id == $area->id_parent_area || $area->id_parent_area == null) && $area->id == $valap->id_area)
+                        $areap = $area;
+                }
+            }
+        }
+        return $areap;
+    }
+
+    public function getSubAreap($profile, $areaprofiles)
+    {
+        $subareap = null;
+        $subareas = Area::all();
+
+        foreach ($areaprofiles as $key => $valap) {
+            if ($valap->id_profile == $profile->id) {
+                foreach ($subareas as $key => $subarea) {
+                    if($subarea->id != $subarea->id_parent_area && $subarea->id == $valap->id_area)
+                        $subareap = $subarea;
+                }
+            }
+        }
+        return $subareap;
+    }
+    public function getTeacher($profile, $responsables)
+    {
+        $teacherp = null;
+        $iprofs = ProfessionalUmss::all();
+
+        foreach ($responsables as $key => $valitnt) {
+            if ($valitnt->id_profile == $profile->id) {
+                if ($valitnt->id_type_resp == 1) {
+                    foreach ($iprofs as $key => $iprof) {
+                        if ($iprof->id == $valitnt->id_intprof)
+                            $teacherp = $iprof;
+                    }
+                } 
+            }
+        }
+        return $teacherp;
+    }
+    public function getDirector()
+    {
+        $director = null;
+
+        $roldir = Rol::where('name_rol', 'director')->first();
+        $urdir = UserRol::where('id_rol', $roldir->id_rol)->first();
+        $director = ProfessionalUmss::where('id_account', $urdir->id_account)->first();
+        
+        return $director;
+    }
+
+    public function getAttendant($profile)
+    {
+        $attendantp = null;
+        $companies = Company::all();
+
+        foreach ($companies as $key => $value) {
+            if($value->id == $profile->id_cmpy_area)
+                $attendantp = $value;
+        }
+
+        return $attendantp;
+    }
+
+    public function getModality($profile)
+    {
+        $modalityp = null;
+        $modalities = Modality::all();
+
+        foreach ($modalities as $key => $value) {
+            if ($value->id == $profile->id_mod) {
+               $modalityp = $value;
+            }
+        }
+        return $modalityp;
+    }
+
+    public function getPostulants($postulantProfiles, $profile)
+    {
+        $postsp = [];
+        $postulants = Postulant::all();
+              
+        foreach ($postulantProfiles as $key => $valpp) {
+            if ($valpp->id_profile == $profile->id) {
+                foreach ($postulants as $postulant => $valp) {
+                    if ($valp->id == $valpp->id_postulant)
+                        $postsp[] = $valp;
+                }
+            }
+        }
+
+        return $postsp;
+    }
+
+    public function getCareer($postulantProfiles, $profile)
+    {
+        $careerp = null;
+        $careers = Career::all();
+
+        foreach ($postulantProfiles as $key => $valpp) {
+            if ($valpp->id_profile ==  $profile->id) {
+                foreach ($careers as $key => $career) {
+                    if ($career->id == $valpp->id_career)
+                        $careerp = $career;
+                }
+            }
+        }
+
+        return $careerp;
+    }
+
+    public function getState($profile)
+    {
+        $statep = null;
+        $states = Status::all();
+
+        foreach ($states as $key => $value) {
+            if ($value->id == $profile->id_status)
+                $statep = $value;
+        }
+
+        return $statep;
+    }
+
+    public function getPeriod($postulantProfiles, $profile)
+    {
+        $periodp = null;
+        $periods = Period::all();
+
+        foreach ($postulantProfiles as $key => $valpp) {
+            if ($valpp->id_profile == $profile->id) {
+                foreach ($periods as $key => $valp) {
+                    if ($valp->id == $valpp->id_period)
+                        $periodp = $valp;
+                }
+            } 
+        }
+
+        return $periodp;
+    }
+
+    public function getTutors($profile)
+    {
+        $eprofs = ProfessionalExt::all();
+        $iprofs = ProfessionalUmss::all();
+        $arrayetntutors = [];
+        $arrayitntutors = [];
+        $tutorsp = [];
+        
+        $responsables = Responsable::all();
+        foreach ($responsables as $key => $valitnt) {
+            if ($valitnt->id_profile == $profile->id) {
+                if ($valitnt->id_type_resp == 2) {
+                    foreach ($iprofs as $key => $iprof) {
+                        if ($iprof->id == $valitnt->id_intprof) {
+                            $arrayitntutors[] = $iprof;
+                        }
+                    }
+                } 
+            }
+        }
+        if (count($arrayitntutors) == 1) {
+            $tutorsp[0] = $arrayitntutors[0];
+        } elseif (count($arrayitntutors) == 2) {
+            $tutorsp[0] = $arrayitntutors[0];
+            $tutorsp[1] = $arrayitntutors[1];
+        }
+
+        $etntutors = EtnTutor::all();
+        foreach ($etntutors as $key => $valetnt) {
+            if ($valetnt->id_profile == $profile->id) {
+                foreach ($eprofs as $key => $eprof) {
+                    if ($eprof->id == $valetnt->id_entprof) {
+                        $arrayetntutors[] = $eprof;
+                    }
+                }
+            }
+        }
+        if (count($arrayetntutors) == 1) {
+            if (count($arrayitntutors) == 0) {
+                $tutorsp[0] = $arrayetntutors[0];
+            } else {
+                $tutorsp[1] = $arrayetntutors[0];
+            }
+            
+        } elseif (count($arrayetntutors) == 2) {
+            $tutorsp[0] = $arrayetntutors[0];
+            $tutorsp[1] = $arrayetntutors[1];
+        }
+        return $tutorsp;
+
+    }
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -332,5 +593,24 @@ class ServerConnection extends BaseController
             $user::where('id', $user->id)->update(array('s_objects' => $arg));
         }
     }
+    public function id_status($user, $arg)
+    {
+        if (isset($user)) {
+            $user::where('id', $user->id)->update(array('id_status' => $arg));
+        }
+    }
+    public function end_date($user, $arg)
+    {
+        if (isset($user)) {
+            $user::where('id', $user->id)->update(array('end_date' => $arg));
+        }
+    }
+    public function extended($user, $arg)
+    {
+        if (isset($user)) {
+            $user::where('id', $user->id)->update(array('extended' => $arg));
+        }
+    }
+    
     
 }
