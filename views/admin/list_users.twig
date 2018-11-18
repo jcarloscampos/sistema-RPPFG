@@ -1,0 +1,84 @@
+{% extends 'layout.twig' %}
+
+{% block csslink %}
+    <link rel='stylesheet' href='../../public/assets/css/app.css'>
+{% endblock %}
+
+{% block namepage %}
+    Perfil de administración en SRPPFG
+{% endblock %}
+
+{% block title %}
+    Administrador:  {{ admin.name }} {{ admin.l_name }}
+{% endblock %}
+
+{% block menu %}
+    {% include('remnant/nav-admin.twig') %}
+{% endblock %}
+
+{% block configpersonal %}
+    {% include('remnant/sub-nav.twig') %}
+    <div class="nav-way">
+        <p>
+        <a class=".btn .btn-primary" href="{{'admin' | url }}">Home</a> &nbsp; | &nbsp; users
+        </p>
+    </div>
+{% endblock %}
+
+{% block content %}
+<article id="main">
+        <section class="wrapper style5">
+            <div class="inner">
+                <section>
+                    <div class="wrapper-form">
+                        <div class="table-wrapper">
+                            <div class="menu-actions">
+                                <p>Usuarios registrados</p>
+                                
+                            </div>
+                            <table id="tabla_usuarios">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Apellido Paterno</th>
+                                        <th>Apellido Materno</th>
+                                        <th>Carnet de Identidad</th>
+                                        <th>Teléfono</th>
+                                        <th>Correo Electronico</th>
+                                        <th>Dirección</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="content_table">
+                                    {% for user in users %}
+                                        <tr>
+                                        <td> {{user.name}}</td>
+                                            <td>{{ user.l_name }}</td>
+                                            <td>{{user.ml_name}}</td>
+                                            <td> {{user.ci}}</td>
+                                            <td>{{ user.phone }}</td>
+                                            <td>{{ user.email }}</td>
+                                            <td>{{ user.address }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+                <br> 
+                <br>
+                <br>
+            </div>
+        </section>
+    </article>
+{% endblock %}
+
+{% block jslink %}
+    <script src='../../public/assets/js/jquery.min.js'></script>
+    <script src='../../public/assets/js/jquery.scrollex.min.js'></script>
+    <script src='../../public/assets/js/jquery.scrolly.min.js'></script>
+    <script src='../../public/assets/js/skel.min.js'></script>
+    <script src='../../public/assets/js/util.js'></script>
+    <script src='../../public/assets/js/main.js'></script>
+{% endblock %}
