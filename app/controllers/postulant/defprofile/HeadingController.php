@@ -13,8 +13,8 @@ use AppPHP\Models\Company;
 use AppPHP\Models\PostulantProfile;
 use AppPHP\Models\AreaProfile;
 use AppPHP\Models\Period;
-
-
+use AppPHP\Models\EtnProfArea;
+use AppPHP\Models\ItnProfArea;
 use Sirius\Validation\Validator;
 use AppPHP\Controllers\Common\Validation;
 use AppPHP\Controllers\Common\ServerConnection;
@@ -36,10 +36,21 @@ class HeadingController extends BaseController
                 $career = Career::all();
                 $areas = Area::all();
                 $company = Company::all();
+                $postulantprofiles = PostulantProfile::all();
+                $nottutor = true;
+                $choiceerror = true;
+
+                // Solo se pasaran los estudiantes que no estan en un perfil
+                foreach ($postulants as $key => $postulant) {
+                    $auxpp = PostulantProfile::where('id_postulant', $postulant->id)->first();
+                    if (!isset($auxpp))
+                        if ($user->ci != $postulant->ci)
+                            $postulantsvals[] = $postulant;
+                }
                 
                 return $this->render('postulant/settle-heading.twig',
                 ['vPerfil' => $user, 'uimage'=>$uimage, 'modalities'=>$modalities, 'careers' => $career, 'areas' => $areas,
-                'postulants' => $postulants, 'companies' => $company
+                'postulants' => $postulantsvals, 'companies' => $company, 'choiceerror'=>$choiceerror, 'nottutor'=>$nottutor
                 ]);
             } else {
                 $status = Profile::where('id', $aux->id_profile)->first();
@@ -55,13 +66,16 @@ class HeadingController extends BaseController
         if (isset($_SESSION['postID'])) {
             $user = Postulant::where('id_account', $_SESSION['postID'])->first();
             $uimage = substr($user->name, 0, 1);
-            $stts = Status::where('name', 'inhabilitado')->first();
+            $stts = Status::where('name', 'aceptado')->first();
             $makeDB = new ServerConnection(); 
             $validation = new Validation();
             $validator = new Validator();
             $areasub = [];
             $errors = [];
             $writingError = false;
+            $nottutor = false;
+            $choiceerror = true;
+
             $validation->setRuleDefOne($validator);
 
             if (isset($_POST['jwork'])) {
@@ -77,54 +91,81 @@ class HeadingController extends BaseController
             }
             
             if ($validator->validate($_POST)) {
+                if ($this->issettutor($_POST['area'])) {
+                    $choiceerror = false;
+                    if (isset($_POST['subarea'])) {
+                        $choiceerror = false;
+                        $aax = Area::where('id', $_POST['subarea'])->first();
 
-                $profileData = [
-                    'id_mod' => $_POST['modality'],
-                    'id_status' => $stts->id
-                ];
-
-                // Si modalidad es trabajo dirigido agrega informacion de la empresa proponente del proyecto
-                ($_POST['modality'] == 3) ? $profileData['id_cmpy_area'] = $_POST['company_d'] : $profileData['id_cmpy_area'] = 1;
-                
-                // Array de area y sub area
-                if (isset($_POST['subarea'])) {
-                    $areasub[] = $_POST['area'];
-                    $areasub[] = $_POST['subarea'];
-                } else {
-                    $areasub[] = $_POST['area'];
+                        if ($_POST['area'] == $aax->id_parent_area) {
+                            $choiceerror = true;
+                        }
+                    }else{
+                        $choiceerror = true;
+                    }
+                    $nottutor = true;
                 }
 
-                $profile = $this->createProfile($profileData);
-                //
-                if ($this->createAreaProfile($profile, $areasub) && $this->createPostulantProfile($user, $profile, $_POST['career'], $makeDB -> makePeriod())) {
-                    if ($_POST['jwork'] == 1) {
-                        $postJW = Postulant::where('id', $_POST['jworkpost'])->first();
-                        $ausPP = PostulantProfile::where('id_profile', $profile->id)->first();
-                        $prdpfl = Period::where('id', $ausPP->id_period)->first();
-                        (isset($postJW)) ? $this->createPostulantProfile($postJW, $profile, $_POST['career'], $prdpfl) : $writingError = true;     
+                if ($nottutor && $choiceerror) {
+                    $profileData = [
+                        'id_mod' => $_POST['modality'],
+                        'id_status' => $stts->id
+                    ];
+    
+                    // Si modalidad es trabajo dirigido agrega informacion de la empresa proponente del proyecto
+                    ($_POST['modality'] == 3) ? $profileData['id_cmpy_area'] = $_POST['company_d'] : $profileData['id_cmpy_area'] = 1;
+                    
+                    // Array de area y sub area
+                    if (isset($_POST['subarea'])) {
+    
+                        $areasub[] = $_POST['area'];
+                        $areasub[] = $_POST['subarea'];
+                    } else {
+                        $areasub[] = $_POST['area'];
                     }
-                } else
-                    $writingError = true;
+    
+                    $profile = $this->createProfile($profileData);
 
-                if ($writingError) {
-                    $makeDB->removeProfile($profile);
-                } else {
-                    header('Location: ' . BASE_URL . 'postulant/settle/essence');
-                    return null;
+                    if ($this->createAreaProfile($profile, $areasub) && $this->createPostulantProfile($user, $profile, $_POST['career'], $makeDB -> makePeriod())) {
+                        if ($_POST['jwork'] == 1) {
+                            $postJW = Postulant::where('id', $_POST['jworkpost'])->first();
+                            $ausPP = PostulantProfile::where('id_profile', $profile->id)->first();
+                            $prdpfl = Period::where('id', $ausPP->id_period)->first();
+                            (isset($postJW)) ? $this->createPostulantProfile($postJW, $profile, $_POST['career'], $prdpfl) : $writingError = true;     
+                        }
+                    } else
+                        $writingError = true;
+    
+                    if ($writingError) {
+                        $makeDB->removeProfile($profile);
+                    } else {
+                        header('Location: ' . BASE_URL . 'postulant/settle/essence');
+                        return null;
+                    }
                 }
             }else{
-                $postulants = Postulant::all();
-                $modalities = Modality::all();
-                $career = Career::all();
-                $areas = Area::all();
-                $company = Company::all();
                 $errors = $validator->getMessages();
-
-                return $this->render('postulant/settle-heading.twig',
-                ['vPerfil' => $user, 'uimage'=>$uimage, 'errors' => $errors, 'modalities'=>$modalities, 'careers' => $career,
-                'areas' => $areas, 'postulants' => $postulants, 'companies' => $company
-                ]);
             }
+            $postulants = Postulant::all();
+            $modalities = Modality::all();
+            $career = Career::all();
+            $areas = Area::all();
+            $company = Company::all();
+            $postulantprofiles = PostulantProfile::all();
+
+            // Solo se pasaran los estudiantes que no estan en un perfil
+            foreach ($postulants as $key => $postulant) {
+                $auxpp = PostulantProfile::where('id_postulant', $postulant->id)->first();
+                if (!isset($auxpp))
+                    if ($user->ci != $postulant->ci)
+                        $postulantsvals[] = $postulant;
+            }
+
+            return $this->render('postulant/settle-heading.twig',
+            ['vPerfil' => $user, 'uimage'=>$uimage, 'errors' => $errors, 'modalities'=>$modalities,
+            'careers' => $career, 'areas' => $areas, 'postulants' => $postulantsvals, 'companies' => $company,
+            'nottutor'=>$nottutor, 'choiceerror'=>$choiceerror
+            ]);
         }
         header('Location: ' . BASE_URL . '');
     }
@@ -136,7 +177,11 @@ class HeadingController extends BaseController
     private  function createProfile($dataset)
     {
         $nProfile = null;
+        //$registered = IsRegistered::where("ci", "=", $_POST['ci'])->get()->toArray();
+        $totalp = Profile::all()->toArray();
+        $nump = count($totalp)+1;
         $nProfile = new Profile([
+            'num_profile' => $nump,
             'id_cmpy_area' => $dataset['id_cmpy_area'],
             'id_mod' => $dataset['id_mod'],
             'id_status' => $dataset['id_status'],
@@ -184,6 +229,20 @@ class HeadingController extends BaseController
             $nAP->save();
             $result = true;
         }
+        return $result;
+    }
+
+    private function inputError(){
+
+    }
+    private function issettutor($idarea)
+    {
+        $result = false;
+        $itnprofarea = ItnProfArea::where('id_area', $idarea)->first();
+        $etnprofarea = EtnProfArea::where('id_area', $idarea)->first();
+
+        if (isset($itnprofarea) || isset($etnprofarea))
+            $result = true;
         return $result;
     }
 }

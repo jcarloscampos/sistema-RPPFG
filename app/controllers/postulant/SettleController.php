@@ -32,8 +32,7 @@ class SettleController extends BaseController
                     return $this->render('postulant/settle.twig', ['vPerfil'=>$user, 'uimage'=>$uimage]);
                 } else {
                     $outer = true;
-                    $status = Profile::where('id', $aux->id_profile)->first();
-                    $msg = $status->id_status;
+                    $msg = 1;
                     return $this->render('postulant/messages.twig', ['vPerfil' => $user, 'uimage'=>$uimage, 'msg' => $msg, 'outer'=>$outer]);
                 }
             }

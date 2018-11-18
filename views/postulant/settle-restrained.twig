@@ -45,37 +45,20 @@
 
                                 <div class="row uniform">
                                     <div class="6u 12u$(xsmall)">
-                                        <label><strong style="color:red">(*) </strong> Docente de materia</label>
-                                        <select name="psmatter" id="psmatter">
-                                            <option value=""disabled selected>- Selecciones su Docente -</option>
-                                            {% for itnp in iprofessionals %}
-                                                {% for pmatter in pmatters %}
-                                                    {% if itnp.id == pmatter.id_prof %}
-                                                        <option value="{{itnp.id}}">{{ itnp.name }} {{ itnp.l_name }} {{ itnp.ml_name }}</option>
-                                                    {% endif %}
-                                                {% endfor %}
-                                            {% endfor %}
-                                        </select>    
-                                    </div>
-                                    <div class="6u$ 12u$(xsmall)">
-                                        <label><strong style="color:red">(*) </strong> Formulario de aprobación</label>
-                                        <input type="file" accept=".pdf" name="approvedProfile" id="approvedProfile">
-                                    </div>
-                                    <div class="6u 12u$(xsmall)">
                                         <label><strong style="color:red">(*) </strong> Tutor</label>
                                         {# 'aProfile' => $aProfile, 'itnPA' => $itnPA, 'etnPA' => $etnPA]);   [etnps, itnps] #}
                                         <select name="tutor" id="tutor">
                                             <option value=""disabled selected>- Seleccione al tutor titular -</option>
                                             {% for iprof in iprofessionals %}
                                                 {% for itutor in itutors %}
-                                                    {% if iprof.id == itutor %}
+                                                    {% if iprof.id == itutor and iprof.active == 1 %}
                                                         <option value="{{iprof.id_account}}">{{ iprof.name }} {{ iprof.l_name }} {{ iprof.ml_name }}</option>
                                                     {% endif %}
                                                 {% endfor %}
                                             {% endfor %}
                                             {% for eprof in eprofessionals %}
                                                 {% for etutor in etutors %}
-                                                    {% if eprof.id == etutor %}
+                                                    {% if eprof.id == etutor and eprof.active == 1 %}
                                                         <option value="{{eprof.id_account}}">{{ eprof.name }} {{ eprof.l_name }} {{ eprof.ml_name }}</option>
                                                     {% endif %}
                                                 {% endfor %}
@@ -88,15 +71,28 @@
                                             <option value=""disabled selected>- Seleccione al segundo tutor -</option>
                                             {% for iprof in iprofessionals %}
                                                 {% for itutor in itutors %}
-                                                    {% if iprof.id == itutor %}
+                                                    {% if iprof.id == itutor and iprof.active == 1 %}
                                                         <option value="{{iprof.id_account}}">{{ iprof.name }} {{ iprof.l_name }} {{ iprof.ml_name }}</option>
                                                     {% endif %}
                                                 {% endfor %}
                                             {% endfor %}
                                             {% for eprof in eprofessionals %}
                                                 {% for etutor in etutors %}
-                                                    {% if eprof.id == etutor %}
+                                                    {% if eprof.id == etutor and eprof.active == 1 %}
                                                         <option value="{{eprof.id_account}}">{{ eprof.name }} {{ eprof.l_name }} {{ eprof.ml_name }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% endfor %}
+                                        </select>    
+                                    </div>
+                                    <div class="6u$ 12u$(xsmall)">
+                                        <label><strong style="color:red">(*) </strong> Docente de materia</label>
+                                        <select name="psmatter" id="psmatter">
+                                            <option value=""disabled selected>- Selecciones su Docente -</option>
+                                            {% for itnp in iprofessionals %}
+                                                {% for pmatter in pmatters %}
+                                                    {% if itnp.id == pmatter.id_prof %}
+                                                        <option value="{{itnp.id}}">{{ itnp.name }} {{ itnp.l_name }} {{ itnp.ml_name }}</option>
                                                     {% endif %}
                                                 {% endfor %}
                                             {% endfor %}

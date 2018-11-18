@@ -70,7 +70,7 @@ class AreaController extends BaseController
                 $area = new Area([
                     'name' => $_POST['name'],
                     'description' => $_POST['desc'],
-                    'id_parent_area' => 1
+                    'id_parent_area' => null
                     ]);
                 $area->save();
                 

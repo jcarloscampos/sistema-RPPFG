@@ -39,6 +39,17 @@
                             <div class="message-box">
                                 {% include 'remnant/errors.twig' %}
                                 {% include 'remnant/success.twig' %}
+                                {% include 'remnant/warning.twig' %}
+                                {% if not nottutor %}
+                                    <div class="alert alert-warning">
+                                        Para el área o sub área seleccionada no existen docentes de guía (tutores).
+                                    </div>
+                                {% endif %}
+                                {% if not choiceerror %}
+                                    <div class="alert alert-warning">
+                                        Sub área debe ser rama del área seleccionado.
+                                    </div>
+                                {% endif %}
                             </div>
                             <form method="post" action="#">
                                 <div class="row uniform">
@@ -110,9 +121,7 @@
                                         <select name="jworkpost" id="jworkpost">
                                             <option value=""disabled selected>- Selecciones al estudiante adjunto -</option>
                                             {% for postulant in postulants %}
-                                                {% if postulant.ci != vPerfil.ci %}
-                                                    <option value="{{postulant.id}}">{{ postulant.ci }} / {{ postulant.name }} {{ postulant.l_name }} {{ postulant.ml_name }}</option>
-                                                {% endif %}
+                                                <option value="{{postulant.id}}">{{ postulant.ci }} / {{ postulant.name }} {{ postulant.l_name }} {{ postulant.ml_name }}</option>
                                             {% endfor %}
                                         </select>    
                                     </div>

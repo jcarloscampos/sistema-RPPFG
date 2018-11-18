@@ -409,7 +409,17 @@ class ServerConnection extends BaseController
             $tutorsp[1] = $arrayetntutors[1];
         }
         return $tutorsp;
+    }
 
+    public function getSubAreaList($idarea){
+        $areas = Area::all();
+        $listsubareas = [];
+        foreach ($areas as $key => $area) {
+            if ($area->id_parent_area == $idarea) {
+                $listsubareas[] = $area;
+            }
+        }
+        return $listsubareas;
     }
 
 

@@ -1,33 +1,40 @@
 {% extends 'layout.twig' %}
 
 {% block csslink %}
-    <link rel='stylesheet' href='../../../../public/assets/css/app.css'>
+    {% if editp %}
+        <link rel='stylesheet' href='../../../../../public/assets/css/app.css'>
+    {% else %}
+        <link rel='stylesheet' href='../../../../public/assets/css/app.css'>
+    {% endif %}
+    
 {% endblock %}
 
 {% block namepage %}
-    Perfil de administración en SRPPFG
+    Perfil de postulante en SRPPFG
 {% endblock %}
 
 {% block title %}
-    Secretaria:  {{ vPerfil.name }} {{ vPerfil.l_name }} {{ vPerfil.l_name }}
+    Postulante:  {{ vPerfil.name }} {{ vPerfil.l_name }} {{ vPerfil.ml_name }}
 {% endblock %}
 
 {% block menu %}
-    {% include('remnant/nav-secretary.twig') %}
+    {% include('remnant/nav-postulant.twig') %}
 {% endblock %}
 
 {% block configpersonal %}
     <div class="configpersonal">
         <a class=".btn .btn-primary" href="{{'logout' | url }}">Salir</a>
-        <a class="principal" href="{{'secretary/config' | url }}">Configuración</a>
+        <a class="principal" href="{{'postulant/config' | url }}">Configuración</a>
     </div>
     <div class="nav-way">
         <p>
-        <a class=".btn .btn-primary" href="{{'secretary' | url }}">Home</a> &nbsp; | &nbsp; <a class=".btn .btn-primary" href="{{'secretary/settle' | url }}">Perfiles</a> &nbsp; | &nbsp; Establecer permisos
+        {% if editp %}
+            <a class=".btn .btn-primary" href="{{'postulant' | url }}">Home</a> &nbsp; | &nbsp; <a class=".btn .btn-primary" href="{{'postulant/settle/restrained/view' | url }}">Ver Perfil</a> &nbsp; | &nbsp; Editar
+        {% else %}
+            <a class=".btn .btn-primary" href="{{'postulant' | url }}">Home</a> &nbsp; | &nbsp; Perfil
+        {% endif %}
         </p>
     </div>
-
-
 {% endblock %}
 
 {% block content %}
@@ -63,42 +70,61 @@
                             <tr>
                                 <td><p><strong style="color:#3b3d3f; font-weight: bold;">Aprobado en: </strong>{{ approved }}</p></td>
 
-                                <td colspan="2"><p><strong style="color:#3b3d3f; font-weight: bold;">Fecha límite de defensa</strong></p>
-                                <select name="enddatep" id="enddatep">
-                                    <option value=""disabled selected>- {{period.end_date}} -</option>
-                                        <option value="1">Prórroga de ampliación (1 Semestre)</option>
-                                        <option value="2">Solicitud de ampliación (2 Semestres)</option>
-                                    </select>   
-                                </td>
-                                <td><p><strong style="color:#3b3d3f; font-weight: bold;">Estado: </strong></p> 
-                                <select name="statep" id="statep">
-                                    <option value=""disabled selected>- {{ cstate.name }} -</option>
-                                        {% for state in status %}
-                                            <option value="{{state.id}}">{{state.name}}</option>
-                                        {% endfor %}
-                                    </select>   
-                                </td>
+                                <td colspan="2"><p><strong style="color:#3b3d3f; font-weight: bold;">Fecha límite de defensa: </strong>{{period.end_date}}</p></td>
+
+                                <td><p><strong style="color:#3b3d3f; font-weight: bold;">Estado: </strong>{{ cstate.name }}</p></td>
                             </tr>
                             <tr>
-                                <td colspan="4"%><p><strong style="color:#3b3d3f; font-weight: bold;">Tutor(es): </strong>{{tutorfir.name}} {{tutorfir.l_name}} {{tutorfir.ml_name}}
+                                <td colspan="4"><p><strong style="color:#3b3d3f; font-weight: bold;">Tutor(es): </strong>{{tutorfir.name}} {{tutorfir.l_name}} {{tutorfir.ml_name}}
                                 {% if twofold %} / {{ tutorsec.name}} {{tutorsec.l_name}} {{tutorsec.ml_name}} {% endif %} </p></td>
                             </tr>
                             <tr>
                                 <td colspan="2"><p><strong style="color:#3b3d3f; font-weight: bold;">Área: </strong>{{areap.name}}</p></td>
                                 <td colspan="2"><p><strong style="color:#3b3d3f; font-weight: bold;">Sub área: </strong>{{ subareap.name }}</p> </td>
                             </tr>
-                            <tr>
-                                <td colspan="4"><p><strong style="color:#3b3d3f; font-weight: bold;">Título: </strong>{{ profile.title }}</p></td>
-                            </tr> 
-                            <tr>
-                                <td colspan="4"><p><strong style="color:#3b3d3f; font-weight: bold;">Objetivo general: </strong>{{ profile.g_objective }}</p></td>
-                            </tr>
-                            <tr>
-                                <td colspan="4"><p><strong style="color:#3b3d3f; font-weight: bold;">Objetivos específicos: </strong>{{ profile.s_objects }}</p></td>
-                            </tr>
-                            <tr>
-                                <td colspan="4"><p><strong style="color:#3b3d3f; font-weight: bold;">Descripción: </strong>{{ profile.description }}</p></td>
-                            </tr>
+                            {% if editp %}
+                                <tr>
+                                    <td colspan="4">
+                                        <label><strong style="color:red">(*) </strong> Título</label>
+                                        <input type="text" name="title" id="title" value="{{ profile.title }}" />
+                                    </td>
+                                </tr> 
+                                <tr>
+                                    <td colspan="4">
+                                    {# <p><strong style="color:#3b3d3f; font-weight: bold;">Objetivo general: </strong>{{ profile.g_objective }}</p> #}
+                                    <label><strong style="color:red">(*) </strong> Objetivo general</label>
+                                        <input type="text" name="gobj" id="gobj" value="{{ profile.g_objective }}" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                    {# <p><strong style="color:#3b3d3f; font-weight: bold;">Objetivos específicos: </strong>{{ profile.s_objects }}</p> #}
+                                    <label><strong style="color:red">(*) </strong> Objetivos específicos</label>
+                                        <textarea name="sobj" id="sobj" rows="2">{{ profile.s_objects }}</textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                    {# <p><strong style="color:#3b3d3f; font-weight: bold;">Descripción: </strong>{{ profile.description }}</p> #}
+                                    <label><strong style="color:red">(*) </strong> Descripción</label>
+                                        <textarea name="dcptn" id="dcptn" rows="2">{{ profile.description }}</textarea>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="4"><p><strong style="color:#3b3d3f; font-weight: bold;">Título: </strong>{{ profile.title }}</p></td>
+                                </tr> 
+                                <tr>
+                                    <td colspan="4"><p><strong style="color:#3b3d3f; font-weight: bold;">Objetivo general: </strong>{{ profile.g_objective }}</p></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4"><p><strong style="color:#3b3d3f; font-weight: bold;">Objetivos específicos: </strong>{{ profile.s_objects }}</p></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4"><p><strong style="color:#3b3d3f; font-weight: bold;">Descripción: </strong>{{ profile.description }}</p></td>
+                                </tr>
+                            {% endif %}
+
                         </table>
                         {% if group %}
                             <table id="table_settle">
@@ -152,13 +178,32 @@
                             </table>
                         {% endif %}
                         <br>
-                        <div class="12u 12u$(xsmall)">
-                            <ul class="actions" style="text-align: center">
-                                <li><button class="principal" type="submit">Guardar los cambios</button>
-                                </li>
-                            </ul>
-                        </div>
+                        {% if editp %}
+                            <div class="12u 12u$(xsmall)">
+                                <ul class="actions" style="text-align: center">
+                                    <li><button class="principal" type="submit">Guardar los cambios</button>
+                                    </li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                        
                     </form>
+                    {% if not editp %}
+                        <div class="configpersonal" style="text-align: center;">
+                            {% if cstate.name == "aceptado" %}
+                                <a class=".btn .btn-primary"  style="border: 1px solid #1a237e;" href="{{'postulant/settle/restrained/edit/' | url }}{{profile.id}}">Editar Perfil</a> 
+                                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                            {% endif %}
+                            <a class="principal"  style="border: 1px solid #1a237e;" href="{{'postulant/settle/restrained/download/' | url }}{{profile.id}}">Descargar en PDF</a>
+                            {% if cstate.name == "aceptado" %}
+                                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                <a class="principal"  style="border: 1px solid #1a237e;" href="{{'postulant/settle/restrained/publish/' | url }}{{profile.id}}">Publicar Perfil</a>
+                            {% endif %}
+                            
+                            
+                        </div>
+                    {% endif %}
+                    
                 </section>
             </div>
         </section>
@@ -166,10 +211,20 @@
 {% endblock %}
 
 {% block jslink %}
-    <script src='../../../../public/assets/js/jquery.min.js'></script>
-    <script src='../../../../public/assets/js/jquery.scrollex.min.js'></script>
-    <script src='../../../../public/assets/js/jquery.scrolly.min.js'></script>
-    <script src='../../../../public/assets/js/skel.min.js'></script>
-    <script src='../../../../public/assets/js/util.js'></script>
-    <script src='../../../../public/assets/js/main.js'></script>
+    {% if editp %}
+        <script src='../../../../../public/assets/js/jquery.min.js'></script>
+        <script src='../../../../../public/assets/js/jquery.scrollex.min.js'></script>
+        <script src='../../../../../public/assets/js/jquery.scrolly.min.js'></script>
+        <script src='../../../../../public/assets/js/skel.min.js'></script>
+        <script src='../../../../../public/assets/js/util.js'></script>
+        <script src='../../../../../public/assets/js/main.js'></script>
+    {% else %}
+        <script src='../../../../public/assets/js/jquery.min.js'></script>
+        <script src='../../../../public/assets/js/jquery.scrollex.min.js'></script>
+        <script src='../../../../public/assets/js/jquery.scrolly.min.js'></script>
+        <script src='../../../../public/assets/js/skel.min.js'></script>
+        <script src='../../../../public/assets/js/util.js'></script>
+        <script src='../../../../public/assets/js/main.js'></script>
+    {% endif %}
+
 {% endblock %}

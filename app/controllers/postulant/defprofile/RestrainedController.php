@@ -16,7 +16,7 @@ use AppPHP\Models\ItnProfArea;
 use AppPHP\Models\Responsable;
 use AppPHP\Models\TypeResponsable;
 use AppPHP\Models\EtnTutor;
-
+use AppPHP\Models\Status;
 use AppPHP\Models\Profile;
 use AppPHP\Models\PostulantProfile;
 use AppPHP\Models\AreaProfile;
@@ -106,10 +106,10 @@ class RestrainedController extends BaseController
                 }
 
                 if ($doc && $ftutor) {
-                    //header('Location: ' . BASE_URL . 'postulant');
-                    //return null;
-                    $msg = 2;
-                    return $this->render('postulant/messages.twig', ['vPerfil' => $user, 'uimage'=>$uimage, 'msg' => $msg]);
+                    header('Location: ' . BASE_URL . 'postulant/settle/restrained/view');
+                    return null;
+                    //$msg = 2;
+                    //return $this->render('postulant/preview.twig', ['vPerfil' => $user, 'uimage'=>$uimage, 'msg' => $msg]);
                 } else
                     $makeDB->removeProfile($currentpfl);
             } else {
@@ -171,6 +171,321 @@ class RestrainedController extends BaseController
             $result = true;
         }
         return $result;
+    }
+
+    public function getView(){
+        if (isset($_SESSION['postID'])) {
+            $user = Postulant::where('id_account', $_SESSION['postID'])->first();
+            $uimage = substr($user->name, 0, 1);
+        
+            //--------------------------------------------------------------------------------
+            $makeDB = new ServerConnection();
+            $pprofile = PostulantProfile::where('id_postulant', $user->id)->first();
+            $profile = Profile::where('id', $pprofile->id_profile)->first();
+
+            $postulantProfiles = PostulantProfile::all();
+            $status = Status::all();
+            $areaprofiles = AreaProfile::all();
+            $responsables = Responsable::all();
+        
+            //Extrae los postulantes que trabajan en un perfil
+            $posts = $makeDB->getPostulants($postulantProfiles, $profile);
+            count($posts)>1 ? $group = true : $group = false;
+            if ($group) {
+                $postf = $posts[0];
+                $posts = $posts[1];
+            } else {
+                $postf = $posts[0];
+            }
+        
+            // Obtine carrera
+            $career = $makeDB->getCareer($postulantProfiles, $profile);
+            // Estdo actual del perfil
+            $cstate = $makeDB->getState($profile);
+            // periodo
+            $period = $makeDB->getPeriod($postulantProfiles, $profile);
+            $papproved = $period->period;
+            $sapproved = substr($period->start_date, 0, 4);
+            $approved = $papproved . '/' . $sapproved;
+            // status
+            $cstate = Status::where('id', $profile->id_status)->first();
+        
+            // Obtine los tutores del perfil
+            $tutors = $makeDB->getTutors($profile);
+
+            $twofold = false;
+
+            if (count($tutors) == 1) {
+                $tutorfir = $tutors[0];
+                $tutorsec = null;
+            } elseif (count($tutors) == 2) {
+                $tutorfir = $tutors[0];
+                $tutorsec = $tutors[1];
+                $twofold = true;
+            }
+
+            // Modalidad de perfil
+            $modality = $makeDB->getModality($profile);
+            // Encargado de Empresa donde se realiza el trabajo dirigido
+            $attendant = $makeDB->getAttendant($profile);
+            // Director de carrera
+            $director = $makeDB->getDirector();
+            // Docente de materia
+            $teacher = $makeDB->getTeacher($profile, $responsables);
+            // Area y sub area
+            $areap = $makeDB->getAreap($profile, $areaprofiles);
+            $subareap = $makeDB->getSubAreap($profile, $areaprofiles);
+
+            if ($group) {
+                return $this->render(
+                'postulant/preview.twig',
+                ['vPerfil'=>$user, 'uimage'=>$uimage, 'profile'=>$profile, 'group'=>$group, 'postf'=>$postf,
+                'posts'=>$posts, 'modality'=>$modality, 'career'=>$career, 'period'=>$period, 'approved'=>$approved,
+                'status'=>$status, 'cstate'=>$cstate, 'teacher'=>$teacher, 'tutorfir'=>$tutorfir, 'tutorsec'=>$tutorsec,
+                'twofold'=>$twofold, 'areap'=>$areap, 'subareap'=>$subareap, 'director'=>$director, 'attendant'=>$attendant
+                ]
+            );
+            }
+            return $this->render(
+            'postulant/preview.twig',
+            ['vPerfil'=>$user, 'uimage'=>$uimage, 'profile'=>$profile, 'postf'=>$postf, 'modality'=>$modality,
+             'career'=>$career, 'status'=>$status, 'cstate'=>$cstate, 'period'=>$period,'approved'=>$approved,
+            'teacher'=>$teacher, 'tutorfir'=>$tutorfir, 'tutorsec'=>$tutorsec, 'twofold'=>$twofold,
+            'areap'=>$areap, 'subareap'=>$subareap, 'director'=>$director,'attendant'=>$attendant
+            ]
+        );
+            //--------------------------------------------------------------------------------
+        }
+    }
+
+    public function getEdit($idprofile){
+        if (isset($_SESSION['postID'])) {
+            $profile = Profile::where('id', $idprofile)->first();
+            $temstatus = Status::where('name', 'aceptado')->first();
+            $user = Postulant::where('id_account', $_SESSION['postID'])->first();
+            $uimage = substr($user->name, 0, 1);
+
+            if ($profile->id_status == $temstatus->id) {
+                $editp = true;
+            
+                //--------------------------------------------------------------------------------
+                $makeDB = new ServerConnection();
+                //$profile = Profile::where('id', $idprofile)->first();
+    
+                $postulantProfiles = PostulantProfile::all();
+                $status = Status::all();
+                $areaprofiles = AreaProfile::all();
+                $responsables = Responsable::all();
+            
+                //Extrae los postulantes que trabajan en un perfil
+                $posts = $makeDB->getPostulants($postulantProfiles, $profile);
+                count($posts)>1 ? $group = true : $group = false;
+                if ($group) {
+                    $postf = $posts[0];
+                    $posts = $posts[1];
+                } else {
+                    $postf = $posts[0];
+                }
+            
+                // Obtine carrera
+                $career = $makeDB->getCareer($postulantProfiles, $profile);
+                // Estdo actual del perfil
+                $cstate = $makeDB->getState($profile);
+                // periodo
+                $period = $makeDB->getPeriod($postulantProfiles, $profile);
+                $papproved = $period->period;
+                $sapproved = substr($period->start_date, 0, 4);
+                $approved = $papproved . '/' . $sapproved;
+                // status
+                $cstate = Status::where('id', $profile->id_status)->first();
+            
+                // Obtine los tutores del perfil
+                $tutors = $makeDB->getTutors($profile);
+    
+                $twofold = false;
+    
+                if (count($tutors) == 1) {
+                    $tutorfir = $tutors[0];
+                    $tutorsec = null;
+                } elseif (count($tutors) == 2) {
+                    $tutorfir = $tutors[0];
+                    $tutorsec = $tutors[1];
+                    $twofold = true;
+                }
+    
+                // Modalidad de perfil
+                $modality = $makeDB->getModality($profile);
+                // Encargado de Empresa donde se realiza el trabajo dirigido
+                $attendant = $makeDB->getAttendant($profile);
+                // Director de carrera
+                $director = $makeDB->getDirector();
+                // Docente de materia
+                $teacher = $makeDB->getTeacher($profile, $responsables);
+                // Area y sub area
+                $areap = $makeDB->getAreap($profile, $areaprofiles);
+                $subareap = $makeDB->getSubAreap($profile, $areaprofiles);
+    
+                if ($group) {
+                    return $this->render(
+                    'postulant/preview.twig',
+                    ['vPerfil'=>$user, 'uimage'=>$uimage, 'profile'=>$profile, 'group'=>$group, 'postf'=>$postf,
+                    'posts'=>$posts, 'modality'=>$modality, 'career'=>$career, 'period'=>$period, 'approved'=>$approved,
+                    'status'=>$status, 'cstate'=>$cstate, 'teacher'=>$teacher, 'tutorfir'=>$tutorfir, 'tutorsec'=>$tutorsec,
+                    'twofold'=>$twofold, 'areap'=>$areap, 'subareap'=>$subareap, 'director'=>$director, 'attendant'=>$attendant,
+                    'editp'=>$editp
+                    ]
+                );
+                }
+                return $this->render(
+                'postulant/preview.twig',
+                ['vPerfil'=>$user, 'uimage'=>$uimage, 'profile'=>$profile, 'postf'=>$postf, 'modality'=>$modality,
+                 'career'=>$career, 'status'=>$status, 'cstate'=>$cstate, 'period'=>$period,'approved'=>$approved,
+                'teacher'=>$teacher, 'tutorfir'=>$tutorfir, 'tutorsec'=>$tutorsec, 'twofold'=>$twofold,
+                'areap'=>$areap, 'subareap'=>$subareap, 'director'=>$director,'attendant'=>$attendant, 'editp'=>$editp
+                ]
+            );
+                //--------------------------------------------------------------------------------
+            }else{
+                $msg = 9;
+                return $this->render('postulant/messages.twig', ['vPerfil' => $user, 'uimage'=>$uimage, 'msg' => $msg]);
+            }
+
+        }
+    }
+    public function postEdit($idprofile){
+        if (isset($_SESSION['postID'])) {
+            $temstatus = Status::where('name', 'aceptado')->first();
+            $profile = Profile::where('id', $idprofile)->first();
+            if ($profile->id_status == $temstatus->id) {
+                $user = Postulant::where('id_account', $_SESSION['postID'])->first();
+                $uimage = substr($user->name, 0, 1);
+                $makeDB = new ServerConnection(); 
+                $validation = new Validation();
+                $validator = new Validator();
+                $errors = [];
+                $result = false;
+                $validation->setRuleDefTwo($validator);
+    
+                $profileData = [
+                    'title' => $_POST['title'],
+                    'g_objective' => $_POST['gobj'],
+                    's_objects' => $_POST['sobj'],
+                    'description' => $_POST['dcptn']
+                ];
+    
+                if ($validator->validate($_POST)) {
+                    $postPfl = PostulantProfile::where('id_postulant', $user->id)->first();
+                    $currentpfl = Profile::where('id', $postPfl->id_profile)->first();
+                    $result = $makeDB->updateUser($currentpfl, $profileData, $makeDB);
+                } else {
+                    $errors = $validator->getMessages();
+                    //return $this->render('postulant/settle-essence.twig', ['vPerfil'=>$user, 'uimage'=>$uimage, 'errors' => $errors, 'vpData' => $profileData]);
+                }
+    
+                $editp = true;
+            
+                //--------------------------------------------------------------------------------
+                //$profile = Profile::where('id', $idprofile)->first();
+    
+                $postulantProfiles = PostulantProfile::all();
+                $status = Status::all();
+                $areaprofiles = AreaProfile::all();
+                $responsables = Responsable::all();
+            
+                //Extrae los postulantes que trabajan en un perfil
+                $posts = $makeDB->getPostulants($postulantProfiles, $profile);
+                count($posts)>1 ? $group = true : $group = false;
+                if ($group) {
+                    $postf = $posts[0];
+                    $posts = $posts[1];
+                } else {
+                    $postf = $posts[0];
+                }
+            
+                // Obtine carrera
+                $career = $makeDB->getCareer($postulantProfiles, $profile);
+                // Estdo actual del perfil
+                $cstate = $makeDB->getState($profile);
+                // periodo
+                $period = $makeDB->getPeriod($postulantProfiles, $profile);
+                $papproved = $period->period;
+                $sapproved = substr($period->start_date, 0, 4);
+                $approved = $papproved . '/' . $sapproved;
+                // status
+                $cstate = Status::where('id', $profile->id_status)->first();
+            
+                // Obtine los tutores del perfil
+                $tutors = $makeDB->getTutors($profile);
+    
+                $twofold = false;
+    
+                if (count($tutors) == 1) {
+                    $tutorfir = $tutors[0];
+                    $tutorsec = null;
+                } elseif (count($tutors) == 2) {
+                    $tutorfir = $tutors[0];
+                    $tutorsec = $tutors[1];
+                    $twofold = true;
+                }
+    
+                // Modalidad de perfil
+                $modality = $makeDB->getModality($profile);
+                // Encargado de Empresa donde se realiza el trabajo dirigido
+                $attendant = $makeDB->getAttendant($profile);
+                // Director de carrera
+                $director = $makeDB->getDirector();
+                // Docente de materia
+                $teacher = $makeDB->getTeacher($profile, $responsables);
+                // Area y sub area
+                $areap = $makeDB->getAreap($profile, $areaprofiles);
+                $subareap = $makeDB->getSubAreap($profile, $areaprofiles);
+    
+                if ($group) {
+                    return $this->render(
+                    'postulant/preview.twig',
+                    ['vPerfil'=>$user, 'uimage'=>$uimage, 'profile'=>$profile, 'group'=>$group, 'postf'=>$postf,
+                    'posts'=>$posts, 'modality'=>$modality, 'career'=>$career, 'period'=>$period, 'approved'=>$approved,
+                    'status'=>$status, 'cstate'=>$cstate, 'teacher'=>$teacher, 'tutorfir'=>$tutorfir, 'tutorsec'=>$tutorsec,
+                    'twofold'=>$twofold, 'areap'=>$areap, 'subareap'=>$subareap, 'director'=>$director, 'attendant'=>$attendant,
+                    'editp'=>$editp, 'errors'=>$errors, 'result'=>$result
+                    ]
+                );
+                }
+                return $this->render(
+                'postulant/preview.twig',
+                ['vPerfil'=>$user, 'uimage'=>$uimage, 'profile'=>$profile, 'postf'=>$postf, 'modality'=>$modality,
+                 'career'=>$career, 'status'=>$status, 'cstate'=>$cstate, 'period'=>$period,'approved'=>$approved,
+                'teacher'=>$teacher, 'tutorfir'=>$tutorfir, 'tutorsec'=>$tutorsec, 'twofold'=>$twofold,
+                'areap'=>$areap, 'subareap'=>$subareap, 'director'=>$director,'attendant'=>$attendant, 'editp'=>$editp,
+                'errors'=>$errors, 'result'=>$result
+                ]
+                );
+                //--------------------------------------------------------------------------------
+
+            }
+
+        }
+        header('Location: ' . BASE_URL . '');
+    }
+    public function getDownload($idprofile)
+    {
+        echo "para descarga";
+    }
+
+    public function getPublish($idprofile)
+    {
+        $profile = Profile::where('id', $idprofile)->first();
+        $cstatus = Status::where('name', 'aceptado')->first();
+        if ($profile->id_status == $cstatus->id) {
+            $nstatus = Status::where('name', 'revision')->first();
+    
+            $statusdata = ['id_status' => $nstatus->id];
+    
+            $makeDB = new ServerConnection(); 
+    
+            $result = $makeDB->updateUser($profile, $statusdata, $makeDB);
+        }
+        header('Location: ' . BASE_URL . 'postulant/settle/restrained/view');
     }
     
 }

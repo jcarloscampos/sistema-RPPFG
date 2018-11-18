@@ -43,13 +43,21 @@
                         {% if msg == 0 %}
                             <p style="text-align: left; color: #505393">No se guardó el Perfil, hubo un error en el sistema. ¿Desea iniciar de nuevo con el registro de su Perfil?.</p> 
                         {% elseif msg == 1 %}
-                            <p style="text-align: left; color: #505393">Usted ya tiene un perfil definido, puede modificar desde la venta de <a class="principal" href="{{'postulant/actualize' | url }}">actualización</a> del perfil.</p> 
+                            <p style="text-align: left; color: #505393">Usted ya tiene un perfil definido, puede modificar desde la venta de actualización del perfil si su perfil aun no fue publicado.</p> 
                         {% elseif msg == 2 %}
-                            <p style="text-align: left; color: #505393">Su Perfil fue creado exitosamente, puede <a class="principal" href="{{'postulant/actualize/publicize' | url }}">publicar</a> si ya fue aprobado o <a class="principal" href="{{'postulant/actualize' | url }}">actualizar</a> si requiere algún cambio.</p>
+                            <p style="text-align: left; color: #505393">Su Perfil fue creado exitosamente, puede publicar si ya fue aprobado o actualizar si requiere algún cambio.</p>
                         {% endif %}
                         
                         {% if not msg == 2 %}
                             <p style="text-align: left; color: #505393">Si tiene algún problema contáctese con el Administrador.</p> 
+                        {% endif %}
+
+                        {% if not msg == 8 %}
+                            <p style="text-align: left; color: #505393">Su Perfil fue publicado exitosamente.</p> 
+                        {% endif %}
+
+                        {% if not msg == 9 %}
+                            <p style="text-align: left; color: #505393">Ya  no es posible realizar esta acción; su Perfil ya fue publicado.</p> 
                         {% endif %}
                         
                         <div class="configpersonal" style="text-align: center; margin-top: 3em;">

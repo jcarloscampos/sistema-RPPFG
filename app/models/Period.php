@@ -14,5 +14,5 @@ class Period extends Model
     /**
      * @type array
      */
-    protected $fillable = ['start_date', 'end_date', 'period'];
+    protected $fillable = ['start_date', 'end_date', 'period', 'extended'];
 }

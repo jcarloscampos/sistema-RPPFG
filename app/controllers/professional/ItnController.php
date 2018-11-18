@@ -129,12 +129,45 @@ class ItnController extends BaseController
             if (empty($repeated)){
                 $area = Area::find($id);
                 $user = ProfessionalUmss::where('id_account', $_SESSION['iprofID'])->first();
-                
-                $profarea = new ItnProfArea([
-                    'id_prof' => $user->id,
-                    'id_area' => $area->id
-                ]);
-                $profarea->save();
+                //----------------------------------------
+                if ($area->id == $area->id_parent_area) {
+                    $profarea = new ItnProfArea([
+                        'id_prof' => $user->id,
+                        'id_area' => $area->id
+                    ]);
+                    $profarea->save();
+                } else {
+                    $areaparent = Area::where('id', $area->id_parent_area)->first();
+                    $repeatedarea = ItnProfArea::where('id_area', '=', $areaparent->id)->get()->toArray();
+                    if (empty($repeatedarea)){
+                        //Aniade area y sub area
+                        $profarea_subarea = new ItnProfArea([
+                            'id_prof' => $user->id,
+                            'id_area' => $area->id
+                        ]);
+                        $profarea_subarea->save();
+
+                        $profarea_area = new ItnProfArea([
+                            'id_prof' => $user->id,
+                            'id_area' => $areaparent->id
+                        ]);
+                        $profarea_area->save();
+
+                    }else{
+                        //solo sub area
+                        $profarea = new ItnProfArea([
+                            'id_prof' => $user->id,
+                            'id_area' => $area->id
+                        ]);
+                        $profarea->save();
+                    }
+                }
+                //----------------------------------------
+                // $profarea = new ItnProfArea([
+                //     'id_prof' => $user->id,
+                //     'id_area' => $area->id
+                // ]);
+                // $profarea->save();
             }
         }
         header('Location:' . BASE_URL . 'itnprofessional/interestareas');	
@@ -144,7 +177,22 @@ class ItnController extends BaseController
 	{
         if (isset($id)) {
             $profarea = ItnProfArea::find($id);
-            $profarea->delete();
+            //----------------------------------------
+            $area = Area::where('id', $profarea->id_area)->first();
+            
+            if ($area->id == $area->id_parent_area){
+                $makeDB = new ServerConnection();
+                $areasr = $makeDB->getSubAreaList($area->id);
+
+                foreach ($areasr as $key => $arear) {
+                    $profarea = ItnProfArea::where('id_area', $arear->id);
+                    $profarea->delete();
+                }
+            }else{
+                $profarea->delete();
+            }
+            //----------------------------------------
+            //$profarea->delete();
             header('Location:' . BASE_URL . 'itnprofessional/interestareas');	
         }
     }
