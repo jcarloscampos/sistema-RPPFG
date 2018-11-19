@@ -1,0 +1,106 @@
+{% extends 'layout.twig' %}
+
+{% block csslink %}
+    <link rel='stylesheet' href='../../../public/assets/css/app.css'>
+{% endblock %}
+
+{% block namepage %}
+    Perfil de postulante en SRPPFG
+{% endblock %}
+
+{% block title %}
+    Postulante:  {{ vPerfil.name }} {{ vPerfil.l_name }} {{ vPerfil.ml_name }}
+{% endblock %}
+
+{% block menu %}
+    {% include('remnant/nav-postulant.twig') %}
+{% endblock %}
+
+{% block configpersonal %}
+    <div class="configpersonal">
+        <a class=".btn .btn-primary" href="{{'logout' | url }}">Salir</a>
+        <a class="principal" href="{{'postulant/config' | url }}">Configuración</a>
+    </div>
+    <div class="nav-way">
+        <p>
+        <a class=".btn .btn-primary" href="{{'postulant' | url }}">Home</a> &nbsp; | &nbsp; Perfil
+        </p>
+    </div>
+{% endblock %}
+
+{% block content %}
+<article id="main">
+        <section class="wrapper style5">
+            <div class="inner">
+                <section class="content-main">
+                    <div>
+                        <h4 style="text-align: center;">Definición de Perfil</h4>
+                        <div class="wrapper-form">
+                            <div class="message-box">
+                                {% include 'remnant/errors.twig' %}
+                                {% include 'remnant/success.twig' %}
+                            </div>
+                            <form method="post" action="#">
+                                <input type="hidden" name="id" value="{{ vPerfil.id }}">
+
+                                <div class="row uniform">
+                                    <div class="12u 12u$(xsmall)">
+                                        <label><strong style="color:red">(*) </strong> Título</label>
+                                        <input type="text" name="title" id="title" value="{{ vpData.title }}" placeholder="Título del Perfil..." />
+                                    </div>
+                                    <div class="12u 12u$(xsmall)">
+                                        <label><strong style="color:red">(*) </strong> Objetivo general</label>
+                                        <input type="text" name="gobj" id="gobj" value="{{ vpData.g_objective }}" placeholder="Objetivo general del Perfil..." />
+                                    </div>
+                                    <div class="12u 12u$(xsmall)">
+                                        <label><strong style="color:red">(*) </strong> Objetivos específicos</label>
+                                        <textarea name="sobj" id="sobj" rows="2" placeholder="Objetivos específicos del Perfil...">{{ vpData.s_objects }}</textarea>
+                                    </div>
+                                    <div class="12u 12u$(xsmall)">
+                                        <label><strong style="color:red">(*) </strong> Descripción</label>
+                                        <textarea name="dcptn" id="dcptn" rows="2" placeholder="Descripción del Perfil...">{{ vpData.description }}</textarea>
+                                    </div>
+
+                                <br>
+                                <div class="12u 12u$(xsmall)">
+                                    <ul class="actions" style="text-align: center">
+                                        <li>
+                                        <button class="principal" type="submit">Siguiente</button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </form>
+                        </div>
+                        {# <div class="configpersonal" style="text-align: center; margin-top: 3em;">
+                            <a class=".btn .btn-primary"  style="border: 1px solid #1a237e;" href="{{'postulant' | url }}">Cancelar</a> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                            <a class="principal"  style="border: 1px solid #1a237e;" href="{{'postulant/ressources' | url }}">Iniciar</a>
+                        </div> #}
+                    </div>
+                    <div class="status-defprofile">
+                        <div class="status">
+                            <p>1</p>
+                        </div>
+                        <div class="status">
+                            <p>2</p>
+                        </div>
+                        <div class="status">
+                            <p class="active">3</p>
+                        </div>
+                        <div class="status">
+                            <p>4</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </section>
+    </article>
+{% endblock %}
+
+{% block jslink %}
+    <script src='../../../public/assets/js/jquery.min.js'></script>
+    <script src='../../../public/assets/js/jquery.scrollex.min.js'></script>
+    <script src='../../../public/assets/js/jquery.scrolly.min.js'></script>
+    <script src='../../../public/assets/js/skel.min.js'></script>
+    <script src='../../../public/assets/js/util.js'></script>
+    <script src='../../../public/assets/js/main.js'></script>
+{% endblock %}

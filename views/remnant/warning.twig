@@ -5,7 +5,14 @@
 {% endif %}
 
 {% if exists %}
-    <div class"alert alert-warning">
+    <div class="alert alert-warning">
         Éste nombre de usuario ya está tomado
+    </div>
+{% endif %}
+
+
+{% if prolonged %}
+    <div class="alert alert-warning">
+        Ya no es posible realizar esta operación; se agotó su periodo de ampliación.
     </div>
 {% endif %}

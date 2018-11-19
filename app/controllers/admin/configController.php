@@ -15,7 +15,8 @@ class configController extends BaseController
     {
         if (isset($_SESSION['admID'])) {
             $userprofile = Administrator::where('id_account', $_SESSION['admID'])->first();
-            return $this->render('admin/config.twig', ['vPerfil' => $userprofile]);
+            $uimage = substr($userprofile->name, 0, 1);
+            return $this->render('admin/config.twig', ['vPerfil' => $userprofile, 'uimage'=>$uimage]);
         }
     }
 
@@ -29,6 +30,7 @@ class configController extends BaseController
         $user = Administrator::find($_POST['id']);
         
         $validation->setRuleBasic($validator);
+        $validation->setRuleCI($validator);
 
         $userprofile = [
             'name' => $_POST['name'],
@@ -37,8 +39,7 @@ class configController extends BaseController
             'ci'=> $_POST['ci'],
             'phone'=> $_POST['phone'],
             'email'=> $_POST['email'],
-            'address'=> $_POST['address'],
-            'avatar'=> $_POST['avatar']
+            'address'=> $_POST['address']
         ];
 
         if ($validator->validate($_POST)) {
@@ -52,8 +53,9 @@ class configController extends BaseController
             $errors = $validator->getMessages();
         }
         $user = Administrator::find($_POST['id']);
+        $uimage = substr($user->name, 0, 1);
         return $this->render('admin/config.twig',
-            ['errors' => $errors, 'vPerfil' => $user, 'result' => $result
+            ['errors' => $errors, 'vPerfil' => $user, 'uimage'=>$uimage, 'result' => $result
         ]);
     }
 }

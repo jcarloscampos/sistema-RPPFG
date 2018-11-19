@@ -17,11 +17,12 @@ class IndexController extends BaseController
         if (isset($_SESSION['dirID'])) {
             $userId = $_SESSION['dirID'];
            // $director = ProfessionalUmss->
-            $director = ProfessionalUmss::where('id_account', $userId)->first();
+            $user = ProfessionalUmss::where('id_account', $userId)->first();
+            $uimage = substr($user->name, 0, 1);
 
             if ($director) {
                 # si existe la cuenta en la BD
-                return $this->render('director/index.twig', ['account'=>$director]);
+                return $this->render('director/index.twig', ['account'=>$user, 'uimage'=>$uimage]);
 
             }
         }

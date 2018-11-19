@@ -105,5 +105,58 @@ class Validation
         ));
         return $validator;
     }
-    
+
+    public function setRuleDefOne($validator)
+    {
+        $validator->add(array(
+            'modality:Modalidad de titulación: '=>'required',
+            'career:Carrera al que pertenece: '=>'required',
+            'area:Área del perfil: '=>'required'         
+        ));
+        return $validator;
+    }
+
+    public function setRuleCompany($validator)
+    {
+        $validator->add(array(
+            'company_d:Información de la Empresa que colabora en su perfil: '=>'required'       
+        ));
+        return $validator;
+    }
+
+    public function setRuleJworkpost($validator)
+    {
+        $validator->add(array(
+            'jworkpost:Datos del estudiante que acompaña el perfil: '=>'required'       
+        ));
+        return $validator;
+    }
+
+    public function setRuleDefTwo($validator)
+    {
+        $validator->add(array(
+            'title:Título del Perfil: '=>'required | 
+                                                minlength(6)({label} debe tener al menos {min} caracteres) | 
+                                                maxlength(500)({label} debe tener menos de {max} caracteres)',
+            'gobj:Objetivo general del Perfil: '=>'required | 
+                                                minlength(6)({label} debe tener al menos {min} caracteres) | 
+                                                maxlength(2000)({label} debe tener menos de {max} caracteres)',
+            'sobj:Objetivos específicos del Perfil: '=>'required | 
+                                                minlength(6)({label} debe tener al menos {min} caracteres) | 
+                                                maxlength(3000)({label} debe tener menos de {max} caracteres)',
+            'dcptn:Descripción del Perfil: '=>'required | 
+                                                minlength(6)({label} debe tener al menos {min} caracteres) | 
+                                                maxlength(5000)({label} debe tener menos de {max} caracteres)'
+        ));
+        return $validator;
+    }
+
+    public function setRuleDefThree($validator)
+    {
+        $validator->add(array(
+            'psmatter:Docente de materia de Perfil: '=>'required',
+            'tutor:Tutor del titular del Perfil: '=>'required'
+        ));
+        return $validator;
+    }
 }

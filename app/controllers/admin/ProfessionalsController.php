@@ -23,6 +23,7 @@ class ProfessionalsController extends BaseController
     {
         if (isset($_SESSION['admID'])) {
             $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
+            $uimage = substr($admin->name, 0, 1);
             //$title = ADegree::query()->get();
             $itn = ProfessionalUmss::query()->get()->toArray();
             $etn = ProfessionalExt::query()->get()->toArray();
@@ -48,7 +49,7 @@ class ProfessionalsController extends BaseController
                 return array_slice($profesionales, $offset, $length);
             });
             $pagination = $paginator->paginate($page);
-            return $this->render('admin/list-profesionals.twig', ['profesionales' => $pagination->getItems(), 'pagination'=>$pagination, 'page'=>$page, 'vadmin' => $admin, 'vaccounts'=>$account, 'vurols'=>$urol, 'vrols'=>$rol]);      
+            return $this->render('admin/list-profesionals.twig', ['profesionales' => $pagination->getItems(), 'pagination'=>$pagination, 'page'=>$page, 'uimage'=>$uimage, 'vadmin' => $admin, 'vaccounts'=>$account, 'vurols'=>$urol, 'vrols'=>$rol]);      
 
        //     return $this->render('admin/list-profesionals.twig',
          //   ['vadmin' => $admin, 'vitns'=>$itn, 'vetns'=>$etn, 'vaccounts'=>$account, 'vurols'=>$urol, 'vrols'=>$rol]);
@@ -59,7 +60,8 @@ class ProfessionalsController extends BaseController
     {
         if (isset($_SESSION['admID'])) {
             $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
-            return $this->render('admin/insert-account.twig', ['vadmin' => $admin]);
+            $uimage = substr($admin->name, 0, 1);
+            return $this->render('admin/insert-account.twig', ['vadmin' => $admin, 'uimage'=>$uimage]);
         }
     }
 
@@ -103,7 +105,7 @@ class ProfessionalsController extends BaseController
             $errors = $validator->getMessages();
             return $this->render(
                 'admin/insert-account.twig', 
-                ['vadmin' => $admin, 'errors' => $errors, 'vPerfil'=>$userprofile]);
+                ['vadmin' => $admin, 'errors' => $errors, 'vadmin'=>$userprofile]);
             return null;
         }
         return $this->render(

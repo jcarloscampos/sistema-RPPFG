@@ -1,0 +1,97 @@
+{% extends 'layout.twig' %}
+
+{% block csslink %}
+    {% if outer %}
+        <link rel='stylesheet' href='../../public/assets/css/app.css'>
+    {% else %}
+        <link rel='stylesheet' href='../../../public/assets/css/app.css'>
+    {% endif %}
+{% endblock %}
+
+{% block namepage %}
+    Perfil de postulante en SRPPFG
+{% endblock %}
+
+{% block title %}
+    Postulante:  {{ vPerfil.name }} {{ vPerfil.l_name }} {{ vPerfil.ml_name }}
+{% endblock %}
+
+{% block menu %}
+    {% include('remnant/nav-postulant.twig') %}
+{% endblock %}
+
+{% block configpersonal %}
+    <div class="configpersonal">
+        <a class=".btn .btn-primary" href="{{'logout' | url }}">Salir</a>
+        <a class="principal" href="{{'postulant/config' | url }}">Configuración</a>
+    </div>
+    <div class="nav-way">
+        <p>
+        <a class=".btn .btn-primary" href="{{'postulant' | url }}">Home</a> &nbsp; | &nbsp; Perfil
+        </p>
+    </div>
+{% endblock %}
+
+{% block content %}
+<article id="main">
+        <section class="wrapper style5">
+            <div class="inner">
+                <section class="content-main">
+                    <div>
+                        <h4 style="text-align: center;">Información!</h4>
+                        {# <p style="text-align: left; color: #505393">Ve.. <a class="principal" href="{{'postulant/ressources' | url }}">configuración</a> perfil. </p> #}
+                        {% if msg == 0 %}
+                            <p style="text-align: left; color: #505393">No se guardó el Perfil, hubo un error en el sistema. ¿Desea iniciar de nuevo con el registro de su Perfil?.</p> 
+                        {% elseif msg == 1 %}
+                            <p style="text-align: left; color: #505393">Usted ya tiene un perfil definido, puede modificar desde la venta de actualización del perfil si su perfil aun no fue publicado.</p> 
+                        {% elseif msg == 2 %}
+                            <p style="text-align: left; color: #505393">Su Perfil fue creado exitosamente, puede publicar si ya fue aprobado o actualizar si requiere algún cambio.</p>
+                        {% endif %}
+                        
+                        {% if not msg == 2 %}
+                            <p style="text-align: left; color: #505393">Si tiene algún problema contáctese con el Administrador.</p> 
+                        {% endif %}
+
+                        {% if not msg == 8 %}
+                            <p style="text-align: left; color: #505393">Su Perfil fue publicado exitosamente.</p> 
+                        {% endif %}
+
+                        {% if not msg == 9 %}
+                            <p style="text-align: left; color: #505393">Ya  no es posible realizar esta acción; su Perfil ya fue publicado.</p> 
+                        {% endif %}
+                        
+                        <div class="configpersonal" style="text-align: center; margin-top: 3em;">
+                            <a class=".btn .btn-primary"  style="border: 1px solid #1a237e;" href="{{'postulant' | url }}">Aceptar</a> 
+                            
+                            {% if msg == 0 %}
+                                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                <a class="principal"  style="border: 1px solid #1a237e;" href="{{'postulant/settle/heading' | url }}">Iniciar</a>
+                            {% endif %}
+                            
+                        </div>
+                    </div>
+                    <div class="status-defprofile">
+                    </div>
+                </section>
+            </div>
+        </section>
+    </article>
+{% endblock %}
+
+{% block jslink %}
+    {% if outer %}
+        <script src='../../public/assets/js/jquery.min.js'></script>
+        <script src='../../public/assets/js/jquery.scrollex.min.js'></script>
+        <script src='../../public/assets/js/jquery.scrolly.min.js'></script>
+        <script src='../../public/assets/js/skel.min.js'></script>
+        <script src='../../public/assets/js/util.js'></script>
+        <script src='../../public/assets/js/main.js'></script>
+    {% else %}
+        <script src='../../../public/assets/js/jquery.min.js'></script>
+        <script src='../../../public/assets/js/jquery.scrollex.min.js'></script>
+        <script src='../../../public/assets/js/jquery.scrolly.min.js'></script>
+        <script src='../../../public/assets/js/skel.min.js'></script>
+        <script src='../../../public/assets/js/util.js'></script>
+        <script src='../../../public/assets/js/main.js'></script>
+    {% endif %}
+{% endblock %}

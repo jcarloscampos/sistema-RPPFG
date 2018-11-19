@@ -23,7 +23,12 @@ class SigninController extends BaseController
             # la cuenta es de un administrador
             header('Location:' . BASE_URL . 'admin');
             return null;
-        } elseif (isset($_SESSION['dirID'])) {
+        } elseif (isset($_SESSION['staryID'])) {
+            # la cuenta es director de carrera
+            header('Location:' . BASE_URL . 'secretary');
+            return null;
+        }
+        elseif (isset($_SESSION['dirID'])) {
             # la cuenta es director de carrera
             header('Location:' . BASE_URL . 'director');
             return null;
@@ -31,11 +36,16 @@ class SigninController extends BaseController
             # la cuenta es de un postulante
             header('Location:' . BASE_URL . 'postulant');
             return null;
-        } elseif (isset($_SESSION['profID'])) {
+        } elseif (isset($_SESSION['iprofID'])) {
             # la cuenta es de un profesional
-            header('Location:' . BASE_URL . 'professional');
+            header('Location:' . BASE_URL . 'itnprofessional');
+            return null;
+        }elseif (isset($_SESSION['eprofID'])) {
+            # la cuenta es de un profesional
+            header('Location:' . BASE_URL . 'etnprofessional');
             return null;
         }
+
         header('Location: ' . BASE_URL . '');
     }
 }

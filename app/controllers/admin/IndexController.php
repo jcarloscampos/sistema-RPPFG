@@ -27,12 +27,14 @@ class IndexController extends BaseController
             if ($userId) {
                 # si existe la cuenta en la BD
                 $admin = Administrator::where('id_account', $userId)->first();
+                $uimage = substr($admin->name, 0, 1);
                 if ($admin->ci == 0 || $admin->name == "" || $admin->l_name == "") {
                     $inforeg = true;
                 }
                 return $this->render('admin/index.twig', 
                     ['inforeg'=>$inforeg, 
-                    'admin' => $admin
+                    'vadmin' => $admin,
+                    'uimage' => $uimage
                 ]);
             }
         }

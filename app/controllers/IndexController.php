@@ -53,10 +53,21 @@ class IndexController extends BaseController
                             # sesión para un administrador
                             $nameSes = 'admID';
                             $this->setSession($user, $nameSes);
-
-                        } elseif ($rol->name_rol == 'director') {
+                        } elseif ($rol->name_rol == 'secretary') {
+                             # sesión para la secretaria
+                             $nameSes = 'staryID';
+                             $this->setSession($user, $nameSes);
+                        }elseif ($rol->name_rol == 'director') {
                             # sesión para un director de carrera
                             $nameSes = 'dirID';
+                            $this->setSession($user, $nameSes);
+                        }elseif ($rol->name_rol == 'itnprof') {
+                            # sesión para un director de carrera
+                            $nameSes = 'iprofID';
+                            $this->setSession($user, $nameSes);
+                        }elseif ($rol->name_rol == 'etnprof') {
+                            # sesión para un director de carrera
+                            $nameSes = 'eprofID';
                             $this->setSession($user, $nameSes);
                         }
                     }
@@ -67,12 +78,17 @@ class IndexController extends BaseController
                         $this->setSession($user, $nameSes);
                     }
                     # si existe la cuenta en la BD y puede ser un Profesional de UNSS o externo
-                    $profUmss = ProfessionalUmss::where('id_account', $user->id)->first();
-                    $profEtn = ProfessionalExt::where('id_account', $user->id)->first();
-                    if ($profUmss || $profEtn) {
-                        $nameSes = 'profID';
-                        $this->setSession($user, $nameSes);
-                    }
+                    // $profUmss = ProfessionalUmss::where('id_account', $user->id)->first();
+                    // if ($profUmss) {
+                    //     $nameSes = 'iprofID';
+                    //     $this->setSession($user, $nameSes);
+                    // }
+
+                    // $profEtn = ProfessionalExt::where('id_account', $user->id)->first();
+                    // if ($profEtn) {
+                    //     $nameSes = 'eprofID';
+                    //     $this->setSession($user, $nameSes);
+                    // }
                 }
             }
             $validator->addMessage('username', 'Nombre de usuario y/o contraseña no son correctas');

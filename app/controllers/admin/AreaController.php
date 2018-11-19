@@ -45,8 +45,9 @@ class AreaController extends BaseController
             $paginator->setSliceCallback(function ($offset, $length) use ($areas) {
                 return array_slice($areas, $offset, $length);
             });
+            $uimage = substr($admin->name, 0, 1);
             $pagination = $paginator->paginate($page);
-            return $this->render('admin/list-area.twig', ['areas' => $pagination->getItems(), 'pagination'=>$pagination, 'page'=>$page, 'vadmin' => $admin]);
+            return $this->render('admin/list-area.twig', ['areas' => $pagination->getItems(), 'pagination'=>$pagination, 'page'=>$page, 'vadmin' => $admin, 'uimage'=>$uimage]);
         }
     }
 
@@ -57,10 +58,11 @@ class AreaController extends BaseController
     {
         if (isset($_SESSION['admID'])) {
             $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
+            $uimage = substr($admin->name, 0, 1);
             //$areas = Area::all();
             $typeArea = true;
             //return $this->render('admin/crud-area.twig', ['vadmin' => $admin, 'vareas' => $areas, 'typeArea' => $typeArea]);
-            return $this->render('admin/crud-area.twig', ['vadmin' => $admin, 'typeArea' => $typeArea]);
+            return $this->render('admin/crud-area.twig', ['vadmin' => $admin, 'uimage'=>$uimage, 'typeArea' => $typeArea]);
         }
     }
 
@@ -75,6 +77,7 @@ class AreaController extends BaseController
         $typeArea = true;
         $duplicate = false;
         $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
+        $uimage = substr($admin->name, 0, 1);
         $validator = new Validator();
         $validation = new Validation();
         $makeDB = new ServerConnection(); 
@@ -87,7 +90,7 @@ class AreaController extends BaseController
                 $area = new Area([
                     'name' => $_POST['name'],
                     'description' => $_POST['desc'],
-                    'id_parent_area' => 1
+                    'id_parent_area' => null
                     ]);
                 $area->save();
                 
@@ -103,7 +106,7 @@ class AreaController extends BaseController
         }
         $errors = $validator->getMessages();
         return $this->render('admin/crud-area.twig',
-        ['vadmin' => $admin, 'errors' => $errors, 'duplicate' => $duplicate, 'result'=>$result, 'typeArea' => $typeArea]);
+        ['vadmin' => $admin, 'uimage'=>$uimage, 'errors' => $errors, 'duplicate' => $duplicate, 'result'=>$result, 'typeArea' => $typeArea]);
     }
 
 
@@ -111,9 +114,10 @@ class AreaController extends BaseController
 	{   
         $area = Area::where('id', $id)->first();
         $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
+        $uimage = substr($admin->name, 0, 1);
         $updarea = true;
 
-		return $this->render('admin/crud-area.twig', ['vadmin' => $admin, 'varea' => $area, 'updarea' => $updarea]);
+		return $this->render('admin/crud-area.twig', ['vadmin' => $admin, 'uimage'=>$uimage, 'varea' => $area, 'updarea' => $updarea]);
 	}
 
     public function postEdit($arg)
@@ -125,6 +129,7 @@ class AreaController extends BaseController
         $validation = new Validation();
         $makeDB = new ServerConnection();
         $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
+        $uimage = substr($admin->name, 0, 1);
         $uArea = Area::find($arg);
         
         $validation->setRuleArea($validator);
@@ -136,7 +141,7 @@ class AreaController extends BaseController
             return null;
         }
         $errors = $validator->getMessages();
-		return $this->render('admin/crud-area.twig', ['vadmin' => $admin, 'errors' => $errors, 'varea' => $uArea, 'updarea' => $updarea]);
+		return $this->render('admin/crud-area.twig', ['vadmin' => $admin, 'uimage'=>$uimage, 'errors' => $errors, 'varea' => $uArea, 'updarea' => $updarea]);
     }
     public function getDelete($id)
 	{
@@ -145,28 +150,15 @@ class AreaController extends BaseController
         header('Location:' . BASE_URL . 'admin/area');	
     }
 
-    
-
-
-
-
-
-
-
-
-
-
-
-    // ####################################################################################################
-    
     public function getCreatesubarea()
 	{   
         $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
+        $uimage = substr($admin->name, 0, 1);
         $areas = Area::query()->orderBy('name')->get();
         $typeArea = false;
 
         return $this->render('admin/crud-area.twig', 
-        ['vadmin' => $admin, 'vareas' => $areas, 'typeArea' => $typeArea]);
+        ['vadmin' => $admin, 'uimage'=>$uimage, 'vareas' => $areas, 'typeArea' => $typeArea]);
     }
 
     public function postCreatesubarea()
@@ -176,6 +168,7 @@ class AreaController extends BaseController
         $typeArea = false;
         $duplicate = false;
         $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
+        $uimage = substr($admin->name, 0, 1);
         $validator = new Validator();
         $validation = new Validation();
         $makeDB = new ServerConnection();
@@ -202,18 +195,19 @@ class AreaController extends BaseController
         }
         $errors = $validator->getMessages();
         return $this->render('admin/crud-area.twig',
-        ['vadmin' => $admin, 'errors' => $errors, 'vareas' => $areas, 'duplicate' => $duplicate, 'typeArea' => $typeArea]);
+        ['vadmin' => $admin, 'uimage'=>$uimage, 'errors' => $errors, 'vareas' => $areas, 'duplicate' => $duplicate, 'typeArea' => $typeArea]);
     }
 
     public function getAddsubarea($id)
 	{   
         $uArea = Area::find($id);
         $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
+        $uimage = substr($admin->name, 0, 1);
         $updarea = true;
         $addsubarea = true;
 
         return $this->render('admin/crud-area.twig', 
-        ['vadmin' => $admin, 'varea' => $uArea, 'updarea' => $updarea, 'addsubarea' => $addsubarea]);
+        ['vadmin' => $admin, 'uimage'=>$uimage, 'varea' => $uArea, 'updarea' => $updarea, 'addsubarea' => $addsubarea]);
     }
     
     public function postAddsubarea($id)
@@ -225,6 +219,7 @@ class AreaController extends BaseController
         $updarea = true;
         $addsubarea = true;
         $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
+        $uimage = substr($admin->name, 0, 1);
         $validator = new Validator();
         $validation = new Validation();
         $makeDB = new ServerConnection();
@@ -251,7 +246,7 @@ class AreaController extends BaseController
         $errors = $validator->getMessages();
         return $this->render('admin/crud-area.twig',
         ['vadmin' => $admin, 'errors' => $errors, 'duplicate' => $duplicate, 'typeArea' => $typeArea, 
-        'updarea' => $updarea, 'addsubarea' => $addsubarea]);
+        'updarea' => $updarea, 'addsubarea' => $addsubarea, 'uimage'=>$uimage]);
     }
     
 

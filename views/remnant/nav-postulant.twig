@@ -5,21 +5,18 @@
             <div id="menu">
                 <div class="content-avatar">
                     <div class="avatar">
-                        <figure>
-                            <a href="{{'postulant' | url }}"><img src='images/avatar/a1.png' alt="Postulante" srcset=""></a>
-                            
-                        </figure>
+                        <p>{{uimage}}</p>
                     </div>
-                    <p> {{ vPerfil.name }} {{ vPerfil.l_name }} </p>
+                    <p class="sname"> {{ vPerfil.name }} {{ vPerfil.l_name }} {{ vPerfil.ml_name }}</p>
                 </div>
                 
                 <br><br><br>
                 <ul> 
                     <li>
-                        <a href="{{'postulant' | url }}">Cargar Proyecto</a>
+                        <a href="{{'postulant/settle' | url }}">Cargar Proyecto</a>
                     </li>
                     <li>
-                        <a href="{{'postulant' | url }}">Actualizar Proyecto</a>
+                        <a href="{{'postulant/settle/restrained/view' | url }}">Ver Proyecto de Perfil</a>
                     </li>
                 </ul>
             </div>

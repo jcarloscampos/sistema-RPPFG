@@ -1,0 +1,131 @@
+{% extends 'layout.twig' %}
+
+{% block csslink %}
+    <link rel='stylesheet' href='../../public/assets/css/app.css'>
+{% endblock %}
+
+{% block namepage %}
+    Perfil de administración en SRPPFG
+{% endblock %}
+
+{% block title %}
+    Secretaria:  {{ vPerfil.name }} {{ vPerfil.l_name }} {{ vPerfil.l_name }}
+{% endblock %}
+
+{% block menu %}
+    {% include('remnant/nav-secretary.twig') %}
+{% endblock %}
+
+{% block configpersonal %}
+    <div class="configpersonal">
+        <a class=".btn .btn-primary" href="{{'logout' | url }}">Salir</a>
+        <a class="principal" href="{{'secretary/config' | url }}">Configuración</a>
+    </div>
+    <div class="nav-way">
+        <p>
+        <a class=".btn .btn-primary" href="{{'secretary' | url }}">Home</a> &nbsp; | &nbsp; Perfiles
+        </p>
+    </div>
+{% endblock %}
+
+{% block content %}
+<article id="main">
+        <section class="wrapper style5">
+            <div class="inner">
+                <section>
+                    <h4 style="text-align: center;">Perfiles</h4>
+                    <div class="message-box">
+                        {% include 'remnant/errors.twig' %}
+                        {% include 'remnant/success.twig' %}
+                    </div>
+                    
+                    <table id="tabla_perfiles">
+                        <thead>
+                            <tr>
+                                <th>Título</th>
+                                <th>Modalidad</th>
+                                <th>Postulante(s)</th>
+                                <th>Estado</th>
+                                <th>Periodo</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="arealist">
+                            {% for profile in profiles %}
+                                <trwidth=35%>
+                                    <td>
+                                        {{ profile.title }}
+                                    </td>
+
+                                    <td width=20%>
+                                        {% for modality in modalities %}
+                                            {% if modality.id == profile.id_mod %}
+                                                {{ modality.name_mod }}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                    <td width=15%>
+                                        {% for postperf in postperfs %}
+                                            {% if postperf.id_profile == profile.id %}
+                                                {% for post in posts %}
+                                                    {% if post.id == postperf.id_postulant %}
+                                                        *{{ post.name }} {{ post.l_name }} {{ post.ml_name}}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </td>
+
+                                    <td width=10>
+                                        {% for state in status %}
+                                            {% if state.id == profile.id_status %}
+                                                {{ state.name }}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                    
+                                    <td width=12%>
+                                    {% set condition = true %}
+                                    {% for postperf in postperfs %}
+                                        {% if postperf.id_profile == profile.id %}
+                                            {% for period in periods %}
+
+                                                {% if period.id == postperf.id_period and condition %}
+                                                    {{period.period}}/{{ period.start_date}}; {{ period.end_date }}
+                                                    {% set condition = false %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% else %}
+                                        
+                                    {% endfor %}
+                                    </td>
+
+                                    <td width=8%>
+                                        <div class="menu-actions-tbs">
+                                            <div class="actions">
+                                                <a href="{{'secretary/settle/setpass/' | url }}{{ profile.id }}">Editar</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </section>
+                <br> 
+                <br>
+                <br>
+            </div>
+        </section>
+    </article>
+{% endblock %}
+
+{% block jslink %}
+    <script src='../../public/assets/js/jquery.min.js'></script>
+    <script src='../../public/assets/js/jquery.scrollex.min.js'></script>
+    <script src='../../public/assets/js/jquery.scrolly.min.js'></script>
+    <script src='../../public/assets/js/skel.min.js'></script>
+    <script src='../../public/assets/js/util.js'></script>
+    <script src='../../public/assets/js/main.js'></script>
+{% endblock %}

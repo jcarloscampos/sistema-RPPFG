@@ -1,0 +1,175 @@
+{% extends 'layout.twig' %}
+
+{% block csslink %}
+    <link rel='stylesheet' href='../../../../public/assets/css/app.css'>
+{% endblock %}
+
+{% block namepage %}
+    Perfil de administración en SRPPFG
+{% endblock %}
+
+{% block title %}
+    Secretaria:  {{ vPerfil.name }} {{ vPerfil.l_name }} {{ vPerfil.l_name }}
+{% endblock %}
+
+{% block menu %}
+    {% include('remnant/nav-secretary.twig') %}
+{% endblock %}
+
+{% block configpersonal %}
+    <div class="configpersonal">
+        <a class=".btn .btn-primary" href="{{'logout' | url }}">Salir</a>
+        <a class="principal" href="{{'secretary/config' | url }}">Configuración</a>
+    </div>
+    <div class="nav-way">
+        <p>
+        <a class=".btn .btn-primary" href="{{'secretary' | url }}">Home</a> &nbsp; | &nbsp; <a class=".btn .btn-primary" href="{{'secretary/settle' | url }}">Perfiles</a> &nbsp; | &nbsp; Establecer permisos
+        </p>
+    </div>
+
+
+{% endblock %}
+
+{% block content %}
+<article id="main">
+        <section class="wrapper style5">
+            <div class="inner">
+                <section class="table-report">
+                    <h4 style="text-align: center;">Perfil Nro. {{profile.num_profile}}</h4>
+                    <div class="message-box">
+                        {% include 'remnant/errors.twig' %}
+                        {% include 'remnant/warning.twig' %}
+                        {% include 'remnant/success.twig' %}
+                        
+                    </div>
+                    <p style="float:right">Nro. {{profile.num_profile}}</p>
+                    <form method="post" action="#">
+                        <table id="table_settle">
+                            <tr>
+                                <td width=25%><strong style="color:#3b3d3f; font-weight: bold;">Nombre del<br> estudiante(s)</strong></td>
+                                <td width=25%><p style="font-size: .9em;  border-bottom: solid 1px gray; margin-bottom: 1em;">Apellido Paterno</p><p>{{ postf.l_name }}</p><p>{{ posts.l_name }}</p></td>
+                                <td width=25%><p style="font-size: .9em;  border-bottom: solid 1px gray; margin-bottom: 1em;">Apellido Materno</p><p>{{ postf.ml_name }}</p><p>{{ posts.ml_name }}</p></td>
+                                <td width=25%><p style="font-size: .9em;  border-bottom: solid 1px gray; margin-bottom: 1em;">Nombre(s)</p><p>{{ postf.name }}</p><p>{{ posts.name }}</p></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"><p><strong style="color:#3b3d3f; font-weight: bold;">Email:<br></strong>{{ postf.email }}<br>{{ posts.email }}</p></td>
+                                <td colspan="2"><p><strong style="color:#3b3d3f; font-weight: bold;">Teléfono:<br></strong>{{ postf.phone }}<br>{{ posts.phone }}</p> </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"><p><strong style="color:#3b3d3f; font-weight: bold;">Carrera: </strong>{{ career.name }}</p></td>
+                                <td colspan="2"><p><strong style="color:#3b3d3f; font-weight: bold;">Modalidad: </strong>{{ modality.name_mod }}</p></td>
+                                
+                            </tr>
+                            <tr>
+                                <td><p><strong style="color:#3b3d3f; font-weight: bold;">Aprobado en: </strong>{{ approved }}</p></td>
+
+                                <td colspan="2"><p><strong style="color:#3b3d3f; font-weight: bold;">Fecha límite de defensa</strong></p>
+                                <select name="enddatep" id="enddatep">
+                                    <option value=""disabled selected>- {{period.end_date}} -</option>
+                                        <option value="1">Prórroga de ampliación (1 Semestre)</option>
+                                        <option value="2">Solicitud de ampliación (2 Semestres)</option>
+                                    </select>   
+                                </td>
+                                <td><p><strong style="color:#3b3d3f; font-weight: bold;">Estado: </strong></p> 
+                                <select name="statep" id="statep">
+                                    <option value=""disabled selected>- {{ cstate.name }} -</option>
+                                        {% for state in status %}
+                                            <option value="{{state.id}}">{{state.name}}</option>
+                                        {% endfor %}
+                                    </select>   
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"%><p><strong style="color:#3b3d3f; font-weight: bold;">Tutor(es): </strong>{{tutorfir.name}} {{tutorfir.l_name}} {{tutorfir.ml_name}}
+                                {% if twofold %} / {{ tutorsec.name}} {{tutorsec.l_name}} {{tutorsec.ml_name}} {% endif %} </p></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"><p><strong style="color:#3b3d3f; font-weight: bold;">Área: </strong>{{areap.name}}</p></td>
+                                <td colspan="2"><p><strong style="color:#3b3d3f; font-weight: bold;">Sub área: </strong>{{ subareap.name }}</p> </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"><p><strong style="color:#3b3d3f; font-weight: bold;">Título: </strong>{{ profile.title }}</p></td>
+                            </tr> 
+                            <tr>
+                                <td colspan="4"><p><strong style="color:#3b3d3f; font-weight: bold;">Objetivo general: </strong>{{ profile.g_objective }}</p></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"><p><strong style="color:#3b3d3f; font-weight: bold;">Objetivos específicos: </strong>{{ profile.s_objects }}</p></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"><p><strong style="color:#3b3d3f; font-weight: bold;">Descripción: </strong>{{ profile.description }}</p></td>
+                            </tr>
+                        </table>
+                        {% if group %}
+                            <table id="table_settle">
+                                <tr>
+                                    <td colspan="5" height="30px"></td>
+                                </tr>
+                                <tr style="text-align: center; font-size: .95em;">
+                                    <td>
+                                        <p style="border-top: 1px dotted gray;">{{director.name}} {{director.l_name}} {{director.ml_name}}</p><p>Director de carrera</p>
+                                    </td>
+                                    <td>
+                                        <p style="border-top: 1px dotted gray;">{{ teacher.name }} {{ teacher.l_name }} {{ teacher.ml_name }}</p><p>Docente de la Materia</p>
+                                    </td>
+                                    <td>
+                                        <p style="border-top: 1px dotted gray;">{{tutorfir.name}} {{tutorfir.l_name}} {{tutorfir.ml_name}}</p><p>Tutor</p>
+                                    </td>
+                                    {% if modality.id == 3 %}
+                                        <td>
+                                            <p style="border-top: 1px dotted gray;">{{attendant.responsable}}</p><p>Responsable</p>
+                                        </td>
+                                    {% endif %}
+                                    <td>
+                                        <p style="border-top: 1px dotted gray;">{{ postf.name }} {{ postf.l_name }} {{ postf.ml_name }}</p><p>Estudiante</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        {% else %}
+                            <table id="table_settle">
+                                <tr>
+                                    <td colspan="5" height="50px"></td>
+                                </tr>
+                                <tr style="text-align: center; font-size: .95em;">
+                                    <td>
+                                        <p style="border-top: 1px dotted gray;">{{director.name}} {{director.l_name}} {{director.ml_name}}</p> <p>Director de carrera</p>
+                                    </td>
+                                    <td>
+                                        <p style="border-top: 1px dotted gray;">{{ teacher.name }} {{ teacher.l_name }} {{ teacher.ml_name }}</p><p>Docente de la Materia</p>
+                                    </td>
+                                    <td>
+                                        <p style="border-top: 1px dotted gray;">{{tutorfir.name}} {{tutorfir.l_name}} {{tutorfir.ml_name}}</p><p>Tutor</p>
+                                    </td>
+                                    {% if modality.id == 3 %}
+                                        <td>
+                                            <p style="border-top: 1px dotted gray;">{{attendant.responsable}}</p><p>Responsable</p>
+                                        </td>
+                                    {% endif %}
+                                    <td>
+                                        <p style="border-top: 1px dotted gray;">{{ postf.name }} {{ postf.l_name }} {{ postf.ml_name }}</p><p>Estudiante</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        {% endif %}
+                        <br>
+                        <div class="12u 12u$(xsmall)">
+                            <ul class="actions" style="text-align: center">
+                                <li><button class="principal" type="submit">Guardar los cambios</button>
+                                </li>
+                            </ul>
+                        </div>
+                    </form>
+                </section>
+            </div>
+        </section>
+    </article>
+{% endblock %}
+
+{% block jslink %}
+    <script src='../../../../public/assets/js/jquery.min.js'></script>
+    <script src='../../../../public/assets/js/jquery.scrollex.min.js'></script>
+    <script src='../../../../public/assets/js/jquery.scrolly.min.js'></script>
+    <script src='../../../../public/assets/js/skel.min.js'></script>
+    <script src='../../../../public/assets/js/util.js'></script>
+    <script src='../../../../public/assets/js/main.js'></script>
+{% endblock %}
