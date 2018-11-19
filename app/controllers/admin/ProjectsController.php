@@ -17,6 +17,8 @@ use AppPHP\Models\ProjectsView;
 use Sirius\Validation\Validator;
 use AppPHP\Models\Administrator;
 use AppPHP\Controllers\Common\Validation;
+use AshleyDawson\SimplePagination\Paginator;
+
 
 /**
  * Clase controlador para lectura, inserción, eliminación y actualización de datos de la tabla Proyectos
@@ -33,8 +35,28 @@ class ProjectsController extends BaseController
     {
         if (isset($_SESSION['admID'])) {
             $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
-            $Proyectos = ProjectsView::query()->orderBy('title', 'asc')->get();
-            return $this->render('admin/list_projects.twig', ['Proyectos' => $Proyectos, 'admin' => $admin]);
+            $Proyectos = ProjectsView::query()->orderBy('title', 'asc')->get()->toArray();
+            $params = null; 
+            $page = 1;
+            $myUrl=parse_url($_SERVER['REQUEST_URI']);
+            if(isset($myUrl['query'])){
+                parse_str(parse_url($_SERVER['REQUEST_URI'])['query'], $params);
+                $page = (int)$params['page'];          
+            }
+            $paginator = new Paginator();
+            $paginator->setItemsPerPage(5)->setPagesInRange(5);
+            $paginator->setItemTotalCallback(function () use ($Proyectos) {
+                return count($Proyectos);
+            });
+            $length = $paginator->getItemsPerPage();
+            $offset =  $page * $length;
+            $paginator->setSliceCallback(function ($offset, $length) use ($Proyectos) {
+                return array_slice($Proyectos, $offset, $length);
+            });
+            $pagination = $paginator->paginate($page);
+            return $this->render('admin/list_projects.twig', ['Proyectos' => $pagination->getItems(), 'pagination'=>$pagination, 'page'=>$page, 'admin' => $admin]);         
+
+            //return $this->render('admin/list_projects.twig', ['Proyectos' => $Proyectos, 'admin' => $admin]);
         }
     }
 
@@ -257,7 +279,7 @@ class ProjectsController extends BaseController
     }
 
     private function getPostulantID($nombre_postulante, $apellido_paterno_postulante, $apellido_materno_postulante, $id_career, &$errors){
-        //Buscamos al estudiante en la lista de postulantes actuales
+        //Buscamos al estudiante en la lista de Proyectos actuales
         $postulant_exists = Postulant::where('name', $nombre_postulante)
         ->where('l_name', $apellido_paterno_postulante)
         ->where('ml_name', $apellido_materno_postulante)->first();

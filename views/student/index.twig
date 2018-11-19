@@ -1,0 +1,31 @@
+{% extends 'layout.twig' %}
+{% block userCaption %}
+    <div class="search right">
+        <form action="" class="relative">
+            <span class="icon-search search-icon"></span>
+            <input type="text" placeholder="Buscar perfil...." class="input">
+            <span class="close-icon icon-pen">X</span>  
+        </form>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="container-register">                              
+        <form class="group-content-register" action="" method="post">
+            <div class="wrap-register">
+                <h1 class="center-text">Inicio de sesión de estudiantes</h1>
+                <label for="email"><b>Nombre de usuario</b></label>
+                <input type="text" placeholder="Ingrese su nombre de usuario" name="email" required>
+        
+                <label for="psw"><b>Contraseña</b></label>
+                <input type="password" placeholder="Ingrese su contraseña" name="psw" required>
+        
+                <div class="clearfix-register">
+                    <a class="createbtn" href="{{ 'student/registry/' | url }}">Crear cuenta</a>
+                    <input class="signupbtn" type="submit" value="Acceder">
+                </div>
+            </div>
+        </form>
+    </div>
+        
+{% endblock %}

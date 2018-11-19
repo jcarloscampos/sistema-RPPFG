@@ -14,6 +14,7 @@ use AppPHP\Controllers\Common\Validation;
 use AppPHP\Controllers\Common\ServerConnection;
 use AppPHP\Controllers\Common\SettingData;
 use AppPHP\Controllers\Common\Mail;
+use AshleyDawson\SimplePagination\Paginator;
 
 class ProfessionalsController extends BaseController
 {
@@ -24,13 +25,34 @@ class ProfessionalsController extends BaseController
             $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
             $uimage = substr($admin->name, 0, 1);
             //$title = ADegree::query()->get();
-            $itn = ProfessionalUmss::query()->get();
-            $etn = ProfessionalExt::query()->get();
+            $itn = ProfessionalUmss::query()->get()->toArray();
+            $etn = ProfessionalExt::query()->get()->toArray();
             $account = Account::query()->get();
             $urol = UserRol::query()->get();
             $rol = Rol::query()->get();
-            return $this->render('admin/list-profesionals.twig',
-            ['vadmin' => $admin, 'uimage'=>$uimage, 'vitns'=>$itn, 'vetns'=>$etn, 'vaccounts'=>$account, 'vurols'=>$urol, 'vrols'=>$rol]);
+            $profesionales = array_merge($itn, $etn);
+            $params = null; 
+            $page = 1;
+            $myUrl=parse_url($_SERVER['REQUEST_URI']);
+            if(isset($myUrl['query'])){
+                parse_str(parse_url($_SERVER['REQUEST_URI'])['query'], $params);
+                $page = (int)$params['page'];          
+            }
+            $paginator = new Paginator();
+            $paginator->setItemsPerPage(5)->setPagesInRange(5);
+            $paginator->setItemTotalCallback(function () use ($profesionales) {
+                return count($profesionales);
+            });
+            $length = $paginator->getItemsPerPage();
+            $offset =  $page * $length;
+            $paginator->setSliceCallback(function ($offset, $length) use ($profesionales) {
+                return array_slice($profesionales, $offset, $length);
+            });
+            $pagination = $paginator->paginate($page);
+            return $this->render('admin/list-profesionals.twig', ['profesionales' => $pagination->getItems(), 'pagination'=>$pagination, 'page'=>$page, 'uimage'=>$uimage, 'vadmin' => $admin, 'vaccounts'=>$account, 'vurols'=>$urol, 'vrols'=>$rol]);      
+
+       //     return $this->render('admin/list-profesionals.twig',
+         //   ['vadmin' => $admin, 'vitns'=>$itn, 'vetns'=>$etn, 'vaccounts'=>$account, 'vurols'=>$urol, 'vrols'=>$rol]);
         }
     }
 
