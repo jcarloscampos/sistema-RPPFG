@@ -63,6 +63,19 @@
                                 {% endfor %}
                                 </tbody>
                             </table>
+                              {% if page!=1%}
+                                <a href="?page={{ pagination.getPreviousPageNumber() }}">Pagina Anterior</a>
+                            {% endif %}
+                            {% if users|length > 0 %}
+                            <div>
+                                {% for page in pagination.pages %}
+                                    <a href="?page={{ page }}">{{ page }}</a> |
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                            {% if pagination.getNextPageNumber()!=''%}
+                            <a href="?page={{ pagination.getNextPageNumber() }}">Pagina Siguiente</a>
+                            {% endif %}
                         </div>
                     </div>
                 </section>
