@@ -18,7 +18,8 @@
         "phroute/phroute": "^2.1",
         "twig/twig": "^1.35",
         "illuminate/database": "^5.4",
-        "siriusphp/validation": "^2.2"
+        "siriusphp/validation": "^2.2",
+        "mpdf/mpdf": "^7.1"
     },
     
     "require-dev": {}

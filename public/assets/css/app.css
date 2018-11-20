@@ -2928,7 +2928,7 @@ MEDIA QUERY CLASSES
   height: 80px;
   text-align: center; }
 
-.avatar, figure, img {
+.avatar {
   width: 80px;
   height: 80px;
   margin: 0 auto;
