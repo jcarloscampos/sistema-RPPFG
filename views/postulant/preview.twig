@@ -74,6 +74,11 @@
 
                                 <td><p><strong style="color:#3b3d3f; font-weight: bold;">Estado: </strong>{{ cstate.name }}</p></td>
                             </tr>
+                             {% if modality.id == 3 %}
+                                <tr>
+                                    <td colspan="4"><p><strong style="color:#3b3d3f; font-weight: bold;">Institución participante: </strong>{{attendant.name}} ({{attendant.acronym}})</p></td>
+                                </tr>
+                            {% endif %}
                             <tr>
                                 <td colspan="4"><p><strong style="color:#3b3d3f; font-weight: bold;">Tutor(es): </strong>{{tutorfir.name}} {{tutorfir.l_name}} {{tutorfir.ml_name}}
                                 {% if twofold %} / {{ tutorsec.name}} {{tutorsec.l_name}} {{tutorsec.ml_name}} {% endif %} </p></td>

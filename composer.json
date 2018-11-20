@@ -19,8 +19,8 @@
         "twig/twig": "^1.35",
         "illuminate/database": "^5.4",
         "siriusphp/validation": "^2.2",
-        "ashleydawson/simple-pagination": "~1.0"
-
+        "mpdf/mpdf": "^7.1",
+        "ashleydawson/simple-pagination": "^1.0"
     },
     
     "require-dev": {}

@@ -8,10 +8,51 @@
 </head>
 <body>
 
-<div class="">
-
+<div class="headerpdf">
+    <div class="logoumss">
+        <img src="../public/images/logo-umss.png" alt="UMSS" width="80px" height="80px">
+    </div>
+    <div class="nameinstt">
+        <h1>Universidad Mayor de San Simón</h1>
+        <h1>Facultad de Ciencias y Tecnología</h1>
+    </div>
+    <div class="logofcyt">
+        <img src="../public/images/logo-fcyt.png" alt="FCYT">
+    </div>
 </div>
 
+<table>
+    <tr>
+        <td>
+            <div class="logoumss">
+                <img src="../public/images/logo-umss.png" alt="UMSS" width="80px" height="80px">
+            </div>
+        </td>
+        <td>
+            <div class="nameinstt">
+                <h5>Universidad Mayor de San Simón</h5>
+                <h5>Facultad de Ciencias y Tecnología</h5>
+            </div>
+        </td>
+        <td>
+            <div class="logofcyt">
+                <img src="../public/images/logo-fcyt.png" alt="FCYT" width="80px" height="80px">
+            </div>
+        </td>
+    </tr>
+</table>
+<table id="table_settle">
+    <tr>
+        <td width=25%><strong style="color:#3b3d3f; font-weight: bold;">Nombre del<br> estudiante(s)</strong></td>
+        <td width=25%><p style="font-size: .9em;  border-bottom: solid 1px gray; margin-bottom: 1em;">Apellido Paterno</p><p>{{ postf.l_name }}</p></td>
+        <td width=25%><p style="font-size: .9em;  border-bottom: solid 1px gray; margin-bottom: 1em;">Apellido Materno</p><p>{{ postf.ml_name }}</p></td>
+        <td width=25%><p style="font-size: .9em;  border-bottom: solid 1px gray; margin-bottom: 1em;">Nombre(s)</p><p>{{ postf.name }}</p></td>
+    </tr>
+    <tr>
+        <td colspan="2"><p><strong style="color:#3b3d3f; font-weight: bold;">Email:<br></strong>{{ postf.email }}<br>{{ posts.email }}</p></td>
+        <td colspan="2"><p><strong style="color:#3b3d3f; font-weight: bold;">Teléfono:<br></strong>{{ postf.phone }}<br>{{ posts.phone }}</p> </td>
+    </tr>
+</table>
 
 
 
