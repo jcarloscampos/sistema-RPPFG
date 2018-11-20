@@ -53,11 +53,11 @@
                                 </thead>
                                 
                                 <tbody id="content_table">
-                                {# Listado de profesionales de la umss #}
-                                    {% for itn in vitns %}
+                                {# Listado de profesionales mixta //de la umss #}
+                                    {% for profesional in profesionales %}
                                         <tr>
                                             <td>
-                                                {% if itn.active == 1 %}
+                                                {% if profesional.active == 1 %}
                                                     {# <input type="checkbox" name="state" value="{{ account.id }}" checked> #}
                                                     Si
                                                 {% else %}
@@ -65,20 +65,20 @@
                                                     No
                                                 {% endif %}
                                             </td>
-                                            <td>{{ itn.name }} {{ itn.l_name }} {{ itn.ml_name }}</td>
-                                            <td>{{ itn.ci }}</td>
-                                            <td>{{ itn.email }}</td>
+                                            <td>{{ profesional.name }} {{ profesional.l_name }} {{ profesional.ml_name }}</td>
+                                            <td>{{ profesional.ci }}</td>
+                                            <td>{{ profesional.email }}</td>
 
                                             <td>
                                                 {% for account in vaccounts %}
-                                                    {% if account.id == itn.id_account %}
+                                                    {% if account.id == profesional.id_account %}
                                                         {{ account.username }}
                                                     {% endif %}
                                                 {% endfor %}
                                             </td>
                                             <td>
                                                 {% for urol in vurols %}
-                                                    {% if urol.id_account == itn.id_account %}
+                                                    {% if urol.id_account == profesional.id_account %}
                                                         {% for rol in vrols %}
                                                             {% if rol.id_rol == urol.id_rol %}
                                                                 {{ rol.name_rol }}
@@ -90,22 +90,22 @@
                                             <td>
                                                 <div class="menu-actions-tb">
                                                 <div class="actions">
-                                                    <a href="{{ 'admin/' | url }}{{ itn.id }}">Ver</a>
-                                                    <a href="{{ 'admin/professionals/updateprofessional/' | url }}{{ itn.id_account }}">Editar</a>
+                                                    <a href="{{ 'admin/' | url }}{{ profesional.id }}">Ver</a>
+                                                    <a href="{{ 'admin/professionals/updateprofessional/' | url }}{{ profesional.id_account }}">Editar</a>
                                                 </div>
                                                 </div>
                                             </td>
                                         </tr>
                                     {% endfor %}
                                     {# Listado de profesionales del exterior #}
-                                    {% for etn in vetns %}
+                                    {#% for etn in vetns %}
                                         <tr>
                                             <td>
                                                 {% if etn.active == 1 %}
-                                                    {# <input type="checkbox" name="state" value="{{ account.id }}" checked> #}
+                                                    { <input type="checkbox" name="state" value="{{ account.id }}" checked> }
                                                     Si
                                                 {% else %}
-                                                    {# <input type="checkbox" name="state" value="{{ account.id }}"> #}
+                                                    { <input type="checkbox" name="state" value="{{ account.id }}"> }
                                                     No
                                                 {% endif %}
                                             </td>
@@ -140,10 +140,22 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                    {% endfor %}
+                                    {% endfor %#}
                                 </tbody>
-                               
                             </table>
+                             {% if page!=1%}
+                                <a href="?page={{ pagination.getPreviousPageNumber() }}">Pagina Anterior</a>
+                            {% endif %}
+                            {% if profesionales|length > 0 %}
+                            <div>
+                                {% for page in pagination.pages %}
+                                    <a href="?page={{ page }}">{{ page }}</a> |
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                             {% if pagination.getNextPageNumber()!=''%}
+                            <a href="?page={{ pagination.getNextPageNumber() }}">Pagina Siguiente</a>
+                            {% endif %}
                         </div>
                     </div>
                 </section>

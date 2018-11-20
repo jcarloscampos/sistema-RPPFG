@@ -12,6 +12,8 @@ use AppPHP\Models\Account;
 use Sirius\Validation\Validator;
 use AppPHP\Models\Administrator;
 use AppPHP\Controllers\Common\Validation;
+use AshleyDawson\SimplePagination\Paginator;
+
 
 /**
  * Clase controlador para lectura, inserción, eliminación y actualización de datos de la tabla ProfessionalUMSS
@@ -28,8 +30,27 @@ class TeachersController extends BaseController
     {
         if (isset($_SESSION['admID'])) {
             $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
-            $docentes = ProfessionalUMSSView::query()->orderBy('full_name', 'asc')->get();
-            return $this->render('admin/list_teachers.twig', ['docentes' => $docentes, 'admin' => $admin]);
+            $docentes = ProfessionalUMSSView::query()->orderBy('full_name', 'asc')->get()->toArray();
+            $params = null; 
+            $page = 1;
+            $myUrl=parse_url($_SERVER['REQUEST_URI']);
+            if(isset($myUrl['query'])){
+                parse_str(parse_url($_SERVER['REQUEST_URI'])['query'], $params);
+                $page = (int)$params['page'];          
+            }
+            $paginator = new Paginator();
+            $paginator->setItemsPerPage(5)->setPagesInRange(5);
+
+            $paginator->setItemTotalCallback(function () use ($docentes) {
+                return count($docentes);
+            });
+            $length = $paginator->getItemsPerPage();
+            $offset =  $page * $length;
+            $paginator->setSliceCallback(function ($offset, $length) use ($docentes) {
+                return array_slice($docentes, $offset, $length);
+            });
+            $pagination = $paginator->paginate($page);
+            return $this->render('admin/list_teachers.twig', ['docentes' => $pagination->getItems(), 'pagination'=>$pagination, 'page'=>$page, 'admin' => $admin]);
         }
     }
 

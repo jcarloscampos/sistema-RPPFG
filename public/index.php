@@ -67,7 +67,7 @@ $router->filter('prof', function(){
     if(!isset($_SESSION['profID'])){
         header('Location: ' . BASE_URL . '');
         return false;
-    }
+    }   
 });
 
 //rutas
@@ -80,6 +80,7 @@ $router->group(['before' => 'adm'], function($router){
     $router->controller('/admin/professionals', AppPHP\Controllers\Admin\ProfessionalsController::class);
     $router->controller('/admin/postulants', AppPHP\Controllers\Admin\PostulantsController::class);
     $router->controller('/admin/projects', AppPHP\Controllers\Admin\ProjectsController::class);
+    $router->controller('/admin/users', AppPHP\Controllers\Admin\UsersController::class);
 });
 
 $router->controller('/secretary', AppPHP\Controllers\Secretary\IndexController::class);
@@ -121,7 +122,7 @@ $router->controller('/director', AppPHP\Controllers\Director\IndexController::cl
 $router->controller('/signup', AppPHP\Controllers\Accounts\SignupController::class);
 $router->controller('/signin', AppPHP\Controllers\Accounts\SigninController::class);
 $router->controller('/logout', AppPHP\Controllers\Accounts\LogoutController::class);
-
+$router->controller('/forgotpass', AppPHP\Controllers\Accounts\ForgotPassController::class);
 
 
 
