@@ -80,14 +80,17 @@ class SettingData
         }
         return $val;
     }
-    public function getTutors($profileareas, $profareas, $professionals){
+    //($areaprofiles, $etnprofareas, $eprofessionals);
+    public function getTutors($profileareas, $profareas, $professionals, $idprofile){
         $result = [];
         $auxids = [];
         
         foreach ($profileareas as $key => $profilearea) {
-            foreach ($profareas as $key => $profarea) {
-                if ($profilearea->id_area == $profarea->id_area) {
-                    $auxids[] = $profarea->id_prof;
+            if ($profilearea->id_profile == $idprofile){
+                foreach ($profareas as $key => $profarea) {
+                    if ($profilearea->id_area == $profarea->id_area) {
+                        $auxids[] = $profarea->id_prof;
+                    }
                 }
             }
         }

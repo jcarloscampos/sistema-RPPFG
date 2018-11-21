@@ -49,10 +49,10 @@ class RestrainedController extends BaseController
                 $eprofessionals = ProfessionalExt::all();
                 $etnprofareas = EtnProfArea::all();
                 $itnprofareas = ItnProfArea::all();
-
-                $itutors = $generate->getTutors($areaprofiles, $itnprofareas, $iprofessionals);
-                $etutors = $generate->getTutors($areaprofiles, $etnprofareas, $eprofessionals);
-
+                
+                $itutors = $generate->getTutors($areaprofiles, $itnprofareas, $iprofessionals, $aux->id_profile);
+                $etutors = $generate->getTutors($areaprofiles, $etnprofareas, $eprofessionals, $aux->id_profile);
+                
                 return $this->render('postulant/settle-restrained.twig',
                 ['vPerfil'=>$user, 'uimage'=>$uimage, 'matter' => $matter, 'pmatters' => $pmatter, 'iprofessionals'=> $iprofessionals, 
                 'eprofessionals' => $eprofessionals, 'itutors' => $itutors, 'etutors' => $etutors]);
