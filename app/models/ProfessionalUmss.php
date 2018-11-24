@@ -22,10 +22,11 @@ class ProfessionalUmss extends Model
         'email',
         'phone',
         'address',
+        'avatar',
         'cod_sis',
         'active',
-        'a_degree',
-        'workload',
+        'id_ad',
+        'id_wl',
         'profile',
         'id_account'
     ];

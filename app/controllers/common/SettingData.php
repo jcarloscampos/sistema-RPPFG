@@ -104,4 +104,20 @@ class SettingData
         }
         return array_unique($result);
     }
+
+    /**
+     * Esta funcion debería ser integrada al sistema WebSIS de UMSS para poder obtener
+     * la información del Profesional desde ese sistema
+     */
+    public function recuperarCIProfessional($nombre, $ap_paterno, $ap_materno) {
+        return "12345678";
+    }
+
+    /**
+     * Esta funcion debería ser integrada al sistema WebSIS de UMSS para poder obtener
+     * la información del Profesional desde ese sistema
+     */
+    public function recuperarSISProfesional($nombre, $ap_paterno, $ap_materno) {
+        return "190000001";
+    }
 }

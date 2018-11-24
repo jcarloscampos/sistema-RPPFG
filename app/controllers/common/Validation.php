@@ -90,9 +90,11 @@ class Validation
         return $validator;
     }
 
-    public function setRuleFile($validator)
+    public function setRuleFile($validator, $container, $fileType)
     {
-        $validator->add(array('listaAreasSubareas:Archivo de áreas y sub áreas'=> 'required'));
+        $validator->add(array(
+            $container. ':Archivo de ' . $fileType => 'required'
+        ));
         return $validator;
     }
 
