@@ -246,7 +246,7 @@ class ProfessionalsController extends BaseController
         $information = [];
         $validator = new Validator();
         $validation = new Validation();
-        $generate = new SettingData();
+        $settingData = new SettingData();
 
         $validation->setRuleFile($validator, "listaDocentes", "Docentes UMSS");
         
@@ -275,8 +275,8 @@ class ProfessionalsController extends BaseController
                         $direccion = $data[8];
                         $perfil = $data[9];
                         $pass_cuenta = $data[10];
-                        $ci = $generate->recuperarCIProfessional($nombre, $ap_paterno, $ap_materno);
-                        $cod_sis = $generate->recuperarSISProfesional($nombre, $ap_paterno, $ap_materno);
+                        $ci = $settingData->recuperarCIProfessional($nombre, $ap_paterno, $ap_materno);
+                        $cod_sis = $settingData->recuperarSISProfessional($nombre, $ap_paterno, $ap_materno);
 
                         // Verificamos si el usuario ya existe registrado como docente:
                         // Validamos si existe la carga horaria
@@ -310,7 +310,7 @@ class ProfessionalsController extends BaseController
                                     }
                                     $account_id = Account::where('username', $nombre_cuenta)->first();
                                     if (is_null($account_id)){
-                                        array_push($information, 'Cuenta de Usuario: ' . $nombre_cuenta . ' no registrada.');
+                                        array_push($error, 'Cuenta de Usuario: ' . $nombre_cuenta . ' no registrada.');
                                     }else{
                                         //Insertamos los datos del docente
                                         $ProfessionalUMSS = new ProfessionalUMSS([
