@@ -270,6 +270,7 @@ class AreaController extends BaseController
     {
         $result = false;
         $errors = [];
+        $information = [];
         $validator = new Validator();
         $validation = new Validation();
         $makeDB = new ServerConnection(); 
@@ -309,6 +310,9 @@ class AreaController extends BaseController
                                     ]);
                                 $area->save();
                             }
+                            else{
+                                array_push($information, "Area " . $name_area. " ya registrada");
+                            }
                             $uArea = Area::where('name', $name_area)->first();
                             $areaprofile = ['id_parent_area' => $uArea->id];
                             $result = $makeDB->updateUser($uArea, $areaprofile, $makeDB);
@@ -331,12 +335,18 @@ class AreaController extends BaseController
                         if($parentID){
                             $parentName = $Areas_list[$parentID];
                             $area_ID = Area::where('name',$parentName)->first()->id;
-                            $subarea = new Area([
-                                'name' => $name_subarea,
-                                'description' => $desc_subarea,
-                                'id_parent_area' => $area_ID
-                            ]);
-                            $subarea->save();
+                            $subarea = Area::where('name',$name_area)->where('id_parent_area',$area_ID)->get();
+                            if(!count($subarea)){
+                                $subarea = new Area([
+                                    'name' => $name_area,
+                                    'description' => $desc_area,
+                                    'id_parent_area' => 1
+                                    ]);
+                                $subarea->save();
+                            }
+                            else{
+                                array_push($information, "SubArea \"" . $name_area. "\" ya registrada para el área \"" . $parentName . "\"");
+                            }
                         }
                     }
                     $counter++;
@@ -344,15 +354,32 @@ class AreaController extends BaseController
                 fclose($handle);
                 $result = true;
             }
-            else{
-                //TODO by Walter -> Juan Carlos por favor agregar el catch de este mensaje o enseñarme como se hace
-                array_push($errors, "Archivo invalido!");
-                $result = false;
+            if(count($information) > 0){
+                return $this->render('admin/import_from_files.twig',
+                    [
+                        'result'=>$result,
+                        'errors' => $errors,
+                        'information' => $information,
+                        'admin' => $admin,
+                        'prev' => "area",
+                        'prevMenu' => "Áreas",
+                        'currentMenu' => "Importar Áreas",
+                        'currentHeader' => "Importar desde Lista de Areas y Subareas",
+                        'formID' => "listaAreasSubareas"
+                    ]
+                );
             }
+            else{
+                return $this->getIndex();
+            }
+        }
+        $errors = $validator->getMessages();
+        if(count($information) > 0){
             return $this->render('admin/import_from_files.twig',
                 [
                     'result'=>$result,
                     'errors' => $errors,
+                    'information' => $information,
                     'admin' => $admin,
                     'prev' => "area",
                     'prevMenu' => "Áreas",
@@ -362,18 +389,8 @@ class AreaController extends BaseController
                 ]
             );
         }
-        $errors = $validator->getMessages();
-        return $this->render('admin/import_from_files.twig',
-            [
-                'result'=>$result,
-                'errors' => $errors,
-                'admin' => $admin,
-                'prev' => "area",
-                'prevMenu' => "Áreas",
-                'currentMenu' => "Importar Áreas",
-                'currentHeader' => "Importar desde Lista de Areas y Subareas",
-                'formID' => "listaAreasSubareas"
-            ]
-        );
+        else{
+            return $this->getIndex();
+        }
     }
 }
