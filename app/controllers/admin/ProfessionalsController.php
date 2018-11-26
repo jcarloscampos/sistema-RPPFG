@@ -359,7 +359,7 @@ class ProfessionalsController extends BaseController
                 );
             }
             else{
-                return $this->render('admin/professionals.twig');
+                return $this->getIndex();
             }
         }
         $errors = $validator->getMessages();
@@ -379,7 +379,7 @@ class ProfessionalsController extends BaseController
             );
         }
         else{
-            return $this->render('admin/professionals.twig');
+            return $this->getIndex();
         }
     }
 }

@@ -130,14 +130,15 @@ class ProjectsController extends BaseController
     {
         $result = false;
         $errors = [];
+        $information = [];
         $validator = new Validator();
         $validation = new Validation();
         
-        $validation->setRuleFile($validator);
+        $validation->setRuleFile($validator,"listaProyectos", "Proyectos de Grado");
         
         $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
  
-        if ($validator->validate($_POST)) {
+        if ($validator->validate($_FILES)) {
             $fname = $_FILES['listaProyectos']['name'];
             $chk_ext = explode(".",$fname);
 
@@ -167,26 +168,18 @@ class ProjectsController extends BaseController
                         $career = Career::where('name', $carrera)->first();
                         if (is_null($career)){
                             array_push($errors, "Error en la linea: $counter, La siguiente carrera no se encuentra registrada en el sistema: \"$carrera\", por favor verifique e intente nuevamente.");
-                            break;
                         }
                         $id_career = $career->id;
-                        
-                        //Obtenemos el ID del periodo
-                        $period = Period::where('name', $periodo)->first();
-                        if (is_null($period)){
-                            array_push($errors, "Error en la linea: $counter, El siguiente periodo no se encuentra registrado en el sistema: \"$periodo\", por favor verifique e intente nuevamente.");
-                            break;
-                        }
-                        $id_period = $period->id;
 
                         //Obtenemos el ID del area
-                        $area = Area::where('name_area', $area_perfil)
+                        $area = Area::where('name', $area_perfil)
                                     ->where('id_parent_area', null)->first();
                         if (is_null($area)){
                             array_push($errors, "Error en la linea: $counter, La siguiente area no se encuentra registrada en el sistema: \"$area\", por favor registrela e intente nuevamente.");
                             break;
                         }
                         $id_area = $area->id;
+                        echo "<script>console.log( 'ID area $id_area ' );</script>";
 
                         //Obtenemos el ID de la modalidad
                         $modality = Modality::where('name_mod', $modalidad_titulacion)->first();
@@ -195,20 +188,23 @@ class ProjectsController extends BaseController
                             break;
                         }
                         $id_modality = $modality->id;
+                        echo "<script>console.log( 'ID moda $id_modality ' );</script>";
 
                         //Obtenemos el ID del status
                         $status = Status::where('name', "aceptado")->first();
                         $id_status = $status->id;
+                        echo "<script>console.log( 'ID status $id_status ' );</script>";
 
                         //Obtenemos el ID del postulante
                         $id_postulant = getPostulantID($nombre_postulante, $apellido_paterno_postulante, $apellido_materno_postulante, $id_career, $counter, $errors);
+                        echo "<script>console.log( 'ID postulant $id_postulant ' );</script>";
 
                         //Obtenemos el ID del tutor
                         $id_tutor = getTutorID($nombre_tutor, $apellido_paterno_tutor, $apellido_materno_tutor, $id_area, $counter, $errors);
+                        echo "<script>console.log( 'ID tutor $id_tutor ' );</script>";
 
                         //validamos la infomracion del Perfil y la introducimos a la base de datos
-                        crear_actualizarPerfil($counter, $titulo_proyecto_final, $objetivo_general, $id_modality, $id_period, $fecha_de_registro, $id_postulant, $id_area, $id_tutor, $id_career);
-                        
+                        crear_actualizarPerfil($counter, $titulo_proyecto_final, $objetivo_general, $id_modality, $periodo, $fecha_de_registro, $id_postulant, $id_area, $id_tutor, $id_career);
                     }
                     $counter++;
                 }
@@ -232,7 +228,7 @@ class ProjectsController extends BaseController
                 );
             }
             else{
-                return $this->render('admin/projects.twig');
+                return $this->getIndex();
             }
         }
         $errors = $validator->getMessages();
@@ -252,19 +248,21 @@ class ProjectsController extends BaseController
             );
         }
         else{
-            return $this->render('admin/projects.twig');
+            return $this->getIndex();
         }
     }
 
-    private function crear_actualizarPerfil($counter, $titulo_proyecto_final, $objetivo_general, $id_modality, $id_period, $fecha_de_registro, $id_postulant, $id_area, $id_tutor, $id_career){
+    private function crear_actualizarPerfil($counter, $titulo_proyecto_final, $objetivo_general, $id_modality, $periodo, $fecha_de_registro, $id_postulant,
+                                            $id_area, $id_tutor, $id_career){
         //Buscamos si el perfil ya existe mediante el título
         $profile_exists = Profile::where('title', $titulo_proyecto_final)->first();
         $profile_id = 0;
+        $numProfile = $counter + 1000; //TODO -> Este número esta siendo insertado de esta manera por que no se entiende su proposito ni origen
 
         //Creamos el Perfil si es que no existe
         if(is_null($profile_exists)){
             $new_perfil = new Profile([
-                'num_profile' => $counter + 1000, //TODO -> Este número esta siendo insertado de esta manera por que no se entiende su proposito ni origen
+                'num_profile' => $numProfile,
                 'title' => $titulo_proyecto_final,
                 'g_objective' => $objetivo_general,
                 's_objects' => "",
@@ -277,30 +275,136 @@ class ProjectsController extends BaseController
             $profile_id = Profile::where('title', $titulo_proyecto_final)->first()->id;
         }else{
             //actualizamos la informacion de la tabla perfil con los datos más recientes
-
             $profile_id = $profile_exists->id;
+            Profile::where('id',$profile_id)
+            ->update([
+                'num_profile' => $numProfile,
+                'title' => $titulo_proyecto_final,
+                'g_objective' => $objetivo_general,
+                's_objects' => "",
+                "description" => "",
+                "id_cmpy_area" => "", //TODO - Investigando el sentido de este valor
+                "id_mod" => $id_modality,
+                "id_status" => $id_status
+            ]);
         }
+
         //Completamos todas las relaciones restantes
         //Buscamos la relacion del Perfil con el tutor y la actualizamos/creamos de ser necesario
-        //TODO -> EtnTutor::
-        // 'id_tutor' => $id_tutor
+        $etntutor_exists = EtnTutor::where('id_etnprof', $id_tutor)->where('id_profile',$profile_id)->first();
+        if(is_null($etntutor_exists)){
+            $new_etntutor = new EtnTutor([
+                'id_etnprof' => $id_tutor,
+                'id_profile' => $profile_id
+            ]);
+            $new_etntutor->save();
+        }else{
+            $id_etntutor = $etntutor_exists->id;
+            EtnTutor::where('id', $id_etntutor)
+            ->update([
+                'id_etnprof' => $id_tutor,
+                'id_profile' => $profile_id
+            ]);
+        }
+        
+        //Buscamos la informacion del Perfil con el responsable, usamos el primer Docente que tenga una relación directa con el área del perfil o el primer docente registrado
+        $profUmssArea = ItnProfArea::where('id_area', $id_area)->first();
+        $prof_id = 1;
+        if(is_null($profUmssArea)){
+            $prof_id = $profUmssArea->id_prof;
+        }
 
-        //Buscamos la informacion del Perfil con el responsable, usamos el primer Docente que tenga una relación directa con el área del perfil
-        //TODO -> Responsable::
+        $responsable_exists = Responsable::where('id_profile', $profile_id)
+                                         ->where('id_type_resp',"1")->first();
+        if(is_null($responsable_exists)){
+            $new_responsable = new Responsable([
+                'id_intprof' => $prof_id,
+                'id_profile' => $profile_id,
+                'id_type_resp' => "1"
+            ]);
+            $new_responsable->save();
+        }else{
+            $id_responsable = $responsable_exists->id;
+            Responsable::where('id', $id_responsable)
+            ->update([
+                'id_intprof' => $prof_id,
+                'id_profile' => $profile_id,
+                'id_type_resp' => "1"
+            ]);
+        }
+        
+        //Buscamos la informacion del Periodo
+        //calculamos las fechas
+        $currentdateYMD = "" . substr($fecha_de_registro,6,4) . "-" . substr($fecha_de_registro,3,2) . "-" . substr($fecha_de_registro, 0, 2);
+        $startdate = date("Y-m-d",strtotime($currentdateYMD));
+        $enddate = date("Y-m-d",strtotime($currentdateYMD."+ 2 year"));
+        $periodo_exists = Period::where('start_date', $startdate)
+                                    ->where('end_date', $enddate)
+                                    ->where('period', $periodo)
+                                    ->where('extended', FALSE)-first();
+        if(is_null($periodo_exists)){
+            $new_period = new Period([
+                'start_date' => $startdate,
+                'end_date' => $enddate,
+                'period' => $periodo,
+                'extended' => FALSE
+            ]);
+            $new_period->save();
+        }else{
+            $id_period = $periodo_exists->id;
+            Period::where('id', $id_period)
+            ->update([
+                'start_date' => $startdate,
+                'end_date' => $enddate,
+                'period' => $periodo,
+                'extended' => FALSE
+            ]);
+        }
 
         //Buscamos la informacíon del Perfil con el postulante y la actualizamos/creamos de ser necesario
-        //TODO -> PostulantProfile::
-        // 'id_postulant' => $id_postulant,
-        // 'registry_date' => $fecha_de_registro,
-        // 'id_period' => $id_period,
-        // 'id_career' => $id_career
+        $postulantProfile_exists = PostulantProfile::where('id_postulant', $id_postulant)
+                                                   ->where('id_profile',$profile_id)
+                                                   ->where('id_career',$id_career)->first();
+        if(is_null($postulantProfile_exists)){
+            $new_postulantProfile = new PostulantProfile([
+                'id_postulant' => $id_postulant,
+                'id_profile' => $profile_id,
+                'id_career' => $id_career,
+                'id_period' => $id_period
+            ]);
+            $new_postulantProfile->save();
+        }else{
+            $id_postulantProfile = $postulantProfile_exists->id;
+            PostulantProfile::where('id', $id_postulantProfile)
+            ->update([
+                'id_postulant' => $id_postulant,
+                'id_profile' => $profile_id,
+                'id_career' => $id_career,
+                'id_period' => $id_period
+            ]);
+        }
+
 
         //Buscamos la información del Perfil con el Área y la actualizamos/creamos de ser necesario
-        //TODO -> AreaProfile::
-        // 'id_area' => $id_area
-
+        $areaProfile_exists = AreaProfile::where('id_profile', $profile_id)
+                                         ->where('id_area',$id_area)->first();
+        if(is_null($areaProfile_exists)){
+            $new_areaProfile = new AreaProfile([
+                'id_profile' => $profile_id,
+                'id_area' => $id_area
+            ]);
+            $new_areaProfile->save();
+        }else{
+            $id_areaProfile = $areaProfile_exists->id;
+            AreaProfile::where('id', $id_areaProfile)
+            ->update([
+                'id_profile' => $profile_id,
+                'id_area' => $id_area
+            ]);
+        }
 
     }
+
     /* Este método no va a funcionar, o va a devolver resultados incorrectos, hasta que se corrija el error de diseño en la Base de datos referente
     * a tener un docente UMSS como tutor, Punto que ya se había notiicado al equipo en fecha 29 de Octubre, luego de la reunión con el cliente
     */

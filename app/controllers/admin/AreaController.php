@@ -370,7 +370,7 @@ class AreaController extends BaseController
                 );
             }
             else{
-                return $this->render('admin/list-area.twig');
+                return $this->getIndex();
             }
         }
         $errors = $validator->getMessages();
@@ -390,7 +390,7 @@ class AreaController extends BaseController
             );
         }
         else{
-            return $this->render('admin/list-area.twig');
+            return $this->getIndex();
         }
     }
 }
