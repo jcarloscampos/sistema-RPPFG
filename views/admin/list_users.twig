@@ -33,7 +33,7 @@
                     <div class="wrapper-form">
                         <div class="table-wrapper">
                             <div class="menu-actions">
-                                <p>Usuarios registrados</p>
+                                <h2>Usuarios registrados</h2>
                                 
                             </div>
                             <table id="tabla_usuarios">
@@ -42,23 +42,18 @@
                                         <th>Nombre</th>
                                         <th>Apellido Paterno</th>
                                         <th>Apellido Materno</th>
-                                        <th>Carnet de Identidad</th>
-                                        <th>Teléfono</th>
                                         <th>Correo Electronico</th>
-                                        <th>Dirección</th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody id="content_table">
                                     {% for user in users %}
                                         <tr>
-                                        <td> {{user.name}}</td>
+                                            <td> {{user.name}}</td>
                                             <td>{{ user.l_name }}</td>
                                             <td>{{user.ml_name}}</td>
-                                            <td> {{user.ci}}</td>
-                                            <td>{{ user.phone }}</td>
                                             <td>{{ user.email }}</td>
-                                            <td>{{ user.address }}</td>
+                                            <td></td>
                                     </tr>
                                 {% endfor %}
                                 </tbody>

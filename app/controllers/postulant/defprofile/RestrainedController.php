@@ -177,7 +177,8 @@ class RestrainedController extends BaseController
         if (isset($_SESSION['postID'])) {
             $user = Postulant::where('id_account', $_SESSION['postID'])->first();
             $uimage = substr($user->name, 0, 1);
-        
+            $generate = new SettingData();
+
             //--------------------------------------------------------------------------------
             $makeDB = new ServerConnection();
             $pprofile = PostulantProfile::where('id_postulant', $user->id)->first();
@@ -187,6 +188,14 @@ class RestrainedController extends BaseController
             $status = Status::all();
             $areaprofiles = AreaProfile::all();
             $responsables = Responsable::all();
+
+            $iprofessionals = ProfessionalUmss::all();
+            $eprofessionals = ProfessionalExt::all();
+            $etnprofareas = EtnProfArea::all();
+            $itnprofareas = ItnProfArea::all();
+
+            $itutors = $generate->getTutors($areaprofiles, $itnprofareas, $iprofessionals);
+            $etutors = $generate->getTutors($areaprofiles, $etnprofareas, $eprofessionals);
         
             //Extrae los postulantes que trabajan en un perfil
             $posts = $makeDB->getPostulants($postulantProfiles, $profile);
@@ -242,7 +251,8 @@ class RestrainedController extends BaseController
                 ['vPerfil'=>$user, 'uimage'=>$uimage, 'profile'=>$profile, 'group'=>$group, 'postf'=>$postf,
                 'posts'=>$posts, 'modality'=>$modality, 'career'=>$career, 'period'=>$period, 'approved'=>$approved,
                 'status'=>$status, 'cstate'=>$cstate, 'teacher'=>$teacher, 'tutorfir'=>$tutorfir, 'tutorsec'=>$tutorsec,
-                'twofold'=>$twofold, 'areap'=>$areap, 'subareap'=>$subareap, 'director'=>$director, 'attendant'=>$attendant
+                'twofold'=>$twofold, 'areap'=>$areap, 'subareap'=>$subareap, 'director'=>$director, 'attendant'=>$attendant, 'iprofessionals'=> $iprofessionals, 
+                'eprofessionals' => $eprofessionals, 'itutors' => $itutors, 'etutors' => $etutors                
                 ]
             );
             }
@@ -251,7 +261,8 @@ class RestrainedController extends BaseController
             ['vPerfil'=>$user, 'uimage'=>$uimage, 'profile'=>$profile, 'postf'=>$postf, 'modality'=>$modality,
              'career'=>$career, 'status'=>$status, 'cstate'=>$cstate, 'period'=>$period,'approved'=>$approved,
             'teacher'=>$teacher, 'tutorfir'=>$tutorfir, 'tutorsec'=>$tutorsec, 'twofold'=>$twofold,
-            'areap'=>$areap, 'subareap'=>$subareap, 'director'=>$director,'attendant'=>$attendant
+            'areap'=>$areap, 'subareap'=>$subareap, 'director'=>$director,'attendant'=>$attendant, 'iprofessionals'=> $iprofessionals, 
+            'eprofessionals' => $eprofessionals, 'itutors' => $itutors, 'etutors' => $etutors
             ]
         );
             //--------------------------------------------------------------------------------
@@ -264,6 +275,7 @@ class RestrainedController extends BaseController
             $temstatus = Status::where('name', 'aceptado')->first();
             $user = Postulant::where('id_account', $_SESSION['postID'])->first();
             $uimage = substr($user->name, 0, 1);
+            $generate = new SettingData();
 
             if ($profile->id_status == $temstatus->id) {
                 $editp = true;
@@ -277,6 +289,13 @@ class RestrainedController extends BaseController
                 $areaprofiles = AreaProfile::all();
                 $responsables = Responsable::all();
             
+                $iprofessionals = ProfessionalUmss::all();
+                $eprofessionals = ProfessionalExt::all();
+                $etnprofareas = EtnProfArea::all();
+                $itnprofareas = ItnProfArea::all();
+
+                $itutors = $generate->getTutors($areaprofiles, $itnprofareas, $iprofessionals);
+                $etutors = $generate->getTutors($areaprofiles, $etnprofareas, $eprofessionals);
                 //Extrae los postulantes que trabajan en un perfil
                 $posts = $makeDB->getPostulants($postulantProfiles, $profile);
                 count($posts)>1 ? $group = true : $group = false;
@@ -332,7 +351,8 @@ class RestrainedController extends BaseController
                     'posts'=>$posts, 'modality'=>$modality, 'career'=>$career, 'period'=>$period, 'approved'=>$approved,
                     'status'=>$status, 'cstate'=>$cstate, 'teacher'=>$teacher, 'tutorfir'=>$tutorfir, 'tutorsec'=>$tutorsec,
                     'twofold'=>$twofold, 'areap'=>$areap, 'subareap'=>$subareap, 'director'=>$director, 'attendant'=>$attendant,
-                    'editp'=>$editp
+                    'editp'=>$editp, 'iprofessionals'=> $iprofessionals, 
+                    'eprofessionals' => $eprofessionals, 'itutors' => $itutors, 'etutors' => $etutors
                     ]
                 );
                 }
@@ -341,7 +361,8 @@ class RestrainedController extends BaseController
                 ['vPerfil'=>$user, 'uimage'=>$uimage, 'profile'=>$profile, 'postf'=>$postf, 'modality'=>$modality,
                  'career'=>$career, 'status'=>$status, 'cstate'=>$cstate, 'period'=>$period,'approved'=>$approved,
                 'teacher'=>$teacher, 'tutorfir'=>$tutorfir, 'tutorsec'=>$tutorsec, 'twofold'=>$twofold,
-                'areap'=>$areap, 'subareap'=>$subareap, 'director'=>$director,'attendant'=>$attendant, 'editp'=>$editp
+                'areap'=>$areap, 'subareap'=>$subareap, 'director'=>$director,'attendant'=>$attendant, 'editp'=>$editp, 'iprofessionals'=> $iprofessionals, 
+                'eprofessionals' => $eprofessionals, 'itutors' => $itutors, 'etutors' => $etutors
                 ]
             );
                 //--------------------------------------------------------------------------------
@@ -372,6 +393,8 @@ class RestrainedController extends BaseController
                     's_objects' => $_POST['sobj'],
                     'description' => $_POST['dcptn']
                 ];
+                $generate = new SettingData();
+
     
                 if ($validator->validate($_POST)) {
                     $postPfl = PostulantProfile::where('id_postulant', $user->id)->first();
@@ -391,6 +414,14 @@ class RestrainedController extends BaseController
                 $status = Status::all();
                 $areaprofiles = AreaProfile::all();
                 $responsables = Responsable::all();
+
+                $iprofessionals = ProfessionalUmss::all();
+                $eprofessionals = ProfessionalExt::all();
+                $etnprofareas = EtnProfArea::all();
+                $itnprofareas = ItnProfArea::all();
+
+                $itutors = $generate->getTutors($areaprofiles, $itnprofareas, $iprofessionals);
+                $etutors = $generate->getTutors($areaprofiles, $etnprofareas, $eprofessionals);
             
                 //Extrae los postulantes que trabajan en un perfil
                 $posts = $makeDB->getPostulants($postulantProfiles, $profile);
@@ -447,7 +478,8 @@ class RestrainedController extends BaseController
                     'posts'=>$posts, 'modality'=>$modality, 'career'=>$career, 'period'=>$period, 'approved'=>$approved,
                     'status'=>$status, 'cstate'=>$cstate, 'teacher'=>$teacher, 'tutorfir'=>$tutorfir, 'tutorsec'=>$tutorsec,
                     'twofold'=>$twofold, 'areap'=>$areap, 'subareap'=>$subareap, 'director'=>$director, 'attendant'=>$attendant,
-                    'editp'=>$editp, 'errors'=>$errors, 'result'=>$result
+                    'editp'=>$editp, 'errors'=>$errors, 'result'=>$result, 'iprofessionals'=> $iprofessionals, 
+                    'eprofessionals' => $eprofessionals, 'itutors' => $itutors, 'etutors' => $etutors
                     ]
                 );
                 }
@@ -457,7 +489,8 @@ class RestrainedController extends BaseController
                  'career'=>$career, 'status'=>$status, 'cstate'=>$cstate, 'period'=>$period,'approved'=>$approved,
                 'teacher'=>$teacher, 'tutorfir'=>$tutorfir, 'tutorsec'=>$tutorsec, 'twofold'=>$twofold,
                 'areap'=>$areap, 'subareap'=>$subareap, 'director'=>$director,'attendant'=>$attendant, 'editp'=>$editp,
-                'errors'=>$errors, 'result'=>$result
+                'errors'=>$errors, 'result'=>$result, 'iprofessionals'=> $iprofessionals, 
+                'eprofessionals' => $eprofessionals, 'itutors' => $itutors, 'etutors' => $etutors
                 ]
                 );
                 //--------------------------------------------------------------------------------
