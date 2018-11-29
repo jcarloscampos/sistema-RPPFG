@@ -6,6 +6,8 @@ use AppPHP\Controllers\BaseController;
 use AppPHP\Models\ProfessionalUmss;
 use AppPHP\Models\ProfessionalExt;
 use AppPHP\Models\Account;
+use AppPHP\Models\Workload;
+use AppPHP\Models\ADegree;
 use AppPHP\Models\UserRol;
 use AppPHP\Models\Rol;
 use Sirius\Validation\Validator;
@@ -211,5 +213,173 @@ class ProfessionalsController extends BaseController
         
         return $this->render('admin/update-professional.twig',
         ['vadmin' => $admin, 'result' => $result, 'vPerfil'=>$user, 'itn'=>$itn, 'rol'=>$rol]);
+    }
+
+    /**
+     * Mediante método GET se hace la peticion para mostrar la plantilla para importar ProfessionalUMSS
+     */
+    public function getImport()
+    {
+        if (isset($_SESSION['admID'])) {
+            $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
+            return $this->render(
+                'admin/import_from_files.twig',[
+                    'admin' => $admin,
+                    'prev' => "professionals",
+                    'prevMenu' => "Profesionales",
+                    'currentMenu' => "Importar Docentes",
+                    'currentHeader' => "Importar desde Lista de Docentes",
+                    'formID' => "listaDocentes"
+                ]
+            );
+        }
+    }
+
+    /**
+     * Por metoodo POST se hace la insercion de datos en BD. para pasar la informacion
+     * lo que se hace es pasar el arreglo dentro del constructor
+     */
+    public function postImport()
+    {
+        $result = false;
+        $errors = [];
+        $information = [];
+        $validator = new Validator();
+        $validation = new Validation();
+        $settingData = new SettingData();
+
+        $validation->setRuleFile($validator, "listaDocentes", "Docentes UMSS");
+        
+        $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
+ 
+        if ($validator->validate($_FILES)) {
+            $fname = $_FILES['listaDocentes']['name'];
+            $chk_ext = explode(".",$fname);
+
+            if(strtolower(end($chk_ext)) == "csv"){
+                //si es correcto, entonces damos permisos de lectura para subir
+                $filename = $_FILES['listaDocentes']['tmp_name'];
+                $handle = fopen($filename, "r");
+                $counter = 0;
+                while (($data = fgetcsv($handle, 1000, ";")) !== FALSE){
+                    //asi omitimos la columna de titulos
+                    if($counter > 0){
+                        $nombre = $data[0];
+                        $ap_paterno = $data[1];
+                        $ap_materno = $data[2];
+                        $email = $data[3];
+                        $grado_academico = $data[4];
+                        $carga_horaria = $data[5];
+                        $nombre_cuenta = $data[6];
+                        $telefono = $data[7];
+                        $direccion = $data[8];
+                        $perfil = $data[9];
+                        $pass_cuenta = $data[10];
+                        $ci = $settingData->recuperarCIProfessional($nombre, $ap_paterno, $ap_materno);
+                        $cod_sis = $settingData->recuperarSISProfessional($nombre, $ap_paterno, $ap_materno);
+
+                        // Verificamos si el usuario ya existe registrado como docente:
+                        // Validamos si existe la carga horaria
+                        // validamos si existe el grado academico
+                        // Insertamos los datos del docente
+                        $user_exists = ProfessionalUMSS::where('name', $nombre)
+                                            ->where('l_name', $ap_paterno)
+                                            ->where('ml_name', $ap_materno)
+                                            ->where('ci', $ci)->first();
+                        if (is_null($user_exists)){
+                            $id_carga_horaria = Workload::where('name_wl',$carga_horaria)->first();
+                            $id_grado_academico = ADegree::where('name_ad',$grado_academico)->first();
+                            if(is_null($id_carga_horaria)){
+                               array_push($information, 'Carga horaria: ' . $carga_horaria . ' no registrada.');
+                            }else{
+                                if (is_null($id_grado_academico)){
+                                    array_push($information, 'Grado Académico: ' . $grado_academico . ' no registrado.');
+                                }else{
+                                    if($pass_cuenta == ''){
+                                        //TODO -> Se van  a crear las cuentas con las 3 primeras letras del nombre, las 3 primeras del apellido y el CI en caso de no existir un password por defecto en el documento de donde se importan los datos
+                                        $pass_cuenta = substr($nombre,0,3) . substr($ap_paterno,0,3) . $ci;
+                                    }
+                                    $account_id = Account::where('username', $nombre_cuenta)->first();
+                                    if (is_null($account_id)){
+                                        $account = new Account([
+                                            'username' => $nombre_cuenta,
+                                            'password' => password_hash($pass_cuenta, PASSWORD_DEFAULT),
+                                            'state' => 1
+                                        ]);
+                                        $account->save();
+                                    }
+                                    $account_id = Account::where('username', $nombre_cuenta)->first();
+                                    if (is_null($account_id)){
+                                        array_push($error, 'Cuenta de Usuario: ' . $nombre_cuenta . ' no registrada.');
+                                    }else{
+                                        //Insertamos los datos del docente
+                                        $ProfessionalUMSS = new ProfessionalUMSS([
+                                            'ci' => $ci,
+                                            'name' => $nombre,
+                                            'l_name' => $ap_paterno,
+                                            'ml_name' => $ap_materno,
+                                            'email' => $email,
+                                            'phone' => $telefono,
+                                            'address' => $direccion,
+                                            'cod_sis' => $cod_sis,
+                                            'active' => "1",
+                                            'id_ad' => $id_grado_academico->id,
+                                            'id_wl' => $id_carga_horaria->id,
+                                            'profile' => $perfil,
+                                            'id_account' => $account_id->id
+                                        ]);
+                                        $ProfessionalUMSS->save();
+                                    }
+                                }
+                            }
+                        }
+                        else{
+                            array_push($information, "Docente " . $grado_academico . " " . $ap_paterno . " " . $ap_materno . " " . $nombre. " ya registrado");
+                        }
+                    }
+                    $counter++;
+                }
+                //cerramos la lectura del archivo
+                fclose($handle);
+                $result=true;
+            }
+            if(count($information) > 0){
+                return $this->render('admin/import_from_files.twig',
+                    [
+                        'result'=>$result,
+                        'errors' => $errors,
+                        'information' => $information,
+                        'admin' => $admin,
+                        'prev' => "professionals",
+                        'prevMenu' => "Profesionales",
+                        'currentMenu' => "Importar Docentes",
+                        'currentHeader' => "Importar desde Lista de Docentes",
+                        'formID' => "listaDocentes"
+                    ]
+                );
+            }
+            else{
+                return $this->getIndex();
+            }
+        }
+        $errors = $validator->getMessages();
+        if(count($information) > 0){
+            return $this->render('admin/import_from_files.twig',
+                [
+                    'result'=>$result,
+                    'errors' => $errors,
+                    'information' => $information,
+                    'admin' => $admin,
+                    'prev' => "professionals",
+                    'prevMenu' => "Profesionales",
+                    'currentMenu' => "Importar Docentes",
+                    'currentHeader' => "Importar desde Lista de Docentes",
+                    'formID' => "listaDocentes"
+                ]
+            );
+        }
+        else{
+            return $this->getIndex();
+        }
     }
 }

@@ -22,7 +22,14 @@ class IndexController extends BaseController
      */
     public function getIndex()
     {
-        return $this->render('index.twig');
+        if (isset($_SESSION['admID']) || isset($_SESSION['staryID']) || isset($_SESSION['dirID']) || 
+        isset($_SESSION['postID']) || isset($_SESSION['iprofID']) || isset($_SESSION['eprofID'])) {
+            header('Location:' . BASE_URL . 'signin');
+            return null;
+        } else {
+            return $this->render('index.twig');
+        }
+        
     }
 
     /**
@@ -77,18 +84,6 @@ class IndexController extends BaseController
                         $nameSes = 'postID';
                         $this->setSession($user, $nameSes);
                     }
-                    # si existe la cuenta en la BD y puede ser un Profesional de UNSS o externo
-                    // $profUmss = ProfessionalUmss::where('id_account', $user->id)->first();
-                    // if ($profUmss) {
-                    //     $nameSes = 'iprofID';
-                    //     $this->setSession($user, $nameSes);
-                    // }
-
-                    // $profEtn = ProfessionalExt::where('id_account', $user->id)->first();
-                    // if ($profEtn) {
-                    //     $nameSes = 'eprofID';
-                    //     $this->setSession($user, $nameSes);
-                    // }
                 }
             }
             $validator->addMessage('username', 'Nombre de usuario y/o contraseña no son correctas');

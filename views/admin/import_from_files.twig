@@ -20,7 +20,7 @@
     {% include('remnant/sub-nav.twig') %}
     <div class="nav-way">
         <p>
-        <a class=".btn .btn-primary" href="{{'admin' | url }}">Home</a> &nbsp; | &nbsp; <a class=".btn .btn-primary" href="{{'admin/subarea' | url }}">Sub áreas</a> &nbsp; | &nbsp; Insertar sub área
+        <a class=".btn .btn-primary" href="{{'admin' | url }}">Home</a> &nbsp; | &nbsp; <a class=".btn .btn-primary" href="{{'admin/' | url }}{{prev}}">{{prevMenu}}</a> &nbsp; | &nbsp; {{currentMenu}}
         </p>
     </div>
 {% endblock %}
@@ -35,34 +35,27 @@
                             {% if errors %}
                                 {% include 'remnant/errors.twig' %}
                             {% endif %}
-                            {% if result %}
-                                {% include 'remnant/success.twig' %}
+                            {% if information %}
+                                {% include 'remnant/information.twig' %}
                             {% endif %}
-                        </div>
-                        <form method="post" action="#">
+                            {% include 'remnant/success.twig' %}
+                            
+                        </div>         
+                        <form method="post" action="#" enctype="multipart/form-data">
                             <div class="row uniform">
-                                <div class="8u 12u$(xsmall)">
-                                    <label>Nombre del sub área</label>
-                                    <input type="text" name="name" id="name" value="" placeholder="Sub área..." />
-                                </div>
-                                <div class="4u$ 12u$(xsmall)">
-                                    <label>Área al que pertenece</label>
-                                    <select name="nameareasel" id="nameareasel">
-                                        <option value="" disabled selected>- Seleccione -</option>
-                                        {% for area in areas %}
-                                            <option value="{{ area.id }}">{{ area.name_area }}</option>
-                                        {% endfor %}
-                                    </select>    
-                                </div>
                                 <div class="12u 12u$(xsmall)">
-                                    <label>Descripción del sub área</label>
-                                    <textarea class="form-control" name="desc" id="desc" rows="5" value="" placeholder="Descripción.."></textarea>
-                                </div>
+                                <label>{{currentHeader}}</label>
+                                <input type="file" accept=".csv" name="{{formID}}" id="{{formID}}">
+                                <label for="{{formID}}" style='display:none'>
+                                    <img src="../../../public/images/wrapper/loading.gif" style="width:10px;height:10px;">Uploading...</img>
+                                </label>
+                                <br>
+                            </div>
                             </div>
                             <br>
                             <div class="12u 12u$(xsmall)">
                                 <ul class="actions" style="text-align: center">
-                                    <li><button class="principal" type="submit">Guardar</button>
+                                    <li><button class="principal" type="submit">Importar</button>
                                     </li>
                                 </ul>
                             </div>
@@ -84,4 +77,5 @@
     <script src='../../../public/assets/js/skel.min.js'></script>
     <script src='../../../public/assets/js/util.js'></script>
     <script src='../../../public/assets/js/main.js'></script>
+    <script src='../../../public/assets/js/upload.file.js'></script>
 {% endblock %}

@@ -39,6 +39,7 @@ class HeadingController extends BaseController
                 $postulantprofiles = PostulantProfile::all();
                 $nottutor = true;
                 $choiceerror = true;
+                $postulantsvals = [];
 
                 // Solo se pasaran los estudiantes que no estan en un perfil
                 foreach ($postulants as $key => $postulant) {

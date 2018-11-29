@@ -6,6 +6,10 @@
     {% else %}
         <link rel='stylesheet' href='../../../public/assets/css/app.css'>
     {% endif %}
+    {% if msg == 7  %}
+        <link rel='stylesheet' href='../../../../public/assets/css/app.css'>
+    {% endif %}
+    
 {% endblock %}
 
 {% block namepage %}
@@ -51,12 +55,14 @@
                         {% if not msg == 2 %}
                             <p style="text-align: left; color: #505393">Si tiene algún problema contáctese con el Administrador.</p> 
                         {% endif %}
-
-                        {% if not msg == 8 %}
+                        {% if  msg == 7 %}
+                            <p style="text-align: left; color: #505393">Usted aun no definió un Proyecto de Perfil.</p> 
+                        {% endif %}
+                        {% if msg == 8 %}
                             <p style="text-align: left; color: #505393">Su Perfil fue publicado exitosamente.</p> 
                         {% endif %}
 
-                        {% if not msg == 9 %}
+                        {% if msg == 9 %}
                             <p style="text-align: left; color: #505393">Ya  no es posible realizar esta acción; su Perfil ya fue publicado.</p> 
                         {% endif %}
                         
@@ -99,5 +105,13 @@
         <script src='../../../public/assets/js/skel.min.js'></script>
         <script src='../../../public/assets/js/util.js'></script>
         <script src='../../../public/assets/js/main.js'></script>
+    {% endif %}
+    {% if msg == 7  %}
+        <script src='../../../../public/assets/js/jquery.min.js'></script>
+        <script src='../../../../public/assets/js/jquery.scrollex.min.js'></script>
+        <script src='../../../../public/assets/js/jquery.scrolly.min.js'></script>
+        <script src='../../../../public/assets/js/skel.min.js'></script>
+        <script src='../../../../public/assets/js/util.js'></script>
+        <script src='../../../../public/assets/js/main.js'></script>
     {% endif %}
 {% endblock %}
