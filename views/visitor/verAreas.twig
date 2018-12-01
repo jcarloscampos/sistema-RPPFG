@@ -1,0 +1,75 @@
+{% extends 'layout.twig' %}
+
+{% block csslink %}
+    <link rel='stylesheet' href='../../public/assets/css/app.css'>
+{% endblock %}
+
+{% block title %}
+   Visitante: Ver Areas
+{% endblock %}
+
+{% block namepage %}
+    SRPPFG
+{% endblock %}
+
+{% block content %}
+<article id="main">
+        <section class="wrapper style5">
+            <div class="inner">
+                <section>
+                    <div class="wrapper-form">
+                        <div class="table-wrapper">
+                            <div class="menu-actions">
+                                <h2>Áreas disponibles</h2>
+                            </div>
+                            <table id="tabla_areas">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Subárea</th>
+                                        <th>Descripción</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="content_table">
+                                    {% for area in areas %}
+                                        <tr>
+                                            <td>{{ area.name }}</td>
+                                            
+                                            <td>
+                                                {% if area.id != area.id_parent_area %}
+
+                                                    {% for subarea in areas %}
+                                                        {% if subarea.id == area.id_parent_area %}
+                                                            {{ subarea.name }}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ area.description }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            {% if page!=1%}
+                                <a href="?page={{ pagination.getPreviousPageNumber() }}">Pagina Anterior</a>
+                            {% endif %}
+                            {% if areas|length > 0 %}
+                            <div>
+                                {% for page in pagination.pages %}
+                                    <a href="?page={{ page }}">{{ page }}</a> |
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                            {% if pagination.getNextPageNumber()!=''%}
+                            <a href="?page={{ pagination.getNextPageNumber() }}">Pagina Siguiente</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </section>
+                <br> 
+                <br>
+                <br>
+            </div>
+        </section>
+    </article>
+{% endblock %}

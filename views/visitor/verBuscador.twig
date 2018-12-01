@@ -1,0 +1,133 @@
+{% extends 'layout.twig' %}
+
+{% block csslink %}
+    <link rel='stylesheet' href='../../public/assets/css/app.css'>
+{% endblock %}
+
+{% block namepage %}
+   SRPPFG
+{% endblock %}
+
+{% block title %}
+   Visitante: Busqueda de Proyectos Finales de Grado
+{% endblock %}
+
+{% block menu %}
+    {% include('visitor/menuNavVisitante.twig') %}
+{% endblock %}
+
+{% block content %}
+<article id="main">
+        <section class="wrapper style5">
+            <div class="inner">
+                <section>
+                    <div class="wrapper-form">
+                        <div class="table-wrapper">
+                            <form>
+                                <div style="#" class="menu-actions">
+                                <p>Proyectos de Grado registrados</p>
+
+                                
+                                <input type="text" style="height:40px;width:200px;margin:-8px 10px;padding:5px" placeholder="Buscar" class="mySearch" name="search">
+
+                                <select name="selector" style="height:40px;width:200px;margin:-8px 10px;padding:5px" >
+                                    <option disabled selected>seleccione uno-----</option>
+                                    <option >area</option>
+                                    <option>titulo</option>
+                                    <option>carrera</option>
+                                </select>
+                                
+                                <div>
+                                    <button type="submit">Buscar</button>
+                                </div>
+                                </div>
+                            </form>   
+                            <table id="tabla_proyectos">
+                                <thead>
+                                    <tr>
+                                        <th>Titulo</th>
+                                        <th>Tutor(es)</th>
+                                        <th>Postulante(s)</th>
+                                        <th>Objetivo General</th>
+                                        <th>Area(s)</th>
+                                        <th>Modalidad de Titulación</th>
+                                        <th>Carrera</th>
+                                        <th>Fecha de Registro</th>
+                                        <th>Periodo</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody id="content_table">
+                                {% for proyecto in proyectos %}
+                                    <tr>
+                                        <td>{{ proyecto.title }}</td>
+                                        <td>
+                                            {{ proyecto.fullname_tutor }}
+                                            {% if (proyecto.fullname_tutor_2 != '') %}
+                                            <br>{{ proyecto.fullname_tutor_2 }}
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ proyecto.fullname_student }}
+                                            {% if (proyecto.fullname_student_2 != '') %}
+                                            <br>{{ proyecto.fullname_student_2 }}
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ proyecto.general_obj }}</td>
+                                        <td>{{ proyecto.area }}
+                                            {% if (proyecto.subarea != '') %}
+                                            <br> - {{ proyecto.subarea }}
+                                            {% endif %}
+                                            {% if (proyecto.area_2 != '') %}
+                                            <br>{{ proyecto.area_2 }}
+                                            {% endif %}
+                                            {% if (proyecto.subarea_2 != '') %}
+                                            <br> - {{ proyecto.subarea_2 }}
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ proyecto.modality }}</td>
+                                        <td>{{ proyecto.career }}</td>
+                                        <td>{{ proyecto.registry_date }}</td>
+                                        <td>{{ proyecto.period }}</td>
+                                            <td>
+                                                <div class="menu-actions-tb">
+                                                <div class="actions">
+                                                    <a href="{{ 'admin/' | url }}{{proyecto.id}}">Ver Proyecto</a>
+                                                </div>
+                                                </div>
+                                            </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                              {% if page!=1%}
+                                <a href="?page={{ pagination.getPreviousPageNumber() }}">Pagina Anterior</a>
+                            {% endif %}
+                            {% if proyectos|length > 0 %}
+                            <div>
+                                {% for page in pagination.pages %}
+                                    <a href="?page={{ page }}">{{ page }}</a> |
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                             {% if pagination.getNextPageNumber()!=''%}
+                            <a href="?page={{ pagination.getNextPageNumber() }}">Pagina Siguiente</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </section>
+                <br> 
+                <br>
+                <br>
+            </div>
+        </section>
+    </article>
+{% endblock %}
+
+{% block jslink %}
+    <script src='../../public/assets/js/jquery.min.js'></script>
+    <script src='../../public/assets/js/jquery.scrollex.min.js'></script>
+    <script src='../../public/assets/js/jquery.scrolly.min.js'></script>
+    <script src='../../public/assets/js/skel.min.js'></script>
+    <script src='../../public/assets/js/util.js'></script>
+    <script src='../../public/assets/js/main.js'></script>
+{% endblock %}

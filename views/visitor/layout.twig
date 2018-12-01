@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block namepage %}{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat|Oleo Script" rel="stylesheet">
+    {% block csslink %}{% endblock %}
+</head>
+<body>
+    <div class="main">
+        <div id="page-wrapper">
+            <header id="header">
+                <p>{% block title %}{% endblock %}</p>
+                {% block menu %}{% endblock %}
+            </header>
+            <header class="config">
+                {% block configpersonal %}{% endblock %}
+            </header>
+                {% block content %}{% endblock %}
+                
+            <footer id="footer">
+                <ul class="copyright">
+                   <li>Universidad Mayor de San Simón 2018</li>
+            </footer>
+        </div>
+        {% block jslink %}{% endblock %}
+    </div>
+</body>
+</html>
