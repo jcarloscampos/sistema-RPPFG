@@ -3,7 +3,11 @@
 namespace AppPHP\Controllers\Admin;
 
 use AppPHP\Controllers\BaseController;
-use AppPHP\Models\User;
+use AppPHP\Models\Postulant;
+use AppPHP\Models\Account;
+use AppPHP\Models\ProfessionalExt;
+use AppPHP\Models\ProfessionalUmss;
+use AppPHP\Models\Secretary;
 use Sirius\Validation\Validator;
 use AppPHP\Models\Administrator;
 use AshleyDawson\SimplePagination\Paginator;
@@ -19,7 +23,12 @@ class UsersController extends BaseController
     {
         if (isset($_SESSION['admID'])) {
             $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
-            $users = User::query()->orderBy('name', 'asc')->get()->toArray();
+            $administrators = Administrator::query()->orderBy('name', 'asc')->get()->toArray();
+            $postulants = Postulant::query()->orderBy('name', 'asc')->get()->toArray();
+            $extProfs =  ProfessionalExt::query()->orderBy('name', 'asc')->get()->toArray();
+            $intProfs = ProfessionalUmss::query()->orderBy('name', 'asc')->get()->toArray();
+            $secretaries = Secretary::query()->orderBy('name', 'asc')->get()->toArray();
+            $users = array_merge($administrators, $postulants, $extProfs, $intProfs, $secretaries);
             $params = null; 
             $page = 1;
             $myUrl=parse_url($_SERVER['REQUEST_URI']);

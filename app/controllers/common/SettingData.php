@@ -104,4 +104,44 @@ class SettingData
         }
         return array_unique($result);
     }
+
+    /**
+     * Esta funcion debería ser integrada al sistema WebSIS de UMSS para poder obtener
+     * la información del Profesional desde ese sistema
+     */
+    public function recuperarCIProfessional($nombre, $ap_paterno, $ap_materno) {
+        return "12345678";
+    }
+
+    /**
+     * Esta funcion debería ser integrada al sistema WebSIS de UMSS para poder obtener
+     * la información del Profesional desde ese sistema
+     */
+    public function recuperarSISProfessional($nombre, $ap_paterno, $ap_materno) {
+        return "190000001";
+    }
+
+    /**
+     * Esta funcion debería ser integrada al sistema WebSIS de UMSS para poder obtener
+     * la información del Estudiante desde ese sistema
+     */
+    public function recuperarCIStudent($nombre, $ap_paterno, $ap_materno) {
+        return "12345678";
+    }
+
+    /**
+     * Esta funcion debería ser integrada al sistema WebSIS de UMSS para poder obtener
+     * la información del Estudiante desde ese sistema
+     */
+    public function recuperarSISStudent($nombre, $ap_paterno, $ap_materno) {
+        return "200000001";
+    }
+
+    /**
+     * Esta funcion debería ser integrada al sistema WebSIS de UMSS para poder obtener
+     * la información del Estudiante desde ese sistema
+     */
+    public function recuperarMailStudent($nombre, $ap_paterno, $ap_materno) {
+        return substr($nombre,0,1) . $ap_paterno . "_temp@umss.edu.bo";
+    }
 }
