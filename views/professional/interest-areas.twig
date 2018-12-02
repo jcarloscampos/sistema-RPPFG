@@ -2,6 +2,12 @@
 
 {% block csslink %}
     <link rel='stylesheet' href='../../public/assets/css/app.css'>
+
+    <link rel='stylesheet' href='../../public/assets/alertifyjs/css/alertify.min.css'>
+    {# <link rel='stylesheet' href='../../public/assets/alertifyjs/css/alertify.rtl.min.css'> #}
+    <link rel='stylesheet' href='../../public/assets/alertifyjs/css/themes/default.min.css'>
+    {# <link rel='stylesheet' href='../../public/assets/alertifyjs/css/themes/default.rtl.min.css'> #}
+
 {% endblock %}
 
 {% block namepage %}
@@ -63,7 +69,7 @@
                                                 <div class="menu-actions-tb">
                                                     <div class="actions">
                                                         {% if emptyarea %}
-                                                            <a href="{{ etn ? 'settle/' : 'itnprofessional/settle/' | url }}{{ area.id }}">Añadir</a>
+                                                            <a href="{{ etn ? 'settle/' : 'itnprofessional/settle/' | url }}{{ area.id }}" id="subjoin">Añadir</a>
                                                         {% else %}
 
                                                             {% set condition = true %}
@@ -71,14 +77,14 @@
                                                             {% for profarea in profareas if condition %}
                                                                 {% if area.id == profarea.id_area %}
                                                                     {% if profarea.id_prof == vPerfil.id %}
-                                                                    <a href="{{ etn ? 'remove/' : 'itnprofessional/remove/' | url }}{{ profarea.id }}">Quitar</a>
+                                                                    <a href="{{ etn ? 'remove/' : 'itnprofessional/remove/' | url }}{{ profarea.id }}" id="erase">Quitar</a>
                                                                     {% set condition = false %}
                                                                     {% endif %}
                                                                     
                                                                 {% endif %}
                                                             {% endfor %}
                                                             {% if condition %}
-                                                                    <a href="{{ etn ? 'settle/' : 'itnprofessional/settle/' | url }}{{ area.id }}">Añadir</a>
+                                                                    <a href="{{ etn ? 'settle/' : 'itnprofessional/settle/' | url }}{{ area.id }}" id="nsubjoin" >Añadir</a>
                                                             {% endif %}
                                                         {% endif %}
                                                     </div>
@@ -107,9 +113,31 @@
     <script src='../../public/assets/js/util.js'></script>
     <script src='../../public/assets/js/main.js'></script>
 
-    {# <script src="https://code.jquery.com/jquery-2.2.4.min.js" 
-        integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
-        crossorigin="anonymous">
-    </script> #}
+    <script src='../../public/assets/js/jquery-3.3.1.min.js'></script>
+    <script src='../../public/assets/alertifyjs/alertify.min.js'></script>
+    
+    <script>
+        $(document).ready(function(){
+            $('#subjoin').click(function(){
+                alertify.success("se agrego el area");
+            });
+            $('#nsubjoin').click(function(){
+                alertify.success("se agrego el areaaaaaaaaa");
+            });
+            $('#erase').click(function(){
+                alertify.confirm("This is a confirm dialog.",
+  function(){
+    alertify.success('Ok');
+  },
+  function(){
+    alertify.error('Cancel');
+  });
+            });
+        });
+    </script>
+
+
+
+
 
 {% endblock %}

@@ -36,8 +36,10 @@ class SignupController extends BaseController
         $validator = new Validator();
         $validation = new Validation();
         $validation->setRuleBasic($validator);
-        $validation->setRuleTuser($validator);
+        $validation->setRuleCodeSis($validator);
         $validation->setRuleUser($validator);
+        $validation->setRuleCI($validator);
+        
 
         $pData = [
             'ci'=> $_POST['ci'],
@@ -45,8 +47,11 @@ class SignupController extends BaseController
             'l_name' => $_POST['lname'],
             'ml_name' => $_POST['mlname'],
             'email'=> $_POST['email'],
+            'cod_sis'=>$_POST['codsis'],
             'user' => $_POST['user']
         ];
+        //var_dump($pData);
+        //return null;
 
         if ($validator->validate($_POST)) {
             # validacion correcta
@@ -57,12 +62,14 @@ class SignupController extends BaseController
                 # en caso de que sea estudiante verificamos si esta inscrito en la materia
                 $registered = IsRegistered::where("ci", "=", $_POST['ci'])->get()->toArray();
                 # crear nuevo usuario
-                if ($_POST['tuser'] == 1 || $_POST['tuser'] == 2 || !empty($registered)) {
+                $tuser = 3;
+                //if ($_POST['tuser'] == 1 || $_POST['tuser'] == 2 || !empty($registered)) {
+                if (!empty($registered)) {
                     $userAccount = $this->newAccount($_POST['user'], $_POST['pwd']);
                     $pData['id_account'] = $userAccount;
-                    $result = $this->createUser($_POST['tuser'], $pData);
+                    $result = $this->createUser($tuser, $pData);
                     # cambiar definiendo instancia del usuario 
-                    $this->setProfile($_POST['tuser'], $userAccount); 
+                    $this->setProfile($tuser, $userAccount); 
                 }
             }
         } else {
@@ -115,6 +122,7 @@ class SignupController extends BaseController
         $user->l_name = $profile['l_name'];
         $user->ml_name = $profile['ml_name'];
         $user->email = $profile['email'];
+        $user->cod_sis = $profile['cod_sis'];
         $user->id_account = $profile['id_account'];        
         $user->save();
         return true;

@@ -13,7 +13,7 @@
     <link rel='stylesheet' href='../public/assets/css/background1.css'>
     <link rel='stylesheet' href='../public/assets/css/app.css'>
 {% endblock %}
-{% block menu %}
+{# {% block menu %}
     <nav id="nav">
         <ul>
             <li class="special">
@@ -26,7 +26,7 @@
             </li>
         </ul>
     </nav>
-{% endblock %}
+{% endblock %} #}
 
 {% block content %}
     <article id="main">
@@ -63,14 +63,19 @@
                                     <input type="text" name="mlname" id="mlname" value="{{user.ml_name}}" placeholder="Apellido materno" />
                                 </div>
                                 <div class="3u 12u$(xsmall)">
+                                    <label>Código SIS</label>
+                                    <input type="text" name="codsis" id="codsis" value="{{user.cod_sis}}" placeholder="Código SIS" />
+                                </div>
+                                <div class="3u 12u$(xsmall)">
                                     <label>CI</label>
                                     <input type="text" name="ci" id="ci" value="{{user.ci}}" placeholder="Identificación personal" />
                                 </div>
-                                <div class="6u 12u$(xsmall)">
+                                <div class="6u$ 12u$(xsmall)">
                                     <label>Email</label>
                                     <input type="text" name="email" id="email" value="{{user.email}}" placeholder="Email" />
                                 </div>
-                                <div class="3u$ 12u$(xsmall)">
+
+                                {# <div class="3u$ 12u$(xsmall)">
                                     <label>Tipo de usuario</label>
                                     <select name="tuser">
                                         <option value="" disabled selected>- Seleccionar -</option>
@@ -78,7 +83,7 @@
                                         <option value="2">Profesional Externo</option>
                                         <option value="3">Postulante</option>
                                     </select>    
-                                </div>
+                                </div> #}
 
                                 <div class="4u 12u$(xsmall)">
                                     <label>Nombre de usuario</label>
