@@ -87,7 +87,7 @@ class RestrainedController extends BaseController
             $errors = [];
 
             $validation->setRuleDefThree($validator);
-
+            $aux = PostulantProfile::where('id_postulant', $user->id)->first();
             if ($validator->validate($_POST)) {
 
                 $postPfl = PostulantProfile::where('id_postulant', $user->id)->first();
@@ -113,8 +113,8 @@ class RestrainedController extends BaseController
                     $makeDB->removeProfile($currentpfl);
             } else {
                 $errors = $validator->getMessages();
-                $itutors = $generate->getTutors($areaprofiles, $itnprofareas, $iprofessionals);
-                $etutors = $generate->getTutors($areaprofiles, $etnprofareas, $eprofessionals);
+                $itutors = $generate->getTutors($areaprofiles, $itnprofareas, $iprofessionals, $aux->id_profile);
+                $etutors = $generate->getTutors($areaprofiles, $etnprofareas, $eprofessionals, $aux->id_profile);
                 return $this->render('postulant/settle-restrained.twig', 
                 ['vPerfil'=>$user, 'uimage'=>$uimage, 'errors' => $errors, 'matter' => $matter, 'pmatters' => $pmatter, 'iprofessionals'=> $iprofessionals,
                 'eprofessionals' => $eprofessionals, 'itutors' => $itutors, 'etutors' => $etutors
@@ -175,72 +175,30 @@ class RestrainedController extends BaseController
     public function getView(){
         if (isset($_SESSION['postID'])) {
             $user = Postulant::where('id_account', $_SESSION['postID'])->first();
+            $aux = PostulantProfile::where('id_postulant', $user->id)->first();
             $uimage = substr($user->name, 0, 1);
             $generate = new SettingData();
+            
+            if (isset($aux)){
+                
 
-            //--------------------------------------------------------------------------------
-            $makeDB = new ServerConnection();
-            $pprofile = PostulantProfile::where('id_postulant', $user->id)->first();
-            $profile = Profile::where('id', $pprofile->id_profile)->first();
-
-            $postulantProfiles = PostulantProfile::all();
-            $status = Status::all();
-            $areaprofiles = AreaProfile::all();
-            $responsables = Responsable::all();
-
-            $iprofessionals = ProfessionalUmss::all();
-            $eprofessionals = ProfessionalExt::all();
-            $etnprofareas = EtnProfArea::all();
-            $itnprofareas = ItnProfArea::all();
-
-            $itutors = $generate->getTutors($areaprofiles, $itnprofareas, $iprofessionals);
-            $etutors = $generate->getTutors($areaprofiles, $etnprofareas, $eprofessionals);
-        
-            //Extrae los postulantes que trabajan en un perfil
-            $posts = $makeDB->getPostulants($postulantProfiles, $profile);
-            count($posts)>1 ? $group = true : $group = false;
-            if ($group) {
-                $postf = $posts[0];
-                $posts = $posts[1];
-            } else {
-                $postf = $posts[0];
-            }
-        
-            // Obtine carrera
-            $career = $makeDB->getCareer($postulantProfiles, $profile);
-            // Estdo actual del perfil
-            $cstate = $makeDB->getState($profile);
-            // periodo
-            $period = $makeDB->getPeriod($postulantProfiles, $profile);
-            $papproved = $period->period;
-            $sapproved = substr($period->start_date, 0, 4);
-            $approved = $papproved . '/' . $sapproved;
-            // status
-            $cstate = Status::where('id', $profile->id_status)->first();
-        
-            // Obtine los tutores del perfil
-            $tutors = $makeDB->getTutors($profile);
-
-            $twofold = false;
-
-            if (count($tutors) == 1) {
-                $tutorfir = $tutors[0];
-                $tutorsec = null;
-            } elseif (count($tutors) == 2) {
-                $tutorfir = $tutors[0];
-                $tutorsec = $tutors[1];
-                $twofold = true;
-            }
-
-            if (isset($pprofile)) {
                 //--------------------------------------------------------------------------------
                 $makeDB = new ServerConnection();
+                $pprofile = PostulantProfile::where('id_postulant', $user->id)->first();
                 $profile = Profile::where('id', $pprofile->id_profile)->first();
-    
+
                 $postulantProfiles = PostulantProfile::all();
                 $status = Status::all();
                 $areaprofiles = AreaProfile::all();
                 $responsables = Responsable::all();
+
+                $iprofessionals = ProfessionalUmss::all();
+                $eprofessionals = ProfessionalExt::all();
+                $etnprofareas = EtnProfArea::all();
+                $itnprofareas = ItnProfArea::all();
+
+                $itutors = $generate->getTutors($areaprofiles, $itnprofareas, $iprofessionals, $aux->id_profile);
+                $etutors = $generate->getTutors($areaprofiles, $etnprofareas, $eprofessionals, $aux->id_profile);
             
                 //Extrae los postulantes que trabajan en un perfil
                 $posts = $makeDB->getPostulants($postulantProfiles, $profile);
@@ -266,10 +224,9 @@ class RestrainedController extends BaseController
             
                 // Obtine los tutores del perfil
                 $tutors = $makeDB->getTutors($profile);
-    
+
                 $twofold = false;
-                $tutorfir = [];
-                $tutorsec = [];
+
                 if (count($tutors) == 1) {
                     $tutorfir = $tutors[0];
                     $tutorsec = null;
@@ -278,37 +235,84 @@ class RestrainedController extends BaseController
                     $tutorsec = $tutors[1];
                     $twofold = true;
                 }
-    
-                // Modalidad de perfil
-                $modality = $makeDB->getModality($profile);
-                // Encargado de Empresa donde se realiza el trabajo dirigido
-                $attendant = $makeDB->getAttendant($profile);
-                // Director de carrera
-                $director = $makeDB->getDirector();
-                // Docente de materia
-                $teacher = $makeDB->getTeacher($profile, $responsables);
-                // Area y sub area
-                $areap = $makeDB->getAreap($profile, $areaprofiles);
-                $subareap = $makeDB->getSubAreap($profile, $areaprofiles);
-    
-                if ($group) {
+
+                if (isset($pprofile)) {
+                    //--------------------------------------------------------------------------------
+                    $makeDB = new ServerConnection();
+                    $profile = Profile::where('id', $pprofile->id_profile)->first();
+        
+                    $postulantProfiles = PostulantProfile::all();
+                    $status = Status::all();
+                    $areaprofiles = AreaProfile::all();
+                    $responsables = Responsable::all();
+                
+                    //Extrae los postulantes que trabajan en un perfil
+                    $posts = $makeDB->getPostulants($postulantProfiles, $profile);
+                    count($posts)>1 ? $group = true : $group = false;
+                    if ($group) {
+                        $postf = $posts[0];
+                        $posts = $posts[1];
+                    } else {
+                        $postf = $posts[0];
+                    }
+                
+                    // Obtine carrera
+                    $career = $makeDB->getCareer($postulantProfiles, $profile);
+                    // Estdo actual del perfil
+                    $cstate = $makeDB->getState($profile);
+                    // periodo
+                    $period = $makeDB->getPeriod($postulantProfiles, $profile);
+                    $papproved = $period->period;
+                    $sapproved = substr($period->start_date, 0, 4);
+                    $approved = $papproved . '/' . $sapproved;
+                    // status
+                    $cstate = Status::where('id', $profile->id_status)->first();
+                
+                    // Obtine los tutores del perfil
+                    $tutors = $makeDB->getTutors($profile);
+        
+                    $twofold = false;
+                    $tutorfir = [];
+                    $tutorsec = [];
+                    if (count($tutors) == 1) {
+                        $tutorfir = $tutors[0];
+                        $tutorsec = null;
+                    } elseif (count($tutors) == 2) {
+                        $tutorfir = $tutors[0];
+                        $tutorsec = $tutors[1];
+                        $twofold = true;
+                    }
+        
+                    // Modalidad de perfil
+                    $modality = $makeDB->getModality($profile);
+                    // Encargado de Empresa donde se realiza el trabajo dirigido
+                    $attendant = $makeDB->getAttendant($profile);
+                    // Director de carrera
+                    $director = $makeDB->getDirector();
+                    // Docente de materia
+                    $teacher = $makeDB->getTeacher($profile, $responsables);
+                    // Area y sub area
+                    $areap = $makeDB->getAreap($profile, $areaprofiles);
+                    $subareap = $makeDB->getSubAreap($profile, $areaprofiles);
+        
+                    if ($group) {
+                        return $this->render(
+                        'postulant/preview.twig',
+                        ['vPerfil'=>$user, 'uimage'=>$uimage, 'profile'=>$profile, 'group'=>$group, 'postf'=>$postf,
+                        'posts'=>$posts, 'modality'=>$modality, 'career'=>$career, 'period'=>$period, 'approved'=>$approved,
+                        'status'=>$status, 'cstate'=>$cstate, 'teacher'=>$teacher, 'tutorfir'=>$tutorfir, 'tutorsec'=>$tutorsec,
+                        'twofold'=>$twofold, 'areap'=>$areap, 'subareap'=>$subareap, 'director'=>$director, 'attendant'=>$attendant
+                        ]
+                    );
+                    }
                     return $this->render(
                     'postulant/preview.twig',
                     ['vPerfil'=>$user, 'uimage'=>$uimage, 'profile'=>$profile, 'group'=>$group, 'postf'=>$postf,
                     'posts'=>$posts, 'modality'=>$modality, 'career'=>$career, 'period'=>$period, 'approved'=>$approved,
                     'status'=>$status, 'cstate'=>$cstate, 'teacher'=>$teacher, 'tutorfir'=>$tutorfir, 'tutorsec'=>$tutorsec,
-                    'twofold'=>$twofold, 'areap'=>$areap, 'subareap'=>$subareap, 'director'=>$director, 'attendant'=>$attendant
+                    'twofold'=>$twofold, 'areap'=>$areap, 'subareap'=>$subareap, 'director'=>$director, 'attendant'=>$attendant, 'iprofessionals'=> $iprofessionals, 
+                    'eprofessionals' => $eprofessionals, 'itutors' => $itutors, 'etutors' => $etutors                
                     ]
-                );
-                }
-                return $this->render(
-                'postulant/preview.twig',
-                ['vPerfil'=>$user, 'uimage'=>$uimage, 'profile'=>$profile, 'group'=>$group, 'postf'=>$postf,
-                'posts'=>$posts, 'modality'=>$modality, 'career'=>$career, 'period'=>$period, 'approved'=>$approved,
-                'status'=>$status, 'cstate'=>$cstate, 'teacher'=>$teacher, 'tutorfir'=>$tutorfir, 'tutorsec'=>$tutorsec,
-                'twofold'=>$twofold, 'areap'=>$areap, 'subareap'=>$subareap, 'director'=>$director, 'attendant'=>$attendant, 'iprofessionals'=> $iprofessionals, 
-                'eprofessionals' => $eprofessionals, 'itutors' => $itutors, 'etutors' => $etutors                
-                ]
                 );
                 //--------------------------------------------------------------------------------
             }else{
@@ -324,8 +328,12 @@ class RestrainedController extends BaseController
             'areap'=>$areap, 'subareap'=>$subareap, 'director'=>$director,'attendant'=>$attendant, 'iprofessionals'=> $iprofessionals, 
             'eprofessionals' => $eprofessionals, 'itutors' => $itutors, 'etutors' => $etutors
             ]
-        );
-            //--------------------------------------------------------------------------------
+            );
+                //--------------------------------------------------------------------------------
+            } else {
+                $msg = 7;
+                return $this->render('postulant/messages.twig', ['vPerfil' => $user, 'uimage'=>$uimage, 'msg' => $msg]);
+            }
         }
         header('Location: ' . BASE_URL . '');
     }
@@ -337,6 +345,7 @@ class RestrainedController extends BaseController
             $user = Postulant::where('id_account', $_SESSION['postID'])->first();
             $uimage = substr($user->name, 0, 1);
             $generate = new SettingData();
+            $aux = PostulantProfile::where('id_postulant', $user->id)->first();
 
             if ($profile->id_status == $temstatus->id) {
                 $editp = true;
@@ -355,8 +364,8 @@ class RestrainedController extends BaseController
                 $etnprofareas = EtnProfArea::all();
                 $itnprofareas = ItnProfArea::all();
 
-                $itutors = $generate->getTutors($areaprofiles, $itnprofareas, $iprofessionals);
-                $etutors = $generate->getTutors($areaprofiles, $etnprofareas, $eprofessionals);
+                $itutors = $generate->getTutors($areaprofiles, $itnprofareas, $iprofessionals, $aux->id_profile);
+                $etutors = $generate->getTutors($areaprofiles, $etnprofareas, $eprofessionals, $aux->id_profile);
                 //Extrae los postulantes que trabajan en un perfil
                 $posts = $makeDB->getPostulants($postulantProfiles, $profile);
                 count($posts)>1 ? $group = true : $group = false;
@@ -439,6 +448,7 @@ class RestrainedController extends BaseController
         if (isset($_SESSION['postID'])) {
             $temstatus = Status::where('name', 'aceptado')->first();
             $profile = Profile::where('id', $idprofile)->first();
+            $aux = PostulantProfile::where('id_postulant', $user->id)->first();
             if ($profile->id_status == $temstatus->id) {
                 $user = Postulant::where('id_account', $_SESSION['postID'])->first();
                 $uimage = substr($user->name, 0, 1);
@@ -482,8 +492,8 @@ class RestrainedController extends BaseController
                 $etnprofareas = EtnProfArea::all();
                 $itnprofareas = ItnProfArea::all();
 
-                $itutors = $generate->getTutors($areaprofiles, $itnprofareas, $iprofessionals);
-                $etutors = $generate->getTutors($areaprofiles, $etnprofareas, $eprofessionals);
+                $itutors = $generate->getTutors($areaprofiles, $itnprofareas, $iprofessionals, $aux->id_profile);
+                $etutors = $generate->getTutors($areaprofiles, $etnprofareas, $eprofessionals, $aux->id_profile);
             
                 //Extrae los postulantes que trabajan en un perfil
                 $posts = $makeDB->getPostulants($postulantProfiles, $profile);

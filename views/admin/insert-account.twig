@@ -2,6 +2,8 @@
 
 {% block csslink %}
     <link rel='stylesheet' href='../../../public/assets/css/app.css'>
+    <link rel='stylesheet' href='../../../public/assets/alertifyjs/css/alertify.min.css'>
+    <link rel='stylesheet' href='../../../public/assets/alertifyjs/css/themes/default.min.css'>
 {% endblock %}
 
 {% block namepage %}
@@ -36,27 +38,27 @@
                             {% include 'remnant/success.twig' %}
                             {% include 'remnant/warning.twig' %}
                         </div>
-                        <form method="post" action="#">
+                        <form method="post" onsubmit="return validateFormAddAccount()">
                             <div class="row uniform">
                                 <div class="3u 12u$(xsmall)">
                                     <label>Nombre completo</label>
-                                    <input type="text" name="name" id="name" value="{{vPerfil.name}}" placeholder="Nombre completo" />
+                                    <input type="text" name="name" id="name" value="{{vprofile.name}}" placeholder="Nombre completo" onkeyup="formatLetters(this)" onchange="formatLetters(this)"/>
                                 </div>
                                 <div class="3u 12u$(xsmall)">
                                     <label>Apellido paterno</label>
-                                    <input type="text" name="lname" id="lname" value="{{vPerfil.l_name}}" placeholder="Apellido paterno" />
+                                    <input type="text" name="lname" id="lname" value="{{vprofile.l_name}}" placeholder="Apellido paterno" onkeyup="formatLetters(this)" onchange="formatLetters(this)"/>
                                 </div>
                                 <div class="3u 12u$(xsmall)">
                                     <label>Apellido materno</label>
-                                    <input type="text" name="mlname" id="mlname" value="{{vPerfil.ml_name}}" placeholder="Apellido materno" />
+                                    <input type="text" name="mlname" id="mlname" value="{{vprofile.ml_name}}" placeholder="Apellido materno" onkeyup="formatLetters(this)" onchange="formatLetters(this)"/>
                                 </div>
                                 <div class="3u$ 12u$(xsmall)">
                                     <label>CI</label>
-                                    <input type="text" name="ci" id="ci" value="{{vPerfil.ci}}" placeholder="CI" />
+                                    <input type="text" name="ci" id="ci" value="{{vprofile.ci}}" placeholder="CI" onkeyup="formatNum(this)" onchange="formatNum(this)"/>
                                 </div>
                                 <div class="6u 12u$(xsmall)">
                                     <label>Email</label>
-                                    <input type="text" name="email" id="email" value="{{vPerfil.email}}" placeholder="Email"/>
+                                    <input type="text" name="email" id="email" value="{{vprofile.email}}" placeholder="Email"/>
                                 </div>
                                 <div class="3u$ 12u$(xsmall)">
                                     <label>Tipo de usuario</label>
@@ -99,4 +101,8 @@
     <script src='../../../public/assets/js/skel.min.js'></script>
     <script src='../../../public/assets/js/util.js'></script>
     <script src='../../../public/assets/js/main.js'></script>
+
+    <script src='../../../public/assets/js/jquery-3.3.1.min.js'></script>
+    <script src='../../../public/assets/alertifyjs/alertify.min.js'></script>
+    <script src='../../../public/assets/alertifyjs/validation.js'></script>
 {% endblock %}

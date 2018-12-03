@@ -107,12 +107,12 @@ class ProfessionalsController extends BaseController
             $errors = $validator->getMessages();
             return $this->render(
                 'admin/insert-account.twig', 
-                ['vadmin' => $admin, 'errors' => $errors, 'vadmin'=>$userprofile]);
+                ['vadmin' => $admin, 'errors' => $errors, 'vprofile'=>$userprofile]);
             return null;
         }
         return $this->render(
             'admin/insert-account.twig', 
-            ['vadmin' => $admin, 'result' => $result, 'duplicate' => $duplicate]);
+            ['vadmin' => $admin, 'result' => $result, 'duplicate' => $duplicate, 'vprofile'=>$userprofile]);
     }
 
     /**
