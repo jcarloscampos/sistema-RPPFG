@@ -1,0 +1,29 @@
+<nav id="nav">
+    <ul>
+        <li class="special">
+            <a href="#menu" class="menuToggle"><span>Menu</span></a>
+            <div id="menu">
+                <div class="content-avatar">
+                     <div class="avatar">
+                        <p>{{uimage}}</p>
+                    </div>
+                </div>               
+                <br>
+                <ul>
+                    <li>
+                        <a href="{{index.twig}}">Inicio</a>
+                    </li> 
+                    <li>
+                        <a href="{{'visitor/area' | url }}">Ver áreas</a>
+                    </li>
+                    <li>
+                        <a href="{{'visitor/previousDescription'}}">Ver Pasos Previos al Registro</a>
+                    </li>
+                    <li>
+                        <a href="{{'visitor/buscar' | url }}">Buscar Proyectos</a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+    </ul>
+</nav>
