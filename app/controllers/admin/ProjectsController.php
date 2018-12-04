@@ -11,16 +11,19 @@ use AppPHP\Models\Postulant;
 use AppPHP\Models\Area;
 use AppPHP\Models\Career;
 use AppPHP\Models\Modality;
+use AppPHP\Models\Responsable;
+use AppPHP\Models\TypeResponsable;
 use AppPHP\Models\Status;
 use AppPHP\Models\Account;
 use AppPHP\Models\EtnProfArea;
 use AppPHP\Models\EtnTutor;
 use AppPHP\Models\ItnProfArea;
-use AppPHp\Models\PostulantProfile;
-use AppPHp\Models\AreaProfile;
+use AppPHP\Models\PostulantProfile;
+use AppPHP\Models\AreaProfile;
 use Sirius\Validation\Validator;
 use AppPHP\Models\Administrator;
 use AppPHP\Controllers\Common\Validation;
+use AppPHP\Controllers\Common\SettingData;
 use AshleyDawson\SimplePagination\Paginator;
 
 
@@ -167,44 +170,48 @@ class ProjectsController extends BaseController
                         //Obtenemos el ID de la carrera
                         $career = Career::where('name', $carrera)->first();
                         if (is_null($career)){
-                            array_push($errors, "Error en la linea: $counter, La siguiente carrera no se encuentra registrada en el sistema: \"$carrera\", por favor verifique e intente nuevamente.");
+                            array_push($information, "Error en la linea: $counter, La siguiente carrera no se encuentra registrada en el sistema: \"$carrera\", por favor verifique e intente nuevamente.");
                         }
-                        $id_career = $career->id;
+                        else {
+                            $id_career = $career->id;
+                            echo "<script>console.log( 'ID id_career $id_career ' );</script>";
 
-                        //Obtenemos el ID del area
-                        $area = Area::where('name', $area_perfil)
-                                    ->where('id_parent_area', null)->first();
-                        if (is_null($area)){
-                            array_push($errors, "Error en la linea: $counter, La siguiente area no se encuentra registrada en el sistema: \"$area\", por favor registrela e intente nuevamente.");
-                            break;
+                            //Obtenemos el ID del area
+                            $area = Area::where('name', $area_perfil)->first();
+                            if (is_null($area)){
+                                array_push($information, "Error en la linea: $counter, La siguiente area no se encuentra registrada en el sistema: \"$area\", por favor registrela e intente nuevamente.");
+                            }
+                            else{
+                                $id_area = $area->id;
+                                echo "<script>console.log( 'ID area $id_area ' );</script>";
+
+                                //Obtenemos el ID de la modalidad
+                                $modality = Modality::where('name_mod', $modalidad_titulacion)->first();
+                                if (is_null($modality)){
+                                    array_push($information, "Error en la linea: $counter, La siguiente modalidad de titulación no se encuentra registrada en el sistema: \"$modalidad_titulacion\", por favor verifique e intente nuevamente.");
+                                }
+                                else{
+                                    $id_modality = $modality->id;
+                                    echo "<script>console.log( 'ID moda $id_modality ' );</script>";
+
+                                    //Obtenemos el ID del status
+                                    $status = Status::where('name', "aceptado")->first();
+                                    $id_status = $status->id;
+
+                                    //Obtenemos el ID del postulante
+                                    $id_postulant = $this->getPostulantID($nombre_postulante, $apellido_paterno_postulante, $apellido_materno_postulante, $id_career, $counter, $information);
+                                    echo "<script>console.log( 'ID postulant $id_postulant ' );</script>";
+
+                                    //Obtenemos el ID del tutor
+                                    $is_ProfUMSS = true;
+                                    $id_tutor = $this->getTutorID($nombre_tutor, $apellido_paterno_tutor, $apellido_materno_tutor, $id_area, $counter, $information,$is_ProfUMSS);
+                                    echo "<script>console.log( 'ID tutor $id_tutor ' );</script>";
+
+                                    //validamos la infomracion del Perfil y la introducimos a la base de datos
+                                    $this->crear_actualizarPerfil($counter, $titulo_proyecto_final, $objetivo_general, $id_modality, $periodo, $fecha_de_registro, $id_postulant, $id_area, $id_status, $id_tutor, $id_career, $is_ProfUMSS);
+                                }
+                            }
                         }
-                        $id_area = $area->id;
-                        echo "<script>console.log( 'ID area $id_area ' );</script>";
-
-                        //Obtenemos el ID de la modalidad
-                        $modality = Modality::where('name_mod', $modalidad_titulacion)->first();
-                        if (is_null($modality)){
-                            array_push($errors, "Error en la linea: $counter, La siguiente modalidad de titulación no se encuentra registrada en el sistema: \"$modalidad_titulacion\", por favor verifique e intente nuevamente.");
-                            break;
-                        }
-                        $id_modality = $modality->id;
-                        echo "<script>console.log( 'ID moda $id_modality ' );</script>";
-
-                        //Obtenemos el ID del status
-                        $status = Status::where('name', "aceptado")->first();
-                        $id_status = $status->id;
-                        echo "<script>console.log( 'ID status $id_status ' );</script>";
-
-                        //Obtenemos el ID del postulante
-                        $id_postulant = getPostulantID($nombre_postulante, $apellido_paterno_postulante, $apellido_materno_postulante, $id_career, $counter, $errors);
-                        echo "<script>console.log( 'ID postulant $id_postulant ' );</script>";
-
-                        //Obtenemos el ID del tutor
-                        $id_tutor = getTutorID($nombre_tutor, $apellido_paterno_tutor, $apellido_materno_tutor, $id_area, $counter, $errors);
-                        echo "<script>console.log( 'ID tutor $id_tutor ' );</script>";
-
-                        //validamos la infomracion del Perfil y la introducimos a la base de datos
-                        crear_actualizarPerfil($counter, $titulo_proyecto_final, $objetivo_general, $id_modality, $periodo, $fecha_de_registro, $id_postulant, $id_area, $id_tutor, $id_career);
                     }
                     $counter++;
                 }
@@ -253,7 +260,7 @@ class ProjectsController extends BaseController
     }
 
     private function crear_actualizarPerfil($counter, $titulo_proyecto_final, $objetivo_general, $id_modality, $periodo, $fecha_de_registro, $id_postulant,
-                                            $id_area, $id_tutor, $id_career){
+                                            $id_area, $id_status, $id_tutor, $id_career, $is_ProfUMSS){
         //Buscamos si el perfil ya existe mediante el título
         $profile_exists = Profile::where('title', $titulo_proyecto_final)->first();
         $profile_id = 0;
@@ -267,7 +274,7 @@ class ProjectsController extends BaseController
                 'g_objective' => $objetivo_general,
                 's_objects' => "",
                 "description" => "",
-                "id_cmpy_area" => "", //TODO - Investigando el sentido de este valor
+                "id_cmpy_area" => $id_area,
                 "id_mod" => $id_modality,
                 "id_status" => $id_status
             ]);
@@ -283,44 +290,55 @@ class ProjectsController extends BaseController
                 'g_objective' => $objetivo_general,
                 's_objects' => "",
                 "description" => "",
-                "id_cmpy_area" => "", //TODO - Investigando el sentido de este valor
+                "id_cmpy_area" => $id_area,
                 "id_mod" => $id_modality,
                 "id_status" => $id_status
             ]);
         }
 
         //Completamos todas las relaciones restantes
-        //Buscamos la relacion del Perfil con el tutor y la actualizamos/creamos de ser necesario
-        $etntutor_exists = EtnTutor::where('id_etnprof', $id_tutor)->where('id_profile',$profile_id)->first();
-        if(is_null($etntutor_exists)){
-            $new_etntutor = new EtnTutor([
-                'id_etnprof' => $id_tutor,
-                'id_profile' => $profile_id
-            ]);
-            $new_etntutor->save();
+        //Buscamos la relacion del Perfil con el tutor y la creamos de ser necesario
+        if($is_ProfUMSS){
+            $type_resp_id = TypeResponsable::where('name',"tutor")->first()->id;
+            $resp_tutor_exists = Responsable::where('id_profile',$profile_id)
+                                            ->where('id_type_resp', $type_resp_id)
+                                            ->where('id_intprof', $id_tutor)->first();
+            if(is_null($resp_tutor_exists)){
+                $new_resp_tutor_exists = new Responsable([
+                    'id_intprof' => $id_tutor,
+                    'id_profile' => $profile_id,
+                    'id_type_resp' => $type_resp_id
+                ]);
+                $new_resp_tutor_exists->save();
+            }
         }else{
-            $id_etntutor = $etntutor_exists->id;
-            EtnTutor::where('id', $id_etntutor)
-            ->update([
-                'id_etnprof' => $id_tutor,
-                'id_profile' => $profile_id
-            ]);
+            $etntutor_exists = EtnTutor::where('id_entprof', $id_tutor)->where('id_profile',$profile_id)->first();
+            if(is_null($etntutor_exists)){
+                $new_etntutor = new EtnTutor([
+                    'id_entprof' => $id_tutor,
+                    'id_profile' => $profile_id
+                ]);
+                $new_etntutor->save();
+            }
         }
         
         //Buscamos la informacion del Perfil con el responsable, usamos el primer Docente que tenga una relación directa con el área del perfil o el primer docente registrado
         $profUmssArea = ItnProfArea::where('id_area', $id_area)->first();
         $prof_id = 1;
-        if(is_null($profUmssArea)){
+        if(!is_null($profUmssArea)){
             $prof_id = $profUmssArea->id_prof;
+        }else{
+            $prof_id = ItnProfArea::query()->first()->id_prof;
         }
 
+        $type_resp_id = TypeResponsable::where('name',"teacher")->first()->id;
         $responsable_exists = Responsable::where('id_profile', $profile_id)
-                                         ->where('id_type_resp',"1")->first();
+                                         ->where('id_type_resp',$type_resp_id)->first();
         if(is_null($responsable_exists)){
             $new_responsable = new Responsable([
                 'id_intprof' => $prof_id,
                 'id_profile' => $profile_id,
-                'id_type_resp' => "1"
+                'id_type_resp' => $type_resp_id
             ]);
             $new_responsable->save();
         }else{
@@ -329,7 +347,7 @@ class ProjectsController extends BaseController
             ->update([
                 'id_intprof' => $prof_id,
                 'id_profile' => $profile_id,
-                'id_type_resp' => "1"
+                'id_type_resp' => $type_resp_id
             ]);
         }
         
@@ -341,7 +359,7 @@ class ProjectsController extends BaseController
         $periodo_exists = Period::where('start_date', $startdate)
                                     ->where('end_date', $enddate)
                                     ->where('period', $periodo)
-                                    ->where('extended', FALSE)-first();
+                                    ->where('extended', FALSE)->first();
         if(is_null($periodo_exists)){
             $new_period = new Period([
                 'start_date' => $startdate,
@@ -350,6 +368,10 @@ class ProjectsController extends BaseController
                 'extended' => FALSE
             ]);
             $new_period->save();
+            $id_period = Period::where('start_date', $startdate)
+                               ->where('end_date', $enddate)
+                               ->where('period', $periodo)
+                               ->where('extended', FALSE)->first()->id;
         }else{
             $id_period = $periodo_exists->id;
             Period::where('id', $id_period)
@@ -405,15 +427,13 @@ class ProjectsController extends BaseController
 
     }
 
-    /* Este método no va a funcionar, o va a devolver resultados incorrectos, hasta que se corrija el error de diseño en la Base de datos referente
-    * a tener un docente UMSS como tutor, Punto que ya se había notiicado al equipo en fecha 29 de Octubre, luego de la reunión con el cliente
-    */
-    private function getTutorID($nombre_tutor, $apellido_paterno_tutor, $apellido_materno_tutor, $id_area, $counter, &$errors){
+    private function getTutorID($nombre_tutor, $apellido_paterno_tutor, $apellido_materno_tutor, $id_area, $counter, &$information, &$is_ProfUMSS){
         $tutor_id = 0;
         $tutor_is_prof_umss = ProfessionalUMSS::where('name', $nombre_tutor)
         ->where('l_name', $apellido_paterno_tutor)
         ->where('ml_name', $apellido_materno_tutor)->first();
         if (is_null($tutor_is_prof_umss)){
+            $is_ProfUMSS = false;
             //Buscamos al tutor en la lista de profesionales externos actuales
             $tutor_is_prof_ext = ProfessionalExt::where('name', $nombre_tutor)
             ->where('l_name', $apellido_paterno_tutor)
@@ -424,7 +444,7 @@ class ProjectsController extends BaseController
                 //ci por defecto
                 $ci_tutor = "1234567";
                 //email por defecto
-                $email_tutor = $nombre_tutor . $apellido_paterno_tutor . "_temp@umss.edu.bo";
+                $email_tutor = substr($nombre_tutor,0,1) . $apellido_paterno_tutor . "_temp@umss.edu.bo";
                 //username = primera letra del nombre y el apellido, ejemplo: wramirez
                 $username_tutor = substr($nombre_tutor,0,1) . $apellido_paterno_tutor;
                 //password
@@ -437,10 +457,9 @@ class ProjectsController extends BaseController
                     'state' => 1
                 ]);
                 $account->save();
-                $account_id_tutor = Account::where('username', $username_tutor)
-                                    ->where('password', password_hash($pass_tutor, PASSWORD_DEFAULT))->first();
-                if (is_null($account_id)){
-                    array_push($errors, "Cuenta de usuario para el tutor de la linea: $counter no fué creada correctamente, por favor verifique e intente nuevamente");
+                $account_id_tutor = Account::where('username', $username_tutor)->first();
+                if (is_null($account_id_tutor)){
+                    array_push($information, "Cuenta de usuario para el tutor de la linea: $counter no fué creada correctamente, por favor verifique e intente nuevamente");
                 }else{
                     //Luego guardamos la informacion en la tabla prof externo
                     $new_prof_externo = new ProfessionalExt([
@@ -449,27 +468,28 @@ class ProjectsController extends BaseController
                     'l_name' => $apellido_paterno_tutor,
                     'ml_name' => $apellido_materno_tutor,
                     'email' => $email_tutor,
-                    'phone' => "0",
+                    'phone' => 0,
                     'address' => "",
                     'active' => 1,
                     //se le dá el grado academico de licenciatura por defecto
                     'id_ad' => 1,
                     'profile' => "",
-                    'id_account' => $account_id_tutor]);
+                    'id_account' => $account_id_tutor->id]);
                     $new_prof_externo->save();
                 }
                 $tutor_id = ProfessionalExt::where('name', $nombre_tutor)
                 ->where('l_name', $apellido_paterno_tutor)
                 ->where('ml_name', $apellido_materno_tutor)->first()->id;
-                crearRelacionProfExtArea($tutor_id, $id_area);
+                $this->crearRelacionProfExtArea($tutor_id, $id_area);
             }else{
                 //Obtenemos el ID del tutor y lo usamos para crear la relación con el área de interes en caso de no existir la relación
                 $tutor_id = $tutor_is_prof_ext->id;
-                crearRelacionProfExtArea($tutor_id, $id_area);
+                $this->crearRelacionProfExtArea($tutor_id, $id_area);
             }
         }else{
+            $is_ProfUMSS = true;
             $tutor_id = $tutor_is_prof_umss->id;
-            crearRelacionProfUMSSArea($tutor_id, $id_area);
+            $this->crearRelacionProfUMSSArea($tutor_id, $id_area);
         }
         return $tutor_id;
     }
@@ -480,27 +500,27 @@ class ProjectsController extends BaseController
         if (is_null($etnprof_area_exists)){
             //si no existe la relacion creamos una nueva
             $new_etnprof_area = new EtnProfArea([
-                'id_prof', $tutor_id,
-                'id_area', $id_area
+                'id_prof' => $tutor_id,
+                'id_area' => $id_area
             ]);
             $new_etnprof_area->save();
         }
     }
 
     private function crearRelacionProfUMSSArea($tutor_id, $id_area){
-        $etnprof_area_exists = ItnProfArea::where('id_prof', $tutor_id)
+        $itnprof_area_exists = ItnProfArea::where('id_prof', $tutor_id)
         ->where('id_area', $id_area)->first();
-        if (is_null($etnprof_area_exists)){
+        if (is_null($itnprof_area_exists)){
             //si no existe la relacion creamos una nueva
-            $new_etnprof_area = new ItnProfArea([
-                'id_prof', $tutor_id,
-                'id_area', $id_area
+            $new_itnprof_area = new ItnProfArea([
+                'id_prof' => $tutor_id,
+                'id_area' => $id_area
             ]);
-            $new_etnprof_area->save();
+            $new_itnprof_area->save();
         }
     }
 
-    private function getPostulantID($nombre_postulante, $apellido_paterno_postulante, $apellido_materno_postulante, $id_career, $counter, &$errors){
+    private function getPostulantID($nombre_postulante, $apellido_paterno_postulante, $apellido_materno_postulante, $id_career, $counter, &$information){
         //Buscamos al estudiante en la lista de Proyectos actuales
         $postulant_exists = Postulant::where('name', $nombre_postulante)
         ->where('l_name', $apellido_paterno_postulante)
@@ -528,9 +548,9 @@ class ProjectsController extends BaseController
             ]);
             $account->save();
             $account_id_postulante = Account::where('username', $username_postulante)
-                                ->where('password', password_hash($pass_postulante, PASSWORD_DEFAULT))->first();
-            if (is_null($account_id)){
-                array_push($errors, "Cuenta de usuario para el postulante en la linea: $counter no fué creada correctamente, por favor verifique e intente nuevamente");
+                                            ->where('state', 1)->first();
+            if (is_null($account_id_postulante)){
+                array_push($information, "Cuenta de usuario para el postulante en la linea: $counter no fué creada correctamente, por favor verifique e intente nuevamente");
             }else{
                 //Luego guardamos la informacion en la tabla postulante
                 $new_postulant = new Postulant([
@@ -542,14 +562,13 @@ class ProjectsController extends BaseController
                 'phone' => "0",
                 "address" => "",
                 'cod_sis' => $cod_sis_postulante,
-                'id_account' => $account_id_postulante]);
-                $new_postulant>save();
+                'id_account' => $account_id_postulante->id]);
+                $new_postulant->save();
             }
-            return Postulant::where('name', $nombre_postulante)
+            $postulant_exists = Postulant::where('name', $nombre_postulante)
             ->where('l_name', $apellido_paterno_postulante)
-            ->where('ml_name', $apellido_materno_postulante)->first()->id;
-        }else{
-            return $postulant_exists->id;
+            ->where('ml_name', $apellido_materno_postulante)->first();
         }
+        return $postulant_exists->id;
     }
 }

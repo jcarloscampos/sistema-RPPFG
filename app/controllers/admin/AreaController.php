@@ -306,9 +306,13 @@ class AreaController extends BaseController
                                 $area = new Area([
                                     'name' => $name_area,
                                     'description' => $desc_area,
-                                    'id_parent_area' => 1
+                                    'id_parent_area' => null
                                     ]);
                                 $area->save();
+                                
+                                $uArea = Area::where('name', $name_area)->first();
+                                $areaprofile = ['id_parent_area' => $uArea->id];
+                                $result = $makeDB->updateUser($uArea, $areaprofile, $makeDB);
                             }
                             else{
                                 array_push($information, "Area " . $name_area. " ya registrada");
@@ -340,7 +344,7 @@ class AreaController extends BaseController
                                 $subarea = new Area([
                                     'name' => $name_area,
                                     'description' => $desc_area,
-                                    'id_parent_area' => 1
+                                    'id_parent_area' => $area_ID
                                     ]);
                                 $subarea->save();
                             }
