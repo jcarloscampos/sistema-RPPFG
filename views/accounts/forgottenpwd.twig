@@ -16,59 +16,51 @@
     <link rel='stylesheet' href='../public/assets/alertifyjs/css/alertify.min.css'>
     <link rel='stylesheet' href='../public/assets/alertifyjs/css/themes/default.min.css'>
 {% endblock %}
-{# {% block menu %}
-    <nav id="nav">
-        <ul>
-            <li class="special">
-                <a href="#menu" class="menuToggle"><span>Menu</span></a>
-                <div id="menu">
-                    <ul>
-                        <li>SRPPFG</li>
-                    </ul>
-                </div>
-            </li>
-        </ul>
-    </nav>
-{% endblock %} #}
+{% block menu %}
+   
+{% endblock %}
 
 {% block content %}
     <article id="main">
-        <header style="padding-top: 50px; padding-bottom: 50px;" >
+        {# <header style="padding-top: 50px; padding-bottom: 50px;" >
             <h2>SRPPFG</h2>
             <p>Bienvenido a la plataforma de Registro de Perfiles de la UMSS. </p>
-        </header>
+        </header> #}
         <section class="wrapper style5">
             <div class="inner">
                 <section>
-                    <h4 style="text-align: center;">Inicio de sesión</h4>
+                    <h4 style="text-align: center;">Recuperar contraseña</h4>
                     <div class="wrapper-form">
-                        <div class="form-signin">
+                        <div class="form-signinn">
                             <div class="message-box">
                                 {% if errors %}
                                     {% include 'remnant/errors.twig' %}
                                 {% endif %}
+                                {% include 'remnant/success.twig' %}
+                                {% include 'remnant/warning.twig' %}
                             </div>
-                            <form method="post" onsubmit="return validateFormSignin()">
+                            <form method="post" onsubmit="return validateFormforget()">
                                 <div class="row uniform">
-                                    <div class="12u 12u$(xsmall)">
-                                        <input id="username" name="username" type="text" value="" placeholder="Usuario" />
+                                    <div class="7u 12u$(xsmall)">
+                                        <label>Email</label>
+                                        <input type="text" name="email" id="email" value="{{vPerfil.email}}" placeholder="Email..." />
                                     </div>
-
-                                    <div class="12u 12u$(xsmall)">
-                                        <input id="password" name="password" type="password" value="" placeholder="Contraseña"/>
+                                    <div class="5u$ 12u$(xsmall)">
+                                        <label>CI</label>
+                                        <input type="text" name="ci" id="ci" value="{{vPerfil.ci}}" placeholder="Nro. De Documento de identificación..."  onkeyup="formatNum(this)" onchange="formatNum(this)"/>
                                     </div>
                         
                                 </div>
                                 <br>
                                 <div class="12u$">
                                     <ul class="actions" style="text-align: center">
-                                        <li><button class="principal" type="submit">Ingresar</button>
+                                        <li><button class="principal" type="submit">Enviar</button>
                                         </li>
                                     </ul>
                                 </div>
                                 <div class="row">
                                     <div class="signup-box">
-                                        <p><a class="left" href="{{ 'forgottenpass' | url }}">¿Olvidaste la contraseña?</a></p>
+                                        <p>¿Ya tiene una cuenta? <a class="left" href="{{ '' | url }}">Ingresar</a></p>
                                         <p>¿No tiene una cuenta? <a href="{{ 'signup' | url }}">Cree una.</a></p>
                                     </div>
                                 </div>
@@ -94,6 +86,5 @@
 
     <script src='../public/assets/js/jquery-3.3.1.min.js'></script>
     <script src='../public/assets/alertifyjs/alertify.min.js'></script>
-     <script src='../public/assets/alertifyjs/validation.js'></script>
+    <script src='../public/assets/alertifyjs/validation.js'></script>
 {% endblock %}
-

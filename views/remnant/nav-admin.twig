@@ -9,8 +9,12 @@
                     </div>
                     <p class="sname"> {{ vadmin.name }} {{ vadmin.l_name }} {{ vadmin.ml_name }}</p>
                 </div>
-                
                 <br><br><br>
+                <div class="configpersonal">
+                    <a class=".btn .btn-primary" style="border: 1px solid blue;" href="{{'logout' | url }}">Salir</a>&nbsp; &nbsp; &nbsp;
+                    <a class="principal" style="border: 1px solid blue;" href="{{'admin/config' | url }}">Configuración</a>
+                </div>
+                <br>
                 <ul> 
                     <li>
                         <a href="{{'admin/area' | url }}">Administrar áreas</a>

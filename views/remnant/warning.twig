@@ -16,3 +16,15 @@
         Ya no es posible realizar esta operación; se agotó su periodo de ampliación.
     </div>
 {% endif %}
+
+{% if match %}
+    <div class="alert alert-warning">
+        Los datos no existen, ingrese datos correctos.
+    </div>
+{% endif %}
+
+{% if matchEmail %}
+    <div class="alert alert-warning">
+        El correo es incorrecto.
+    </div>
+{% endif %}

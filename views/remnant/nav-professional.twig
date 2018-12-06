@@ -9,8 +9,18 @@
                     </div>
                     <p class="sname"> {{ vPerfil.name }} {{ vPerfil.l_name }} {{ vPerfil.ml_name }}</p>
                 </div>
-                
                 <br><br><br>
+                <div class="configpersonal">
+                    <a class=".btn .btn-primary" style="border: 1px solid blue;" href="{{'logout' | url }}">Salir</a> &nbsp; &nbsp; &nbsp;
+                        {% if etn %}
+                            {# si es docente es externo #}
+                            <a class="principal" style="border: 1px solid blue;" href="{{'etnprofessional/config' | url }}">Configuración</a>
+                        {% else %}
+                            <a class="principal" style="border: 1px solid blue;" href="{{'itnprofessional/config' | url }}">Configuración</a>    
+                        {% endif %}
+                </div>
+                
+                <br>
 
                 <ul> 
                     {% if etn %}

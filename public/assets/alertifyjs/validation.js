@@ -152,10 +152,14 @@ function validateFormConfigPUmss()
             });
             return false;
         }else{
-            return true;
+            var result = false;
+            result = confirm('Los cambios se guardarán, ¿está seguro de continuar?');
+            return result;
         }
     }
 }
+
+
 
 
 function validateFormEssence()
@@ -195,6 +199,34 @@ function validateFormConfigEtn()
        
         if(name === '' || lname === '' || ci === '' || email === ''){
             alertify.alert("Nombre, apellido, ci y email son obligatorios.", function(){
+                alertify.message('Ingrese datos correctos');
+            });
+            return false;
+        }else{
+            var result = false;
+            result = confirm('Los cambios se guardarán, ¿está seguro de continuar?');
+            return result;
+        }
+    }
+}
+
+
+/************************************************************************/
+function validateFormforget()
+{
+    var email = document.getElementById('email').value.trim();
+    var result = /\w+@\w+\.+[a-z]/.test(email);
+    if(!result){
+        alertify.alert("El correo no es válido.", function(){
+            alertify.message('Ingrese datos correctos');
+        });
+        return false;
+    } else {
+        var email = document.getElementById('email').value.trim();
+        var ci = document.getElementById('ci').value.trim();
+       
+        if(ci === '' || email === ''){
+            alertify.alert("Email y CI son obligatorios.", function(){
                 alertify.message('Ingrese datos correctos');
             });
             return false;

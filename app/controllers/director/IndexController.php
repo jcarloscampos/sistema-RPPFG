@@ -15,15 +15,12 @@ class IndexController extends BaseController
     public function getIndex()
     {
         if (isset($_SESSION['dirID'])) {
-            $userId = $_SESSION['dirID'];
-           // $director = ProfessionalUmss->
-            $user = ProfessionalUmss::where('id_account', $userId)->first();
+            $user = ProfessionalUmss::where('id_account', $_SESSION['dirID'])->first();
             $uimage = substr($user->name, 0, 1);
 
-            if ($director) {
+            if (isset($user)) {
                 # si existe la cuenta en la BD
                 return $this->render('director/index.twig', ['account'=>$user, 'uimage'=>$uimage]);
-
             }
         }
         header('Location: ' . BASE_URL . '');

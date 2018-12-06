@@ -35,6 +35,13 @@ class Validation
         ));
         return $validator;
     }
+    public function setRuleEmail($validator)
+    {
+        $validator->add(array(
+            'email:Email'=> 'required | email'
+        ));
+        return $validator;
+    }
 
     public function setRuleTuser($validator)
     {
