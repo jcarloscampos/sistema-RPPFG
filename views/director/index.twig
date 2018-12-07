@@ -1,11 +1,63 @@
 {% extends 'layout.twig' %}
 
+{% block namepage %}
+    Perfil de director en SRPPFG
+{% endblock %}
+
+{% block title %}
+    Director:  {{ vPerfil.name }} {{ vPerfil.l_name }} {{ vPerfil.ml_name }}
+{% endblock %}
+
+{% block csslink %}
+    <link rel='stylesheet' href='../public/assets/css/background2.css'>
+    <link rel='stylesheet' href='../public/assets/css/app.css'>
+{% endblock %}
+
+{% block menu %}
+    {% include('remnant/nav-secretary.twig') %}
+{% endblock %}
+
+{% block configpersonal %}
+    <div class="configpersonal">
+    </div>
+    {# <div class="nav-way">
+        <p>
+        Home
+        </p>
+    </div> #}
+{% endblock %}
+
 {% block content %}
-    <h5>Bienvenido director</h5>
-    <h1> {{ account.name}} </h1>
-    <a href="{{'logout' | url }}">Salir</a>
+<article id="main">
+        <header style="padding-top: 50px; padding-bottom: 50px;" >
+            <h2>SRPPFG</h2>
+            <p>Bienvenido!; Plataforma de seguimiento de proyectos finales de grado.</p>
+        </header>
+        <section class="wrapper style5">
+            <div class="inner">
+                <section>
+                    <div class="wrapper-form">
+                        <div class="message-box">
+                            {% include 'remnant/information.twig' %}
+                        </div>
+                        
+                    </div>
+                </section>
+                <br> 
+                <br>
+                <br>
+            </div>
+        </section>
+    </article>
 
 
-    <h3>Panel de director</h3>
-    
+{% endblock %}
+
+{% block jslink %}
+    <script src='../public/assets/js/jquery.min.js'></script>
+    <script src='../public/assets/js/jquery.scrollex.min.js'></script>
+    <script src='../public/assets/js/jquery.scrolly.min.js'></script>
+    <script src='../public/assets/js/skel.min.js'></script>
+    <script src='../public/assets/js/util.js'></script>
+    <script src='../public/assets/js/main.js'></script>
 {% endblock %}

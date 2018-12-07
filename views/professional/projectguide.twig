@@ -1,0 +1,106 @@
+{% extends 'layout.twig' %}
+
+{% block csslink %}
+    <link rel='stylesheet' href='../../public/assets/css/app.css'>
+{% endblock %}
+
+{% block namepage %}
+    Asistencia a Proyectos en SRPPFG
+{% endblock %}
+
+{% block title %}
+    Docente:  {{ vPerfil.name }} {{ vPerfil.l_name }} {{ vPerfil.ml_name }}
+{% endblock %}
+
+{% block menu %}
+    {% include('remnant/nav-professional.twig') %}
+{% endblock %}
+
+{% block configpersonal %}
+    <div class="configpersonal">
+        {# <a class=".btn .btn-primary" href="{{'logout' | url }}">Salir</a>
+            {% if etn %}
+                <a class="principal" href="{{'etnprofessional/config' | url }}">Configuración</a>
+            {% else %}
+                <a class="principal" href="{{'itnprofessional/config' | url }}">Configuración</a>    
+            {% endif %} #}
+    </div>
+    <div class="nav-way">
+        <p>
+            {% if etn %}
+                <a class=".btn .btn-primary" href="{{'etnprofessional' | url }}">Home</a> &nbsp; | &nbsp; Asistencia a Proyectos
+            {% else %}
+                <a class=".btn .btn-primary" href="{{'itnprofessional' | url }}">Home</a> &nbsp; | &nbsp; Asistencia a Proyectos
+            {% endif %}
+        </p>
+    </div>
+{% endblock %}
+
+{% block content %}
+<article id="main">
+        <section class="wrapper style5">
+            <div class="inner">
+                <section>
+                    <div class="wrapper-form" style="min-height: 274px;">
+                        <div class="table-wrapper">
+                            <div class="menu-actions">
+                                <h2>Asistencia a Proyectos como tutor</h2>
+                            </div>
+                            <table id="tabla_docentes">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre de Proyecto</th>
+                                        <th>Aprovado en</th>
+                                        <th>Fecha de defensa</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="arealist">
+                                    {% for profile in profilesme %}
+                                        <tr>
+                                            <td>
+                                                {{ profile.title }}
+                                            </td>
+                                            <td>
+                                                {{ profile.approved }}
+                                            </td>
+                                            <td>
+                                                {{ profile.enddate }}
+                                            </td>
+                                            <td>
+                                                {% for state in status %}
+                                                    {% if state.id == profile.id_status %}
+                                                        {{ state.name }}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </td>
+                                            <td width="5%">
+                                                <div class="menu-actions-tb">
+                                                    <div class="actions">
+                                                            <a href="{{ etn ? 'projectsid/' : 'itnprofessional/projectsid/' | url }}{{ profile.id }}" id="subjoin">Más información</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+                <br> 
+                <br>
+                <br>
+            </div>
+        </section>
+    </article>
+{% endblock %}
+
+{% block jslink %}
+    <script src='../../public/assets/js/jquery.min.js'></script>
+    <script src='../../public/assets/js/jquery.scrollex.min.js'></script>
+    <script src='../../public/assets/js/jquery.scrolly.min.js'></script>
+    <script src='../../public/assets/js/skel.min.js'></script>
+    <script src='../../public/assets/js/util.js'></script>
+    <script src='../../public/assets/js/main.js'></script>
+{% endblock %}

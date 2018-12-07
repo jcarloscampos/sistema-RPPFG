@@ -20,7 +20,7 @@ class IndexController extends BaseController
 
             if (isset($user)) {
                 # si existe la cuenta en la BD
-                return $this->render('director/index.twig', ['account'=>$user, 'uimage'=>$uimage]);
+                return $this->render('director/index.twig', ['vPerfil'=>$user, 'uimage'=>$uimage]);
             }
         }
         header('Location: ' . BASE_URL . '');

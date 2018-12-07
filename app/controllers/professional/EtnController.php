@@ -13,6 +13,14 @@ use AppPHP\Controllers\Common\Validation;
 use AppPHP\Controllers\Common\ServerConnection;
 use AppPHP\Controllers\Common\SettingData;
 
+use AppPHP\Models\EtnTutor;
+use AppPHP\Models\Profile;
+use AppPHP\Models\Status;
+use AppPHP\Models\Period;
+use AppPHP\Models\Postulant;
+use AppPHP\Models\PostulantProfile;
+use AppPHP\Models\AreaProfile;
+use AppPHP\Models\Responsable;
 
 class EtnController extends BaseController
 {
@@ -190,5 +198,120 @@ class EtnController extends BaseController
             //$profarea->delete();
             header('Location:' . BASE_URL . 'etnprofessional/interestareas');	
         }
+    }
+
+    public function getProjects()
+    {
+        if (isset($_SESSION['eprofID'])) {
+            $etn = true;
+            $user = ProfessionalExt::where('id_account', $_SESSION['eprofID'])->first();
+            $uimage = substr($user->name, 0, 1);
+            $postulants = Postulant::all();
+            $postulantProfiles = PostulantProfile::all();
+            $profiles = Profile::all();
+            $etnTutors = EtnTutor::all();
+            $status = Status::all();
+            $makeDB = new ServerConnection();
+            $guidedme = [];
+
+            foreach ($etnTutors as $key => $value) {
+                if ($value->id_entprof == $user->id) {
+                     $guidedme[] = $value;
+                }
+            }
+            $profileme = [];
+            foreach ($guidedme as $key => $value) {
+                foreach ($profiles as $pkey => $pvalue) {
+                    if ($value->id_profile == $pvalue->id) {
+
+                        $period = $makeDB->getPeriod($postulantProfiles, $pvalue);
+                        $papproved = $period->period;
+                        $pvalue['enddate'] = $period->end_date;
+                        $sapproved = substr($period->start_date, 0, 4);
+                        $approved = $papproved . '/' . $sapproved;
+                        $pvalue['approved'] = $approved;
+                        $profileme[] = $pvalue;
+                    }
+                }
+            }
+            return $this->render('professional/projectguide.twig',
+            ['vPerfil' => $user, 'uimage'=>$uimage, 'etn' => $etn, 'profilesme'=>$profileme, 'status'=>$status]);
+        }
+        header('Location: ' . BASE_URL . '');
+    }
+
+    public function getProjectsid($idprofile)
+    {
+        if (isset($_SESSION['eprofID'])) {
+            $etn = true;
+            $user = ProfessionalExt::where('id_account', $_SESSION['eprofID'])->first();
+            $uimage = substr($user->name, 0, 1);
+
+            $makeDB = new ServerConnection();
+            $profile = Profile::where('id', $idprofile)->first();
+            $postulantProfiles = PostulantProfile::all();
+            $status = Status::all();
+            $areaprofiles = AreaProfile::all();
+            $responsables = Responsable::all();
+            
+            //Extrae los postulantes que trabajan en un perfil
+            $posts = $makeDB->getPostulants($postulantProfiles, $profile);
+            count($posts)>1 ? $group = true : $group = false; 
+            if ($group) {
+                $postf = $posts[0];
+                $posts = $posts[1];
+            }else
+                $postf = $posts[0];
+            
+            // Obtine carrera
+            $career = $makeDB->getCareer($postulantProfiles, $profile);
+            // Estdo actual del perfil
+            $cstate = $makeDB->getState($profile);
+            // periodo
+            $period = $makeDB->getPeriod($postulantProfiles, $profile);
+            $papproved = $period->period;
+            $sapproved = substr($period->start_date, 0, 4);
+            $approved = $papproved . '/' . $sapproved;
+            // status
+            $cstate = Status::where('id', $profile->id_status)->first();
+            
+            // Obtine los tutores del perfil
+            $tutors = $makeDB->getTutors($profile);
+            $twofold = false; 
+
+            if (count($tutors) == 1) {
+                $tutorfir = $tutors[0];
+                $tutorsec = null;
+            }elseif (count($tutors) == 2) {
+                $tutorfir = $tutors[0];
+                $tutorsec = $tutors[1];
+                $twofold = true;
+            }
+
+             // Modalidad de perfil
+            $modality = $makeDB->getModality($profile);
+            // Encargado de Empresa donde se realiza el trabajo dirigido
+            $attendant = $makeDB->getAttendant($profile);
+            // Area y sub area
+            $areap = $makeDB->getAreap($profile, $areaprofiles);
+            $subareap = $makeDB->getSubAreap($profile, $areaprofiles);
+
+            if ($group) {
+                return $this->render('professional/setpass.twig', 
+                    ['vPerfil'=>$user, 'uimage'=>$uimage, 'profile'=>$profile, 'group'=>$group, 'postf'=>$postf,
+                    'posts'=>$posts, 'modality'=>$modality, 'career'=>$career, 'period'=>$period, 'approved'=>$approved,
+                    'status'=>$status, 'cstate'=>$cstate, 'tutorfir'=>$tutorfir, 'tutorsec'=>$tutorsec, 'etn' => $etn,
+                    'twofold'=>$twofold, 'areap'=>$areap, 'subareap'=>$subareap,  'attendant'=>$attendant
+                    ]);
+            }
+            return $this->render('professional/setpass.twig', 
+                ['vPerfil'=>$user, 'uimage'=>$uimage, 'profile'=>$profile, 'postf'=>$postf, 'modality'=>$modality,
+                'career'=>$career, 'status'=>$status, 'cstate'=>$cstate, 'period'=>$period,'approved'=>$approved,  
+                'tutorfir'=>$tutorfir, 'tutorsec'=>$tutorsec, 'twofold'=>$twofold, 'etn' => $etn,
+                'areap'=>$areap, 'subareap'=>$subareap, 'attendant'=>$attendant
+                ]);
+
+        }
+        header('Location: ' . BASE_URL . '');
     }
 }

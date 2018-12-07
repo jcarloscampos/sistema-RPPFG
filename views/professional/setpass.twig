@@ -1,0 +1,113 @@
+{% extends 'layout.twig' %}
+
+{% block csslink %}
+    <link rel='stylesheet' href='../../../public/assets/css/app.css'>
+    <link rel='stylesheet' href='../../../public/assets/alertifyjs/css/alertify.min.css'>
+    {# <link rel='stylesheet' href='../../../../public/assets/alertifyjs/css/alertify.rtl.min.css'> #}
+    <link rel='stylesheet' href='../../../public/assets/alertifyjs/css/themes/default.min.css'>
+    {# <link rel='stylesheet' href='../../../../public/assets/alertifyjs/css/themes/default.rtl.min.css'> #}
+{% endblock %}
+
+{% block namepage %}
+    Detalles de Proyectos en SRPPFG
+{% endblock %}
+
+{% block title %}
+    Docente:  {{ vPerfil.name }} {{ vPerfil.l_name }} {{ vPerfil.l_name }}
+{% endblock %}
+
+{% block menu %}
+    {% include('remnant/nav-professional.twig') %}
+{% endblock %}
+
+{% block configpersonal %}
+    <div class="configpersonal">
+    </div>
+    <div class="nav-way">
+        <p>
+            {% if etn %}
+                <a class=".btn .btn-primary" href="{{'etnprofessional' | url }}">Home</a> &nbsp; | &nbsp; <a class=".btn .btn-primary" href="{{'etnprofessional/projects' | url }}">Asistencia a Proyectos</a> &nbsp; | &nbsp; Detalles de Proyecto
+            {% else %}
+                <a class=".btn .btn-primary" href="{{'itnprofessional' | url }}">Home</a> &nbsp; | &nbsp; <a class=".btn .btn-primary" href="{{'itnprofessional/projects' | url }}">Asistencia a Proyectos</a> &nbsp; | &nbsp; Detalles de Proyecto
+            {% endif %}
+        
+        </p>
+    </div>
+
+
+{% endblock %}
+
+{% block content %}
+<article id="main">
+        <section class="wrapper style5">
+            <div class="inner">
+                <section class="table-report">
+                    <div class="message-box">
+                        {% include 'remnant/errors.twig' %}
+                        {% include 'remnant/warning.twig' %}
+                        {% include 'remnant/success.twig' %}
+                        
+                    </div>
+                    
+                    <table id="table_settle">
+                        <tr>
+                            <td width=25%><strong style="color:#3b3d3f; font-weight: bold;">Nombre del<br> estudiante(s)</strong></td>
+                            <td width=25%><p style="font-size: .9em;  border-bottom: solid 1px gray; margin-bottom: 1em;">Apellido Paterno</p><p>{{ postf.l_name }}</p><p>{{ posts.l_name }}</p></td>
+                            <td width=25%><p style="font-size: .9em;  border-bottom: solid 1px gray; margin-bottom: 1em;">Apellido Materno</p><p>{{ postf.ml_name }}</p><p>{{ posts.ml_name }}</p></td>
+                            <td width=25%><p style="font-size: .9em;  border-bottom: solid 1px gray; margin-bottom: 1em;">Nombre(s)</p><p>{{ postf.name }}</p><p>{{ posts.name }}</p></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><p><strong style="color:#3b3d3f; font-weight: bold;">Email:<br></strong>{{ postf.email }}<br>{{ posts.email }}</p></td>
+                            <td colspan="2"><p><strong style="color:#3b3d3f; font-weight: bold;">Teléfono:<br></strong>{{ postf.phone }}<br>{{ posts.phone }}</p> </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><p><strong style="color:#3b3d3f; font-weight: bold;">Carrera: </strong>{{ career.name }}</p></td>
+                            <td colspan="2"><p><strong style="color:#3b3d3f; font-weight: bold;">Modalidad: </strong>{{ modality.name_mod }}</p></td>
+                            
+                        </tr>
+                        <tr>
+                            <td><p><strong style="color:#3b3d3f; font-weight: bold;">Aprobado en: </strong>{{ approved }}</p></td>
+
+                            <td colspan="2"><p><strong style="color:#3b3d3f; font-weight: bold;">Fecha límite de defensa: </strong>{{period.end_date}}</p></td>
+                            <td><p><strong style="color:#3b3d3f; font-weight: bold;">Estado: </strong>{{cstate.name }}</p></td>
+                        </tr>
+                        <tr>
+                            <td colspan="4"%><p><strong style="color:#3b3d3f; font-weight: bold;">Tutor(es): </strong>{{tutorfir.name}} {{tutorfir.l_name}} {{tutorfir.ml_name}}
+                            {% if twofold %} / {{ tutorsec.name}} {{tutorsec.l_name}} {{tutorsec.ml_name}} {% endif %} </p></td>
+                        </tr>
+                        {% if modality.id == 3 %}
+                            <tr>
+                                <td colspan="4"><p><strong style="color:#3b3d3f; font-weight: bold;">Institución participante: </strong>{{attendant.name}} ({{attendant.acronym}})</p></td>
+                            </tr>
+                        {% endif %}
+                        <tr>
+                            <td colspan="2"><p><strong style="color:#3b3d3f; font-weight: bold;">Área: </strong>{{areap.name}}</p></td>
+                            <td colspan="2"><p><strong style="color:#3b3d3f; font-weight: bold;">Sub área: </strong>{{ subareap.name }}</p> </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4"><p><strong style="color:#3b3d3f; font-weight: bold;">Título: </strong>{{ profile.title }}</p></td>
+                        </tr> 
+                        <tr>
+                            <td colspan="4"><p><strong style="color:#3b3d3f; font-weight: bold;">Objetivo general: </strong>{{ profile.g_objective }}</p></td>
+                        </tr>
+                        <tr>
+                            <td colspan="4"><p><strong style="color:#3b3d3f; font-weight: bold;">Objetivos específicos: </strong>{{ profile.s_objects }}</p></td>
+                        </tr>
+                        <tr>
+                            <td colspan="4"><p><strong style="color:#3b3d3f; font-weight: bold;">Descripción: </strong>{{ profile.description }}</p></td>
+                        </tr>
+                    </table>
+                </section>
+            </div>
+        </section>
+    </article>
+{% endblock %}
+
+{% block jslink %}
+    <script src='../../../public/assets/js/jquery.min.js'></script>
+    <script src='../../../public/assets/js/jquery.scrollex.min.js'></script>
+    <script src='../../../public/assets/js/jquery.scrolly.min.js'></script>
+    <script src='../../../public/assets/js/skel.min.js'></script>
+    <script src='../../../public/assets/js/util.js'></script>
+    <script src='../../../public/assets/js/main.js'></script>
+{% endblock %}
