@@ -1,0 +1,168 @@
+{% extends 'layout.twig' %}
+
+{% block csslink %}
+    <link rel='stylesheet' href='../../public/assets/css/app.css'>
+{% endblock %}
+
+{% block namepage %}
+    Perfil de busqueda de perfiles en SRPPFG
+{% endblock %}
+
+{% block title %}
+    SRPPFG
+{% endblock %}
+
+{% block menu %}
+<nav id="nav">
+        <div class="box-search">
+            <div class="nav-way" style="margin-top: 0em;">
+                <p><a class=".btn .btn-primary" href="{{'' | url }}">Inicio</a> &nbsp; | &nbsp;
+                <a class=".btn .btn-primary" href="{{'searches' | url }}">Proyectos</a> &nbsp; | &nbsp;
+                {% if areasval %}
+                    Áreas &nbsp; | &nbsp;
+                    <a class=".btn .btn-primary" href="{{'searches/professionals' | url }}">Docentes</a>
+                {% else %}
+                    <a class=".btn .btn-primary" href="{{'searches/areas' | url }}">Áreas</a> &nbsp; | &nbsp;
+                    Docentes
+                {% endif %}
+                </p>
+            </div>
+            {# <div class="search-projects">
+                <p style="margin-top: .25em;padding-right: 1em;"><a style="padding: .5em;border: solid 1px #2a6fa8;border-radius: 5px;text-decoration: none;background: rgba(51,148,226, .5);color: white;" href="{{ '' | url }}">Inicio</a>
+                <a style="padding: .5em;border: solid 1px #2a6fa8;border-radius: 5px;text-decoration: none;background: rgba(51,148,226, .5);color: white;" href="{{ 'searches' | url }}">Proyectos</a>
+                {% if areasval %}
+                    <a style="padding: .5em;border: solid 1px #2a6fa8;border-radius: 5px;text-decoration: none;background: rgba(51,148,226, 0);color: white;" href="{{ 'searches/areas' | url }}">Areas</a>
+                    <a style="padding: .5em;border: solid 1px #2a6fa8;border-radius: 5px;text-decoration: none;background: rgba(51,148,226, .5);color: white;" href="{{ 'searches/professionals' | url }}">Docentes</a></p>
+                {% else %}
+                    <a style="padding: .5em;border: solid 1px #2a6fa8;border-radius: 5px;text-decoration: none;background: rgba(51,148,226, .5);color: white;" href="{{ 'searches/areas' | url }}">Areas</a>
+                    <a style="padding: .5em;border: solid 1px #2a6fa8;border-radius: 5px;text-decoration: none;background: rgba(51,148,226, 0);color: white;" href="{{ 'searches/professionals' | url }}">Docentes</a></p>
+                {% endif %}
+            </div> #}
+        </div>
+    </nav>
+{% endblock %}
+{% block content %}
+<article id="main">
+        <section class="wrapper style5">
+            <div class="inner">
+                <section>
+                    {% if areasval %}
+                        <h4 style="text-align: center;">Áreas y sub áreas para proyectos</h4>
+                    {% else %}
+                        <h4 style="text-align: center;">Tutores disponibles para proyectos</h4>
+                    {% endif %}
+                    <div class="wrapper-form">
+                        <div class="form-signinn">
+                            <div class="message-box">
+                                {% if errors %}
+                                    {% include 'remnant/errors.twig' %}
+                                {% endif %}
+                                {% include 'remnant/success.twig' %}
+                                {% include 'remnant/warning.twig' %}
+                            </div>
+                            {% if areasval %}
+                                <table id="tabla_areas">
+                                    <thead>
+                                        <tr>
+                                            <th>Nombre</th>
+                                            <th>Subárea</th>
+                                            <th>Descripción</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="content_table">
+                                        {% for area in areas %}
+                                            <tr>
+                                                <td>{{ area.name }}</td>
+                                                
+                                                <td>
+                                                    {% if area.id != area.id_parent_area %}
+
+                                                        {% for subarea in areas %}
+                                                            {% if subarea.id == area.id_parent_area %}
+                                                                {{ subarea.name }}
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                </td>
+                                                <td>{{ area.description }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                {% if page!=1%}
+                                    <a href="?page={{ pagination.getPreviousPageNumber() }}">Pagina Anterior</a>
+                                {% endif %}
+                                {% if areas|length > 0 %}
+                                <div>
+                                    {% for page in pagination.pages %}
+                                        <a href="?page={{ page }}">{{ page }}</a> |
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                                {% if pagination.getNextPageNumber()!=''%}
+                                <a href="?page={{ pagination.getNextPageNumber() }}">Pagina Siguiente</a>
+                                {% endif %}
+                            {% else %}
+                                <table id="tabla_docentes">
+                                    <thead>
+                                        <tr>
+                                            <th>Nombre completo</th>
+                                            <th>Correo</th>
+                                            <th>Rol</th>
+                                        </tr>
+                                    </thead>
+                                    
+                                    <tbody id="content_table">
+                                    {# Listado de profesionales mixta //de la umss #}
+                                        {% for profesional in profesionales %}
+                                            <tr>
+                                                {% if profesional.active == 1 %}
+                                                    <td>{{ profesional.name }} {{ profesional.l_name }} {{ profesional.ml_name }}</td>
+                                                    <td>{{ profesional.email }}</td>
+                                                    <td>
+                                                        {% for urol in vurols %}
+                                                            {% if urol.id_account == profesional.id_account %}
+                                                                {% for rol in vrols %}
+                                                                    {% if rol.id_rol == urol.id_rol %}
+                                                                        {% if rol.name_rol == 'itnprof' %}
+                                                                            {{ 'Docente de UMSS' }}
+                                                                        {% elseif rol.name_rol == 'etnprof' %}
+                                                                            {{ 'Docente Externo' }}
+                                                                        {% elseif rol.name_rol == 'director' %}
+                                                                            {{ 'Docente de UMSS' }}
+                                                                        {% endif %}
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </td>
+                                                {% endif %}
+                                            </tr>
+                                        {% endfor %}
+                                        
+                                    </tbody>
+                                </table>
+                                {% if page!=1%}
+                                    <a href="?page={{ pagination.getPreviousPageNumber() }}">Pagina Anterior</a>
+                                {% endif %}
+                                {% if profesionales|length > 0 %}
+                                <div>
+                                    {% for page in pagination.pages %}
+                                        <a href="?page={{ page }}">{{ page }}</a> |
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                                {% if pagination.getNextPageNumber()!=''%}
+                                <a href="?page={{ pagination.getNextPageNumber() }}">Pagina Siguiente</a>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </section>
+    </article>
+{% endblock %}
+
+{% block jslink %}
+{% endblock %}

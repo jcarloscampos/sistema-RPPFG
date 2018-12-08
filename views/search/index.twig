@@ -1,0 +1,177 @@
+{% extends 'layout.twig' %}
+
+{% block csslink %}
+    <link rel='stylesheet' href='../public/assets/css/app.css'>
+    <link rel='stylesheet' href='../public/assets/alertifyjs/css/alertify.min.css'>
+    <link rel='stylesheet' href='../public/assets/alertifyjs/css/themes/default.min.css'>
+{% endblock %}
+
+{% block namepage %}
+    Perfil de busqueda de perfiles en SRPPFG
+{% endblock %}
+
+{% block title %}
+    SRPPFG
+{% endblock %}
+
+{% block menu %}
+<nav id="nav">
+        <div class="box-search">
+            <div class="nav-way" style="margin-top: 0em;">
+                <p><a class=".btn .btn-primary" href="{{'' | url }}">Inicio</a> &nbsp; | &nbsp;
+                Proyectos &nbsp; | &nbsp;
+                <a class=".btn .btn-primary" href="{{'searches/areas' | url }}">Áreas</a> &nbsp; | &nbsp;
+                <a class=".btn .btn-primary" href="{{'searches/professionals' | url }}">Docentes</a>
+                </p>
+            </div>
+            {# <div class="search-projects">
+                <p style="margin-top: .25em;padding-right: 1em;"><a style="padding: .5em;border: solid 1px #2a6fa8;border-radius: 5px;text-decoration: none;background: rgba(51,148,226, .5);color: white;" href="{{ '' | url }}">Inicio</a>
+                <a style="padding: .5em;border: solid 1px #2a6fa8;border-radius: 5px;text-decoration: none;background: rgba(51,148,226, 0);color: white;" href="{{ 'searches' | url }}">Proyectos</a>
+                <a style="padding: .5em;border: solid 1px #2a6fa8;border-radius: 5px;text-decoration: none;background: rgba(51,148,226, .5);color: white;" href="{{ 'searches/areas' | url }}">Areas</a>
+                <a style="padding: .5em;border: solid 1px #2a6fa8;border-radius: 5px;text-decoration: none;background: rgba(51,148,226, .5);color: white;" href="{{ 'searches/professionals' | url }}">Docentes</a></p>
+            </div> #}
+        </div>
+        {# <ul>
+            <li class="special">
+                <a href="#menu" class="menuToggle"><span>Menu</span></a>
+                <div id="menu">
+                    <ul>
+                        <li>SRPPFG</li>
+                    </ul>
+                </div>
+            </li>
+        </ul> #}
+    </nav>
+{% endblock %}
+{% block content %}
+<article id="main">
+        <section class="wrapper style5">
+            <div class="inner">
+                <section>
+                    <h4 style="text-align: center;">Buscar proyectos</h4>
+                    <div class="wrapper-form">
+                        <div class="form-signinn">
+                            <div class="message-box">
+                                {% if errors %}
+                                    {% include 'remnant/errors.twig' %}
+                                {% endif %}
+                                {% include 'remnant/success.twig' %}
+                                {% include 'remnant/warning.twig' %}
+                            </div>
+                            <form method="post" onsubmit="return validateSearch()">
+                                <div class="row uniform">
+                                    <div class="12u$ 12u$(xsmall)">
+                                        <label>Título</label>
+                                        <input type="text" name="title" id="title" value="{{vPerfil.title}}" placeholder="Título del proyecto ..."  onkeyup="formatLetters(this)" onchange="formatLetters(this)"/>
+                                    </div>
+
+                                    <div class="6u 12u$(xsmall)">
+                                        <label>Modalidad</label>
+                                        <select name="modality" id="modality">
+                                            <option value="0"> -Todos- </option>
+                                            {% for modality in modalities %}
+                                                <option value="{{modality.id}}">{{modality.name_mod}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+
+                                    <div class="3u 12u$(xsmall)">
+                                        <label>Año</label>
+                                        <select name="year" id="year">
+                                            <option value="0"> -Todos- </option>
+                                            {% for i in 2004..2018 %}
+                                                <option value="{{i}}">{{i}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+
+                                    <div class="3u$ 12u$(xsmall)">
+                                        <label>Periodo</label>
+                                        <select name="period" id="period">
+                                            <option value="0"> -Todos- </option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="12u$">
+                                    <ul class="actions" style="text-align: center">
+                                        <li><button class="principal" type="submit">Buscar</button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </form>
+                            <br><br>
+                            {# ---------------------------------------------------------------------------------------------------------- #}
+                            {% if resultprofile %}
+                                <h4 style="text-align: center;">Mis resultados</h4>
+                                <table id="tabla_docentes">
+                                    <thead>
+                                        <tr>
+                                            <th>Título de Proyecto</th>
+                                            <th>Autor(es)</th>
+                                            <th>Modalidad</th>
+                                            {# <th>Estado</th> #}
+                                        </tr>
+                                    </thead>
+                                    <tbody id="arealist">
+                                        {% for profile in profiles %}
+                                            <tr>
+                                                <td>
+                                                    {{ profile.title }}
+                                                </td>
+                                                <td>
+                                                    {% for postulantprofil in postulantprofiles %}
+                                                        {% if postulantprofil.id_profile == profile.id %}
+                                                            {% for postulant in postulants %}
+                                                                {% if postulant.id == postulantprofil.id_postulant %}
+                                                                    {{'- '}}{{ postulant.name }} {{ postulant.l_name }} {{ postulant.ml_name }}{{'<br>'}}
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </td>
+                                                <td>
+                                                    {% for modality in modalities %}
+                                                        {% if profile.id_mod == modality.id %}
+                                                            {{ modality.name_mod }}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </td>
+                                                {# <td>
+                                                    {% for state in status %}
+                                                        {% if state.id == profile.id_status %}
+                                                            {{ state.name }}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </td> #}
+                                                <td width="5%">
+                                                    <div class="menu-actions-tb">
+                                                        <div class="actions">
+                                                                <a href="{{ etn ? 'projectsid/' : 'searches/profile/' | url }}{{ profile.id }}" id="subjoin">Más información</a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            {% endif %}
+                            
+                        </div>
+                    </div>
+                </section>
+                <br> 
+                <br>
+                <br>
+            </div>
+        </section>
+    </article>
+{% endblock %}
+
+{% block jslink %}
+    <script src='../public/assets/js/jquery-3.3.1.min.js'></script>
+    <script src='../public/assets/alertifyjs/alertify.min.js'></script>
+    <script src='../public/assets/alertifyjs/validation.js'></script>
+{% endblock %}

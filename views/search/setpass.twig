@@ -1,0 +1,113 @@
+{% extends 'layout.twig' %}
+
+{% block csslink %}
+    <link rel='stylesheet' href='../../../public/assets/css/app.css'>
+{% endblock %}
+
+{% block namepage %}
+    Perfil de busqueda de perfiles en SRPPFG
+{% endblock %}
+
+{% block title %}
+    SRPPFG
+{% endblock %}
+
+{% block menu %}
+<nav id="nav">
+        <div class="box-search">
+            <div class="nav-way" style="margin-top: 0em;">
+                <p><a class=".btn .btn-primary" href="{{'' | url }}">Inicio</a> &nbsp; | &nbsp;
+                <a class=".btn .btn-primary" href="{{'searches' | url }}">Proyectos</a> &nbsp; | &nbsp;
+                <a class=".btn .btn-primary" href="{{'searches/areas' | url }}">Áreas</a> &nbsp; | &nbsp;
+                <a class=".btn .btn-primary" href="{{'searches/professionals' | url }}">Docentes</a> &nbsp; | &nbsp;
+                Perfil
+                </p>
+            </div>
+            {# <div class="search-projects">
+                <p style="margin-top: .25em;padding-right: 1em;"><a style="padding: .5em;border: solid 1px #2a6fa8;border-radius: 5px;text-decoration: none;background: rgba(51,148,226, .5);color: white;" href="{{ '' | url }}">Inicio</a>
+                <a style="padding: .5em;border: solid 1px #2a6fa8;border-radius: 5px;text-decoration: none;background: rgba(51,148,226, 0);color: white;" href="{{ 'searches' | url }}">Proyectos</a>
+                <a style="padding: .5em;border: solid 1px #2a6fa8;border-radius: 5px;text-decoration: none;background: rgba(51,148,226, .5);color: white;" href="{{ 'searches/areas' | url }}">Areas</a>
+                <a style="padding: .5em;border: solid 1px #2a6fa8;border-radius: 5px;text-decoration: none;background: rgba(51,148,226, .5);color: white;" href="{{ 'searches/professionals' | url }}">Docentes</a></p>
+            </div> #}
+        </div>
+        {# <ul>
+            <li class="special">
+                <a href="#menu" class="menuToggle"><span>Menu</span></a>
+                <div id="menu">
+                    <ul>
+                        <li>SRPPFG</li>
+                    </ul>
+                </div>
+            </li>
+        </ul> #}
+    </nav>
+{% endblock %}
+{% block content %}
+<article id="main">
+        <section class="wrapper style5">
+            <div class="inner">
+                <section>
+                    <h4 style="text-align: center;">Buscar proyectos</h4>
+                    <div class="wrapper-form" style="min-height: 357px;">
+                        <div class="form-signinn">
+                            <div class="message-box">
+                                {% if errors %}
+                                    {% include 'remnant/errors.twig' %}
+                                {% endif %}
+                                {% include 'remnant/success.twig' %}
+                                {% include 'remnant/warning.twig' %}
+                            </div>
+                            <table id="table_settle">
+                                <tr>
+                                    <td width=25%><strong style="color:#3b3d3f; font-weight: bold;">Nombre del<br> estudiante(s)</strong></td>
+                                    <td width=25%><p style="font-size: .9em;  border-bottom: solid 1px gray; margin-bottom: 1em;">Apellido Paterno</p><p>{{ postf.l_name }}</p><p>{{ posts.l_name }}</p></td>
+                                    <td width=25%><p style="font-size: .9em;  border-bottom: solid 1px gray; margin-bottom: 1em;">Apellido Materno</p><p>{{ postf.ml_name }}</p><p>{{ posts.ml_name }}</p></td>
+                                    <td width=25%><p style="font-size: .9em;  border-bottom: solid 1px gray; margin-bottom: 1em;">Nombre(s)</p><p>{{ postf.name }}</p><p>{{ posts.name }}</p></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><p><strong style="color:#3b3d3f; font-weight: bold;">Carrera: </strong>{{ career.name }}</p></td>
+                                    <td colspan="2"><p><strong style="color:#3b3d3f; font-weight: bold;">Modalidad: </strong>{{ modality.name_mod }}</p></td>
+                                    
+                                </tr>
+                                <tr>
+                                    <td><p><strong style="color:#3b3d3f; font-weight: bold;">Aprobado en: </strong>{{ approved }}</p></td>
+
+                                    <td colspan="2"><p><strong style="color:#3b3d3f; font-weight: bold;">Fecha de defensa: </strong>{{period.end_date}}</p></td>
+                                    <td><p><strong style="color:#3b3d3f; font-weight: bold;">Estado: </strong>{{cstate.name }}</p></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4"%><p><strong style="color:#3b3d3f; font-weight: bold;">Tutor(es): </strong>{{tutorfir.name}} {{tutorfir.l_name}} {{tutorfir.ml_name}}
+                                    {% if twofold %} / {{ tutorsec.name}} {{tutorsec.l_name}} {{tutorsec.ml_name}} {% endif %} </p></td>
+                                </tr>
+                                {% if modality.id == 3 %}
+                                    <tr>
+                                        <td colspan="4"><p><strong style="color:#3b3d3f; font-weight: bold;">Institución participante: </strong>{{attendant.name}} ({{attendant.acronym}})</p></td>
+                                    </tr>
+                                {% endif %}
+                                <tr>
+                                    <td colspan="2"><p><strong style="color:#3b3d3f; font-weight: bold;">Área: </strong>{{areap.name}}</p></td>
+                                    <td colspan="2"><p><strong style="color:#3b3d3f; font-weight: bold;">Sub área: </strong>{{ subareap.name }}</p> </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4"><p><strong style="color:#3b3d3f; font-weight: bold;">Título: </strong>{{ profile.title }}</p></td>
+                                </tr> 
+                                <tr>
+                                    <td colspan="4"><p><strong style="color:#3b3d3f; font-weight: bold;">Objetivo general: </strong>{{ profile.g_objective }}</p></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4"><p><strong style="color:#3b3d3f; font-weight: bold;">Objetivos específicos: </strong>{{ profile.s_objects }}</p></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4"><p><strong style="color:#3b3d3f; font-weight: bold;">Descripción: </strong>{{ profile.description }}</p></td>
+                                </tr>
+                            </table> 
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </section>
+    </article>
+{% endblock %}
+
+{% block jslink %}
+{% endblock %}

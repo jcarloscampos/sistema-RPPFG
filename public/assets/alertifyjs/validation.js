@@ -236,4 +236,17 @@ function validateFormforget()
     }
 }
 
-
+function validateSearch()
+{
+    var title = document.getElementById('title').value.trim();
+    
+    if(title === ''){
+        alertify.alert("Debe ingresar el título del Proyecto.", function(){
+            alertify.message('Ingrese datos correctos');
+        });
+        return false;
+    }else{
+        return true;
+    }
+    
+}

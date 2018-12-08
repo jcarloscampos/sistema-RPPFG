@@ -124,7 +124,7 @@ $router->controller('/signin', AppPHP\Controllers\Accounts\SigninController::cla
 $router->controller('/logout', AppPHP\Controllers\Accounts\LogoutController::class);
 $router->controller('/forgottenpass', AppPHP\Controllers\Accounts\ForgottenpwdController::class);
 
-
+$router->controller('/searches', AppPHP\Controllers\Search\SearchController::class);
 
 
 

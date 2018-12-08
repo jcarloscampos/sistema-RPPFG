@@ -160,6 +160,16 @@ class Validation
         return $validator;
     }
 
+    public function setRuleTitle($validator)
+    {
+        $validator->add(array(
+            'title:Título del Perfil: '=>'required | 
+                                                minlength(6)({label} debe tener al menos {min} caracteres) | 
+                                                maxlength(500)({label} debe tener menos de {max} caracteres)'
+        ));
+        return $validator;
+    }
+
     public function setRuleDefThree($validator)
     {
         $validator->add(array(
