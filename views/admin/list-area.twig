@@ -67,10 +67,22 @@
                                             </td>
                                             <td>{{ area.description }}</td>
                                             <td>
+                                                {% set condition = true %}
                                                 <div class="menu-actions-tb">
                                                 <div class="actions">
                                                     <a href="{{ 'admin/area/edit/' | url }}{{ area.id }}">Editar</a>
+                                                    {% for areaprofile in areaprofiles if condition %}
+                                                        {% if areaprofile.id_area == area.id %}
+                                                            {% set condition = false %}
+                                                        {% endif %}
+                                                    {% endfor %}
+
+                                                    {% if condition  %}
                                                     <a href="{{ 'admin/area/delete/' | url }}{{ area.id }}">Eliminar</a>
+                                                    {% else %}
+                                                       <a class="disabled" href="{{ 'admin/area/delete/' | url }}{{ area.id }}">Eliminar</a>
+                                                    {% endif %}
+                                                    
                                                     <a href="{{ 'admin/area/addsubarea/' | url }}{{ area.id }}">Añadir sub área</a>
                                                 </div>
                                                 </div>

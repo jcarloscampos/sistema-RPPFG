@@ -23,6 +23,7 @@ use AppPHP\Models\Responsable;
 
 
 use Sirius\Validation\Validator;
+use AppPHP\Controllers\Common\Mail;
 use AppPHP\Controllers\Common\Validation;
 use AppPHP\Controllers\Common\ServerConnection;
 use AppPHP\Controllers\Common\SettingData;
@@ -141,6 +142,7 @@ class SettleController extends BaseController
             $user = Secretary::where('id_account', $_SESSION['staryID'])->first();
             $uimage = substr($user->name, 0, 1);
             $makeDB = new ServerConnection();
+            $mail = new Mail();
             $profile = Profile::where('id', $idprofile)->first();
             $prolonged = false;
             $result = false;
@@ -163,9 +165,16 @@ class SettleController extends BaseController
                     # Si la solicitud es por prorroga de ampliacion
                     if ($period->extended == 0 || $period->extended == 2){
                         $nenddate = date("Y-m-d",strtotime($enddate."+ 6 month"));
-                        $extended = 1 + $period->extended;
+                        $extended = 3 + $period->extended; // cambiado por 1
                         $periodData = ['end_date' => $nenddate, 'extended' => $extended];
-                        $result = $makeDB->updateUser($period, $periodData, $makeDB);
+                        #-----------------------------------------------------------------
+                        if ($makeDB->updateUser($period, $periodData, $makeDB)) {
+                            # Ejecuta en caso ser alargado fecha de defensa
+                            $result = true;
+                            $this->sendMessage($postulantprofile->id_profile, $nenddate, $mail);
+                        }
+                        #-----------------------------------------------------------------
+                        //return null;
                     } else 
                         $prolonged = true;
 
@@ -173,9 +182,16 @@ class SettleController extends BaseController
                     # Si la solicitud es por apliacion de caso extra ordinario
                     if ($period->extended == 0 || $period->extended == 1) {
                         $nenddate = date("Y-m-d",strtotime($enddate."+ 1 year"));
-                        $extended = 2 + $period->extended;
+                        $extended = 3 + $period->extended; // cambiado por 2
                         $periodData = ['end_date' => $nenddate, 'extended' => $extended];
-                        $result = $makeDB->updateUser($period, $periodData, $makeDB);
+                        //$result = $makeDB->updateUser($period, $periodData, $makeDB);
+                        #-----------------------------------------------------------------
+                        if ($makeDB->updateUser($period, $periodData, $makeDB)) {
+                            # Ejecuta en caso ser alargado fecha de defensa
+                            $result = true;
+                            $this->sendMessage($postulantprofile->id_profile, $nenddate, $mail);
+                        }
+                        #-----------------------------------------------------------------
                     } else 
                         $prolonged = true;
                 }
@@ -238,7 +254,8 @@ class SettleController extends BaseController
                     ['vPerfil'=>$user, 'uimage'=>$uimage, 'profile'=>$profile, 'group'=>$group, 'postf'=>$postf,
                     'posts'=>$posts, 'modality'=>$modality, 'career'=>$career, 'period'=>$period, 'approved'=>$approved,
                     'status'=>$status, 'cstate'=>$cstate, 'teacher'=>$teacher, 'tutorfir'=>$tutorfir, 'tutorsec'=>$tutorsec,
-                    'twofold'=>$twofold, 'areap'=>$areap, 'subareap'=>$subareap, 'director'=>$director, 'attendant'=>$attendant
+                    'twofold'=>$twofold, 'areap'=>$areap, 'subareap'=>$subareap, 'director'=>$director, 'attendant'=>$attendant,
+                    'result'=>$result, 'prolonged'=>$prolonged
                     ]);
             }
             return $this->render('secretary/setpass.twig', 
@@ -248,6 +265,33 @@ class SettleController extends BaseController
                 'areap'=>$areap, 'subareap'=>$subareap, 'director'=>$director,'attendant'=>$attendant, 
                 'prolonged'=>$prolonged, 'result'=>$result
                 ]);
+        }
+    }
+    private function sendMessage($idprofile, $nenddate, $mail)
+    {
+        $postulantProfiles = PostulantProfile::all();
+        $datasend = [];
+
+        foreach ($postulantProfiles as $key => $value) {
+            if ($value->id_profile == $idprofile) {
+                $postulant = Postulant::where('id', $value->id_postulant)->first();
+                if (isset($postulant)) {
+                    // $to = $array['email'];
+                    // $uname = $array['username'];
+                    // $pwd = $array['password'];
+                    $userName =  $postulant->name . ' '. $postulant->l_name . ' '. $postulant->ml_name;
+                    $message = 'Se le informa que la solicitud que presentó para la ampliación de fecha de defensa fue aceptada, usted debe programar su defensa con fecha anterior a: ' . $nenddate;
+                    $datasend['email'] = $postulant->email;
+                    $datasend['username'] = '';
+                    $datasend['password'] = '';
+
+                    $datasend['user'] = $userName;
+                    $datasend['message'] = $message;
+                    $datasend['case'] = 1;
+
+                    $mail->sendEMail($datasend);
+                }
+            }
         }
     }
 }

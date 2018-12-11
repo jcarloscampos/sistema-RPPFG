@@ -67,7 +67,7 @@
                                             {% if postperf.id_profile == profile.id %}
                                                 {% for post in posts %}
                                                     {% if post.id == postperf.id_postulant %}
-                                                        *{{ post.name }} {{ post.l_name }} {{ post.ml_name}}
+                                                        {{'- '}}{{ post.name }} {{ post.l_name }} {{ post.ml_name}}{{'<br>'}}
                                                     {% endif %}
                                                 {% endfor %}
                                             {% endif %}

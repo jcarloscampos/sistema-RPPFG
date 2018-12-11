@@ -4,6 +4,7 @@ namespace AppPHP\Controllers\Admin;
 
 use AppPHP\Controllers\BaseController;
 use AppPHP\Models\Area;
+use AppPHP\Models\AreaProfile;
 use Sirius\Validation\Validator;
 use AppPHP\Models\Administrator;
 use AppPHP\Controllers\Common\Validation;
@@ -28,6 +29,7 @@ class AreaController extends BaseController
         if (isset($_SESSION['admID'])) {
             $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
             $areas = Area::query()->orderBy('name')->get()->toArray();
+            $areaprofiles = AreaProfile::all();
             $params = null; 
             $page = 1;
             $myUrl=parse_url($_SERVER['REQUEST_URI']);
@@ -47,7 +49,7 @@ class AreaController extends BaseController
             });
             $uimage = substr($admin->name, 0, 1);
             $pagination = $paginator->paginate($page);
-            return $this->render('admin/list-area.twig', ['areas' => $pagination->getItems(), 'pagination'=>$pagination, 'page'=>$page, 'vadmin' => $admin, 'uimage'=>$uimage]);
+            return $this->render('admin/list-area.twig', ['areaprofiles'=>$areaprofiles, 'areas' => $pagination->getItems(), 'pagination'=>$pagination, 'page'=>$page, 'vadmin' => $admin, 'uimage'=>$uimage]);
         }
     }
 

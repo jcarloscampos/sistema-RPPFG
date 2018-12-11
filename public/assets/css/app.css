@@ -3090,3 +3090,10 @@ tbody tr td {
   font-size: .8em;
 }
 
+a.disabled {
+  pointer-events: none;
+  cursor: default;
+  color: #afacab;
+  border: solid 2px #afacab;
+}
+

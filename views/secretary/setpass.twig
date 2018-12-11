@@ -45,7 +45,7 @@
                         
                     </div>
                     <p style="float:right">Nro. {{profile.num_profile}}</p>
-                    <form method="post">
+                    <form method="post" onsubmit="return validateFromDate()">
                         <table id="table_settle">
                             <tr>
                                 <td width=25%><strong style="color:#3b3d3f; font-weight: bold;">Nombre del<br> estudiante(s)</strong></td>
@@ -198,20 +198,10 @@
             var selectedOption = this.options[selectEnddatep.selectedIndex];
             valueStatep = selectedOption.value
         });
-        function validateForm(){
+        function validateFromDate(){
             var result = false;
             if (valueStatep>0){
-                //result = confirm('Los cambios se guardarán, ¿está seguro de continuar?');
-
-                let result2 = alertify.confirm("This is a confirm dialog.",
-                //console.log(result2);
-                function(){
-                alertify.success('Ok');
-                return true;
-                },
-                function(){
-                alertify.error('Cancel');
-                });
+                result = confirm('Los cambios se guardarán, ¿está seguro de continuar?');
             }
             return result;
        } 
