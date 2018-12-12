@@ -46,7 +46,11 @@
                             {% include 'remnant/success.twig' %}
                             {% include 'remnant/warning.twig' %}
                         </div>
-                        <form method="post" onsubmit="return validateFormCrudArea()">
+                        {% if not typeArea %}
+                            <form method="post" onsubmit="return validateFormCrudSubArea()">
+                        {% else %}
+                            <form method="post" onsubmit="return validateFormCrudArea()">
+                        {% endif %}
                             <input type="hidden" name="idArea" value="{{ varea.id }}">
                             <div class="row uniform">
 
@@ -54,7 +58,7 @@
                                 
                                 {% if addsubarea %}
                                     <div class="12u 12u$(xsmall)">
-                                        <label>Nombre de sub área</label>
+                                        <label><strong style="color:red">(*) </strong>Nombre de sub área</label>
                                         <input type="text" placeholder="Sub area..." name="name" id="name" onkeyup="formatLetters(this)" onchange="formatLetters(this)" />
                                     </div>
                                     <div class="12u 12u$(xsmall)">
@@ -63,7 +67,7 @@
                                     </div>
                                 {% else %}
                                     <div class="12u 12u$(xsmall)">
-                                        <label>Nombre del área</label>
+                                        <label><strong style="color:red">(*) </strong>Nombre del área</label>
                                         <input type="text" placeholder="Area..." name="name" id="name" value="{{ varea.name }}" onkeyup="formatLetters(this)" onchange="formatLetters(this)"/>
                                     </div>
                                     <div class="12u 12u$(xsmall)">
@@ -73,11 +77,11 @@
                                 {% endif %}
                             {% elseif not typeArea %}
                                 <div class="8u 12u$(xsmall)">
-                                    <label>Nombre de sub área</label>
+                                    <label><strong style="color:red">(*) </strong>Nombre de sub área</label>
                                     <input type="text" name="name" id="name" value="" placeholder="Sub área..." onkeyup="formatLetters(this)" onchange="formatLetters(this)"/>
                                 </div>
                                 <div class="4u$ 12u$(xsmall)">
-                                    <label>Área al que pertenece</label>
+                                    <label><strong style="color:red">(*) </strong>Área al que pertenece</label>
                                     <select name="nameareasel" id="nameareasel">
                                         <option value="" disabled selected>- Seleccione -</option>
                                         {% for area in vareas %}
@@ -137,5 +141,28 @@
         <script src='../../../public/assets/js/jquery-3.3.1.min.js'></script>
         <script src='../../../public/assets/alertifyjs/alertify.min.js'></script>
         <script src='../../../public/assets/alertifyjs/validation.js'></script>
+
+        <script>
+            var selectStatep = document.getElementById('nameareasel');
+            var valueStatep = 0;
+            
+            selectStatep.addEventListener('change', function(){
+                var selectedOption = this.options[selectStatep.selectedIndex];
+                valueStatep = selectedOption.value
+            });
+
+            function validateFormCrudSubArea ()
+            {
+                var name = document.getElementById('name').value.trim();
+                if(name === '' || valueStatep == 0){
+                    alertify.alert("Los campos deben ser llenados correctamente.", function(){
+                        alertify.message('Ingrese datos correctos');
+                    });
+                    return false;
+                }else{
+                    return true;
+                }
+            }
+        </script>
     {% endif %}
 {% endblock %}

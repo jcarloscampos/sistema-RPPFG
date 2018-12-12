@@ -17,7 +17,7 @@ class Validation
             'phone: Teléfono o celular'=>'  minlength(7)({label} debe tener al menos {min} caracteres) | 
                                             maxlength(8)({label} debe tener menos de {max} caracteres)',
             'email:Email'=> 'required | email',
-            'address:Dirección de domiciliio'=> 'minlength(5)({label} debe tener al menos {min} caracteres) | 
+            'address:Dirección de domicilio'=> 'minlength(5)({label} debe tener al menos {min} caracteres) | 
                                                 maxlength(200)({label} debe tener menos de {max} caracteres)',
             'pwd:Contraseña'=>  'minlength(5)({label} debe tener al menos {min} caracteres) | 
                                 maxlength(30)({label} debe tener menos de {max} caracteres)',
@@ -30,7 +30,7 @@ class Validation
     {
         $validator->add(array(
             'codsis:Código SIS'=>'  required | 
-                                    minlength(7)({label} debe tener maoyr de {min} caracteres) | 
+                                    minlength(7)({label} debe tener mayor de {min} caracteres) | 
                                     maxlength(9)({label} debe tener menos de {max} caracteres)'
         ));
         return $validator;
@@ -108,7 +108,7 @@ class Validation
     public function setRuleCI($validator)
     {
         $validator->add(array(
-            'ci:No de identificación personal'=>'required | 
+            'ci:Nro de identificación personal'=>'required | 
                                                 minlength(6)({label} debe tener al menos {min} caracteres) | 
                                                 maxlength(15)({label} debe tener menos de {max} caracteres)'
         ));
