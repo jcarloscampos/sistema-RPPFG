@@ -215,6 +215,39 @@ class ProfessionalsController extends BaseController
         ['vadmin' => $admin, 'result' => $result, 'vPerfil'=>$user, 'itn'=>$itn, 'rol'=>$rol]);
     }
 
+    public function getViewinformation($idAccount)
+    {
+        if (isset($_SESSION['admID'])) {
+            $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
+            $uimage = substr($admin->name, 0, 1);
+            $itnprof = ProfessionalUmss::where('id_account', $idAccount)->first();
+            $etnprof = ProfessionalExt::where('id_account', $idAccount)->first();
+
+            $account = Account::where('id', $idAccount)->first();
+            $urol = UserRol::where('id_account', $idAccount)->first();
+            $rol = Rol::where('id_rol', $urol->id_rol)->first();
+            
+            
+            $user = null;
+            $workload = null;
+            $adegree = null;
+            $profumss = false;
+            
+            if (isset($itnprof)) {
+                $user = $itnprof;
+                $profumss = true;
+            }elseif (isset($etnprof)) {
+                $user = $etnprof;
+            }
+            $workload = Workload::where('id', $user->id_wl)->first();
+            $adegree = ADegree::where('id', $user->id_ad)->first();
+
+            return $this->render('admin/setpass.twig', ['vadmin' => $admin, 'uimage'=>$uimage, 'user'=>$user, 'profumss'=>$profumss,
+            'account'=>$account, 'rol'=>$rol, 'adegree'=>$adegree, 'workload'=>$workload]);
+        }
+    }
+
+
     /**
      * Mediante método GET se hace la peticion para mostrar la plantilla para importar ProfessionalUMSS
      */

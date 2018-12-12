@@ -1,0 +1,110 @@
+{% extends 'layout.twig' %}
+
+{% block csslink %}
+    <link rel='stylesheet' href='../../../../public/assets/css/app.css'>
+    <link rel='stylesheet' href='../../../../public/assets/alertifyjs/css/alertify.min.css'>
+    {# <link rel='stylesheet' href='../../../../public/assets/alertifyjs/css/alertify.rtl.min.css'> #}
+    <link rel='stylesheet' href='../../../../public/assets/alertifyjs/css/themes/default.min.css'>
+    {# <link rel='stylesheet' href='../../../../public/assets/alertifyjs/css/themes/default.rtl.min.css'> #}
+{% endblock %}
+
+{% block namepage %}
+    Perfil de administración en SRPPFG
+{% endblock %}
+
+{% block title %}
+    Administrador:  {{ vadmin.name }} {{ vadmin.l_name }} {{ vadmin.ml_name }}
+{% endblock %}
+
+{% block menu %}
+    {% include('remnant/nav-admin.twig') %}
+{% endblock %}
+
+{% block configpersonal %}
+    <div class="configpersonal">
+    </div>
+    <div class="nav-way">
+        <p>
+        <a class=".btn .btn-primary" href="{{'admin' | url }}">Home</a> &nbsp; | &nbsp; <a class=".btn .btn-primary" href="{{'admin/professionals' | url }}">Profesionales</a> &nbsp; | &nbsp; Información
+        </p>
+    </div>
+
+
+{% endblock %}
+
+{% block content %}
+<article id="main">
+        <section class="wrapper style5">
+            <div class="inner">
+                <section class="table-report">
+                    <div class="message-box">
+                        {% include 'remnant/errors.twig' %}
+                        {% include 'remnant/warning.twig' %}
+                        {% include 'remnant/success.twig' %}
+                        
+                    </div>
+                    
+                    <table id="table_settle">
+                        <tr>
+                            <td width=25%><p style="font-size: .9em;  border-bottom: solid 1px gray; margin-bottom: 1em;">Nombre(s)</p><p>{{ user.name }}</p><p>{{ posts.l_name }}</p></td>
+                            <td width=25%><p style="font-size: .9em;  border-bottom: solid 1px gray; margin-bottom: 1em;">Apellido Paterno</p><p>{{ user.l_name }}</p><p>{{ posts.ml_name }}</p></td>
+                            <td width=25%><p style="font-size: .9em;  border-bottom: solid 1px gray; margin-bottom: 1em;">Apellido Materno</p><p>{{ user.ml_name }}</p><p>{{ posts.name }}</p></td>
+                            <td width=25%></td>
+                        </tr>
+                        <tr>
+                            {% if profumss %}
+                                <td colspan="2"><p><strong style="color:#3b3d3f; font-weight: bold;">Código SIS: </strong>{{ user.cod_sis }}<br>{{ posts.email }}</p></td>
+                                <td><p><strong style="color:#3b3d3f; font-weight: bold;">CI: </strong>{{ user.ci }}<br>{{ posts.phone }}</p> </td>
+                                <td><p><strong style="color:#3b3d3f; font-weight: bold;">Teléfono: </strong>{{ user.phone }}<br>{{ posts.phone }}</p> </td>
+                            {% else %}
+                                <td colspan="2" ><p><strong style="color:#3b3d3f; font-weight: bold;">CI: </strong>{{ user.ci }}<br>{{ posts.phone }}</p> </td>
+                                <td  colspan="2"><p><strong style="color:#3b3d3f; font-weight: bold;">Teléfono: </strong>{{ user.phone }}<br>{{ posts.phone }}</p> </td>
+                            {% endif %}
+                            
+                        </tr>
+                        <tr>
+                            <td colspan="2"><p><strong style="color:#3b3d3f; font-weight: bold;">Email: </strong>{{ user.email }}<br>{{ posts.email }}</p></td>
+                            <td colspan="2"><p><strong style="color:#3b3d3f; font-weight: bold;">Dirección: </strong>{{ user.address }}</p></td>
+                            
+                        </tr>
+                        <tr>
+                            <td colspan="2"><p><strong style="color:#3b3d3f; font-weight: bold;">Grado académico: </strong>{{ adegree.name_ad }}</p></td>
+                            {% if user.active == 1 %}
+                                <td><p><strong style="color:#3b3d3f; font-weight: bold;">Activo para Proyectos: </strong>{{ "SI" }}</p></td>
+                            {% else %}
+                                <td><p><strong style="color:#3b3d3f; font-weight: bold;">Activo para Proyectos: </strong>{{ "NO" }}</p></td>
+                            {% endif %}
+                            
+                        </tr>
+                        {% if profumss %}
+                            <tr colspan="4">
+                            <td><p><strong style="color:#3b3d3f; font-weight: bold;">Carga hoararia: </strong>{{workload.name_wl}}</p></td> 
+                            </tr>
+                        {% endif %}
+                            
+                        
+                        <tr>
+                            <td colspan="2"><p><strong style="color:#3b3d3f; font-weight: bold;">Nombre de usuario: </strong>{{account.username}}</p></td>
+                            {% if rol.name_rol == "itnprof" %}
+                                <td colspan="2"><p><strong style="color:#3b3d3f; font-weight: bold;">Rol: </strong>{{ "Doncente de UMSS" }}</p> </td>
+                            {% elseif rol.name_rol == "etnprof" %}
+                                <td colspan="2"><p><strong style="color:#3b3d3f; font-weight: bold;">Rol: </strong>{{ "Doncente de externo" }}</p> </td>
+                            {% elseif rol.name_rol == "director" %}
+                                <td colspan="2"><p><strong style="color:#3b3d3f; font-weight: bold;">Rol: </strong>{{ "Director de carrera" }}</p> </td>
+                            {% endif %}
+                        </tr>
+                    </table>
+                </section>
+            </div>
+        </section>
+    </article>
+{% endblock %}
+
+{% block jslink %}
+    <script src='../../../../public/assets/js/jquery.min.js'></script>
+    <script src='../../../../public/assets/js/jquery.scrollex.min.js'></script>
+    <script src='../../../../public/assets/js/jquery.scrolly.min.js'></script>
+    <script src='../../../../public/assets/js/skel.min.js'></script>
+    <script src='../../../../public/assets/js/util.js'></script>
+    <script src='../../../../public/assets/js/main.js'></script>
+{% endblock %}
