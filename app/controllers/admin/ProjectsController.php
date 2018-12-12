@@ -16,10 +16,11 @@ use AppPHP\Models\Account;
 use AppPHP\Models\EtnProfArea;
 use AppPHP\Models\EtnTutor;
 use AppPHP\Models\ItnProfArea;
-use AppPHp\Models\PostulantProfile;
 use AppPHp\Models\AreaProfile;
-use Sirius\Validation\Validator;
+use AppPHP\Models\PostulantProfile;
 use AppPHP\Models\Administrator;
+
+use Sirius\Validation\Validator;
 use AppPHP\Controllers\Common\Validation;
 use AshleyDawson\SimplePagination\Paginator;
 
@@ -39,8 +40,17 @@ class ProjectsController extends BaseController
     {
         if (isset($_SESSION['admID'])) {
             $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
-            //Debido a los cambios en la base de datos es necesario actualizar esto
-            $Proyectos = []; //ProjectsView::query()->orderBy('title', 'asc')->get()->toArray();
+            $uimage = substr($admin->name, 0, 1);
+
+            //$profiles = Profile::all();
+            $modalities = Modality::all();
+            $posts = Postulant::all();
+            $status = Status::all();
+            $periods = Period::all();
+            $postperfs = PostulantProfile::all();
+            $Proyectos = Profile::query()->orderBy('title')->get()->toArray();
+            //$Proyectos = []; //ProjectsView::query()->orderBy('title', 'asc')->get()->toArray();
+            //$Proyectos = $profiles;
             $params = null; 
             $page = 1;
             $myUrl=parse_url($_SERVER['REQUEST_URI']);
@@ -49,7 +59,7 @@ class ProjectsController extends BaseController
                 $page = (int)$params['page'];          
             }
             $paginator = new Paginator();
-            $paginator->setItemsPerPage(5)->setPagesInRange(5);
+            $paginator->setItemsPerPage(1)->setPagesInRange(1);
             $paginator->setItemTotalCallback(function () use ($Proyectos) {
                 return count($Proyectos);
             });
@@ -59,7 +69,11 @@ class ProjectsController extends BaseController
                 return array_slice($Proyectos, $offset, $length);
             });
             $pagination = $paginator->paginate($page);
-            return $this->render('admin/list_projects.twig', ['Proyectos' => $pagination->getItems(), 'pagination'=>$pagination, 'page'=>$page, 'admin' => $admin]);
+
+            return $this->render('admin/list_projects.twig', ['profiles' => $pagination->getItems(), 'pagination'=>$pagination, 'page'=>$page,
+            'vadmin' => $admin, 'uimage'=>$uimage, 'modalities'=>$modalities, 'postperfs'=>$postperfs, 'posts'=>$posts,
+            'status'=>$status, 'periods'=>$periods
+            ]);
         }
     }
 

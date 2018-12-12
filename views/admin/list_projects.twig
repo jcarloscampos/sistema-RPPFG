@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block title %}
-    Administrador:  {{ admin.name }} {{ admin.l_name }}
+    Administrador:  {{ vadmin.name }} {{ vadmin.l_name }} {{ vadmin.ml_name }}
 {% endblock %}
 
 {% block menu %}
@@ -43,67 +43,67 @@
                                     <a href="{{ 'admin/projects/import' | url }}">Importar Por lote</a>
                                 </div>
                             </div>
-                            <table id="tabla_proyectos">
+                            <table id="tabla_perfiles">
                                 <thead>
                                     <tr>
-                                        <th>Titulo</th>
-                                        <th>Tutor(es)</th>
+                                        <th>Título</th>
                                         <th>Postulante(s)</th>
-                                        <th>Objetivo General</th>
-                                        <th>Area(s)</th>
-                                        <th>Modalidad de Titulación</th>
-                                        <th>Carrera</th>
-                                        <th>Fecha de Registro</th>
-                                        <th>Periodo</th>
-                                        <th>Acciones</th>
+                                        <th>Estado</th>
+                                        <th>Defensa</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
-                                <tbody id="content_table">
-                                {% for proyecto in proyectos %}
-                                    <tr>
-                                        <td>{{ proyecto.title }}</td>
-                                        <td>
-                                            {{ proyecto.fullname_tutor }}
-                                            {% if (proyecto.fullname_tutor_2 != '') %}
-                                            <br>{{ proyecto.fullname_tutor_2 }}
-                                            {% endif %}
-                                        </td>
-                                        <td>{{ proyecto.fullname_student }}
-                                            {% if (proyecto.fullname_student_2 != '') %}
-                                            <br>{{ proyecto.fullname_student_2 }}
-                                            {% endif %}
-                                        </td>
-                                        <td>{{ proyecto.general_obj }}</td>
-                                        <td>{{ proyecto.area }}
-                                            {% if (proyecto.subarea != '') %}
-                                            <br> - {{ proyecto.subarea }}
-                                            {% endif %}
-                                            {% if (proyecto.area_2 != '') %}
-                                            <br>{{ proyecto.area_2 }}
-                                            {% endif %}
-                                            {% if (proyecto.subarea_2 != '') %}
-                                            <br> - {{ proyecto.subarea_2 }}
-                                            {% endif %}
-                                        </td>
-                                        <td>{{ proyecto.modality }}</td>
-                                        <td>{{ proyecto.career }}</td>
-                                        <td>{{ proyecto.registry_date }}</td>
-                                        <td>{{ proyecto.period }}</td>
+                                <tbody id="arealist">
+                                    {% for profile in profiles %}
+                                        <tr>
                                             <td>
-                                                <div class="menu-actions-tb">
-                                                <div class="actions">
-                                                    <a href="{{ 'admin/' | url }}{{proyecto.id}}">Ver Proyecto</a>
-                                                </div>
-                                                </div>
+                                                {{ profile.title }}
                                             </td>
-                                    </tr>
-                                {% endfor %}
+
+                                            <td>
+                                                {% for postperf in postperfs %}
+                                                    {% if postperf.id_profile == profile.id %}
+                                                        {% for post in posts %}
+                                                            {% if post.id == postperf.id_postulant %}
+                                                                {{'- '}}{{ post.name }} {{ post.l_name }} {{ post.ml_name}}{{'<br>'}}
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </td>
+
+                                            <td>
+                                                {% for state in status %}
+                                                    {% if state.id == profile.id_status %}
+                                                        {{ state.name }}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </td>
+                                            
+                                            <td>
+                                            {% set condition = true %}
+                                            {% for postperf in postperfs %}
+                                                {% if postperf.id_profile == profile.id %}
+                                                    {% for period in periods %}
+
+                                                        {% if period.id == postperf.id_period and condition %}
+                                                           {{ period.end_date }}
+                                                            {% set condition = false %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% endif %}
+                                            {% else %}
+                                                
+                                            {% endfor %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
                                 </tbody>
                             </table>
-                              {% if page!=1%}
+                            {% if page!=1%}
                                 <a href="?page={{ pagination.getPreviousPageNumber() }}">Pagina Anterior</a>
                             {% endif %}
-                            {% if proyectos|length > 0 %}
+                            {% if profiles|length > 0 %}
                             <div>
                                 {% for page in pagination.pages %}
                                     <a href="?page={{ page }}">{{ page }}</a> |
