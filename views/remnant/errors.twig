@@ -7,3 +7,10 @@
         {% endfor %}
     </div>
 {% endif %}
+
+{% if errormail %}
+    <div class="alert alert-danger">
+        No se puede enviar el correo.<br>
+        Es posible que el servicio Mail no este activo; intente de nuevo para crear la cuenta.  
+    </div>
+{% endif %}

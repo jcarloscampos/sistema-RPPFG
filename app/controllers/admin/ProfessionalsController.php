@@ -70,8 +70,9 @@ class ProfessionalsController extends BaseController
     public function PostNewaccount()
     {
         $errors = [];
-        $result = false;
+        $createAccount = false;
         $duplicate = false;
+        $errormail = false;
         $validator = new Validator();
         $validation = new Validation();
         $makeDB = new ServerConnection();
@@ -92,16 +93,23 @@ class ProfessionalsController extends BaseController
             'active'=>1
         ];
         if ($validator->validate($_POST)) {
-            if ($_POST['tuser'] == "itnprof") {
-                $userstemp = ProfessionalUmss::where('ci', '=', $_POST['ci'])->get()->toArray();
-            } elseif ($_POST['tuser'] == "etnprof") {
-                $userstemp = ProfessionalExt::where('ci', '=', $_POST['ci'])->get()->toArray();
-            }
-            if (empty($userstemp)){
-                $datasend = $this->generateProfile($generate, $makeDB, $userprofile, $_POST['tuser']);
-                $result = $mail->sendEMail($datasend);
-            } else {
+
+            $itntemp = ProfessionalUmss::where('ci', $_POST['ci'])->first();
+            $etntemp = ProfessionalExt::where('ci', $_POST['ci'])->first();
+
+            if (isset($itntemp) || isset($etntemp)){
                 $duplicate = true;
+            } else {
+                $datasend = $this->generateProfile($generate, $makeDB, $userprofile, $_POST['tuser']);
+                //$result = $mail->sendEMail($datasend);
+                if ($mail->sendEMail($datasend)) {
+                    $createAccount = true;
+                } else {
+                    $idAccount = Account::where('username', $datasend['username'])->value('id');
+                    $account = Account::find($idAccount);
+                    $account->delete();
+                    $errormail = true;
+                }
             }
         } else {
             $errors = $validator->getMessages();
@@ -112,7 +120,8 @@ class ProfessionalsController extends BaseController
         }
         return $this->render(
             'admin/insert-account.twig', 
-            ['vadmin' => $admin, 'result' => $result, 'duplicate' => $duplicate, 'vprofile'=>$userprofile]);
+            ['vadmin' => $admin, 'createAccount' => $createAccount, 'duplicate' => $duplicate,
+            'vprofile'=>$userprofile, 'errormail'=>$errormail]);
     }
 
     /**

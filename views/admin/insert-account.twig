@@ -62,20 +62,13 @@
                                 </div>
                                 <div class="3u$ 12u$(xsmall)">
                                     <label>Tipo de usuario</label>
-                                    <select name="tuser">
+                                    <select name="tuser" id="tuser">
                                         <option value="" disabled selected>- Seleccionar -</option>
                                         <option value="itnprof">Profesional UMSS</option>
                                         <option value="etnprof">Profesional Externo</option>
                                     </select>    
                                 </div>
-
-
-
-
-
-                                
                             </div>
-
                             <br>
                             <div class="12u 12u$(xsmall)">
                                 <ul class="actions" style="text-align: center">
@@ -105,4 +98,47 @@
     <script src='../../../public/assets/js/jquery-3.3.1.min.js'></script>
     <script src='../../../public/assets/alertifyjs/alertify.min.js'></script>
     <script src='../../../public/assets/alertifyjs/validation.js'></script>
+    <script>
+        var selectTUser = document.getElementById('tuser');
+        var valueStatep = 0;
+
+         selectTUser.addEventListener('change', function(){
+            var selectedOption = this.options[selectTUser.selectedIndex];
+            valueStatep = selectedOption.value
+        });
+
+        function validateFormAddAccount(){
+            var result = false;
+
+            var name = document.getElementById('name').value.trim();
+            var lname = document.getElementById('lname').value.trim();
+            var mlname = document.getElementById('mlname').value.trim();
+            var ci = document.getElementById('ci').value.trim();
+            var email = document.getElementById('email').value.trim();
+
+            if(name === '' || lname === '' || mlname === '' || ci === '' || email === ''){
+                alertify.alert("Todos los campos deben ser llenados.", function(){
+                    alertify.message('Ingrese datos correctamente');
+                });
+                return false;
+            }else{
+                if (valueStatep == 0){
+                    alertify.alert("Debe seleccionar tipo de profesional.", function(){
+                    alertify.message('Seleccione tipo de profesional');
+                });
+                }else{
+                    var email = document.getElementById('email').value.trim();
+                    var result = /\w+@\w+\.+[a-z]/.test(email);
+                    if(!result){
+                        alertify.alert("El correo no es válido.", function(){
+                            alertify.message('Ingrese datos correctos');
+                        });
+                    }else{
+                        result = confirm('¿Está seguro de crear un nuevo usuario?');
+                    }
+                }
+            }
+            return result;
+       } 
+    </script>
 {% endblock %}
