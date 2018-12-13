@@ -23,31 +23,32 @@ function formatLetters(input)
 
 function validateFormSignup()
 {
+    var result = false;
+    var name = document.getElementById('name').value.trim();
+    var lname = document.getElementById('lname').value.trim();
+    var codsis = document.getElementById('codsis').value.trim();
+    var ci = document.getElementById('ci').value.trim();
     var email = document.getElementById('email').value.trim();
-    var result = /\w+@\w+\.+[a-z]/.test(email);
-    if(!result){
-        alertify.alert("El correo no es válido.", function(){
+    var user = document.getElementById('user').value.trim();
+    var pwd = document.getElementById('pwd').value.trim();
+    var pwdc = document.getElementById('pwdc').value.trim();
+
+    if(name === '' || lname === '' || codsis === '' || ci === '' || email === '' || user === '' || pwd === '' || pwdc === ''){
+        alertify.alert("Todos los campos deben ser llenados.", function(){
             alertify.message('Ingrese datos correctos');
         });
-        return false;
-    } else {
-        var name = document.getElementById('name').value.trim();
-        var lname = document.getElementById('lname').value.trim();
-        var codsis = document.getElementById('codsis').value.trim();
-        var ci = document.getElementById('ci').value.trim();
+    }else{
         var email = document.getElementById('email').value.trim();
-        var user = document.getElementById('user').value.trim();
-        var pwd = document.getElementById('pwd').value.trim();
-        var pwdc = document.getElementById('pwdc').value.trim();
-        if(name === '' || lname === '' || codsis === '' || ci === '' || email === '' || user === '' || pwd === '' || pwdc === ''){
-            alertify.alert("Todos los campos deben ser llenados.", function(){
+        var resultemail = /\w+@\w+\.+[a-z]/.test(email);
+        if(!resultemail){
+            alertify.alert("El correo no es válido.", function(){
                 alertify.message('Ingrese datos correctos');
             });
-            return false;
-        }else{
-            return true;
+        } else {
+            result = true;
         }
     }
+    return result;
 }
 
 function validateFormSignin()

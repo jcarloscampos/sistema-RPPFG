@@ -34,3 +34,15 @@
         Ya no es posible realizar esta operación. <strong>El periodo para cambio de tema o tutor ya se agotó</strong>
     </div>
 {% endif %}
+
+{% if rejected %}
+    <div class="alert alert-warning">
+        Estudiante no inscrito en Taller de Grado / Metodología y Planificación de Proyectos de Grado.
+    </div>
+{% endif %}
+
+{% if repeatedci %}
+    <div class="alert alert-warning">
+        El CI: {{ user.ci }} ya está registrado en otra cuenta.
+    </div>
+{% endif %}

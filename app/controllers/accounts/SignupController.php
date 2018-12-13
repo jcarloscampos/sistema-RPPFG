@@ -33,6 +33,9 @@ class SignupController extends BaseController
         $errors = [];
         $result = false;
         $exists = false;
+        $rejected = false;
+        $repeatedci = false;
+
         $validator = new Validator();
         $validation = new Validation();
         $validation->setRuleBasic($validator);
@@ -55,21 +58,29 @@ class SignupController extends BaseController
 
         if ($validator->validate($_POST)) {
             # validacion correcta
-            $accounts = Account::where("username", "=", $_POST['user'])->get()->toArray();
-            if (!empty($accounts)){
+            $accounts = Account::where('username', $_POST['user'])->first();
+            if (isset($accounts)){
                 $exists = true;
             } else {
                 # en caso de que sea estudiante verificamos si esta inscrito en la materia
-                $registered = IsRegistered::where("ci", "=", $_POST['ci'])->get()->toArray();
+                //$registered = IsRegistered::where("ci", "=", $_POST['ci'])->get()->toArray();
+                $registered = IsRegistered::where('ci', $_POST['ci'])->first();
                 # crear nuevo usuario
                 $tuser = 3;
                 //if ($_POST['tuser'] == 1 || $_POST['tuser'] == 2 || !empty($registered)) {
-                if (!empty($registered)) {
-                    $userAccount = $this->newAccount($_POST['user'], $_POST['pwd']);
-                    $pData['id_account'] = $userAccount;
-                    $result = $this->createUser($tuser, $pData);
-                    # cambiar definiendo instancia del usuario 
-                    $this->setProfile($tuser, $userAccount); 
+                if (isset($registered)) {
+                    $postulant = Postulant::where('ci', $_POST['ci'])->first();
+                    if (isset($postulant)) {
+                        $repeatedci = true;
+                    } else {
+                        $userAccount = $this->newAccount($_POST['user'], $_POST['pwd']);
+                        $pData['id_account'] = $userAccount;
+                        $result = $this->createUser($tuser, $pData);
+                        # cambiar definiendo instancia del usuario 
+                        $this->setProfile($tuser, $userAccount); 
+                    }
+                } else {
+                    $rejected = true;
                 }
             }
         } else {
@@ -80,7 +91,10 @@ class SignupController extends BaseController
             'accounts/signup.twig',
             ['result' => $result,
             'errors' => $errors,
-            'user' => $pData
+            'user' => $pData,
+            'exists' => $exists,
+            'rejected' => $rejected,
+            'repeatedci' => $repeatedci
         ]);
     }
 
