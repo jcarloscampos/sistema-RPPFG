@@ -621,6 +621,12 @@ class ServerConnection extends BaseController
             $user::where('id', $user->id)->update(array('extended' => $arg));
         }
     }
+    public function tchange($user, $arg)
+    {
+        if (isset($user)) {
+            $user::where('id', $user->id)->update(array('tchange' => $arg));
+        }
+    }
     
     
 }

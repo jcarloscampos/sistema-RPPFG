@@ -1,0 +1,258 @@
+{% extends 'layout.twig' %}
+
+{% block csslink %}
+    <link rel='stylesheet' href='../../../../public/assets/css/app.css'>
+    <link rel='stylesheet' href='../../../../public/assets/alertifyjs/css/alertify.min.css'>
+    {# <link rel='stylesheet' href='../../../../public/assets/alertifyjs/css/alertify.rtl.min.css'> #}
+    <link rel='stylesheet' href='../../../../public/assets/alertifyjs/css/themes/default.min.css'>
+    {# <link rel='stylesheet' href='../../../../public/assets/alertifyjs/css/themes/default.rtl.min.css'> #}
+{% endblock %}
+
+{% block namepage %}
+    Perfil de administración en SRPPFG
+{% endblock %}
+
+{% block title %}
+    Secretaria:  {{ vPerfil.name }} {{ vPerfil.l_name }} {{ vPerfil.l_name }}
+{% endblock %}
+
+{% block menu %}
+    {% include('remnant/nav-secretary.twig') %}
+{% endblock %}
+
+{% block configpersonal %}
+    <div class="configpersonal">
+    </div>
+    <div class="nav-way">
+        <p>
+        <a class=".btn .btn-primary" href="{{'secretary' | url }}">Home</a> &nbsp; | &nbsp; <a class=".btn .btn-primary" href="{{'secretary/settle' | url }}">Perfiles</a> &nbsp; | &nbsp; Establecer permisos
+        </p>
+    </div>
+
+
+{% endblock %}
+
+{% block content %}
+<article id="main">
+        <section class="wrapper style5">
+            <div class="inner">
+                <section class="table-report">
+                    <h4 style="text-align: center;">Perfil Nro. {{profile.num_profile}}</h4>
+                    <div class="message-box">
+                        {% include 'remnant/errors.twig' %}
+                        {% include 'remnant/warning.twig' %}
+                        {% include 'remnant/success.twig' %}
+                        
+                    </div>
+                    <p style="float:right">Nro. {{profile.num_profile}}</p>
+                    <form method="post" onsubmit="return validateFromDateeee()">
+                        <input type="hidden" name="auxtitle" id="auxtitle" value="{{ profile.title }}">
+                        <input type="hidden" name="auxgobj" id="auxgobj" value="{{ profile.g_objective }}">
+                        <input type="hidden" name="auxsobj" id="auxsobj" value="{{ profile.s_objects }}">
+                        <input type="hidden" name="auxdcptn" id="auxdcptn" value="{{ profile.description }}">
+
+                        <table id="table_settle">
+                            <tr>
+                                <td width=25%><strong style="color:#3b3d3f; font-weight: bold;">Nombre del<br> estudiante(s)</strong></td>
+                                <td width=25%><p style="font-size: .9em;  border-bottom: solid 1px gray; margin-bottom: 1em;">Apellido Paterno</p><p>{{ postf.l_name }}</p><p>{{ posts.l_name }}</p></td>
+                                <td width=25%><p style="font-size: .9em;  border-bottom: solid 1px gray; margin-bottom: 1em;">Apellido Materno</p><p>{{ postf.ml_name }}</p><p>{{ posts.ml_name }}</p></td>
+                                <td width=25%><p style="font-size: .9em;  border-bottom: solid 1px gray; margin-bottom: 1em;">Nombre(s)</p><p>{{ postf.name }}</p><p>{{ posts.name }}</p></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"><p><strong style="color:#3b3d3f; font-weight: bold;">Email:<br></strong>{{ postf.email }}<br>{{ posts.email }}</p></td>
+                                <td colspan="2"><p><strong style="color:#3b3d3f; font-weight: bold;">Teléfono:<br></strong>{{ postf.phone }}<br>{{ posts.phone }}</p> </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"><p><strong style="color:#3b3d3f; font-weight: bold;">Carrera: </strong>{{ career.name }}</p></td>
+                                <td colspan="2"><p><strong style="color:#3b3d3f; font-weight: bold;">Modalidad: </strong>{{ modality.name_mod }}</p></td>
+                                
+                            </tr>
+                            <tr>
+                                <td><p><strong style="color:#3b3d3f; font-weight: bold;">Aprobado en: </strong>{{ approved }}</p></td>
+
+                                <td colspan="2"><p><strong style="color:#3b3d3f; font-weight: bold;">Fecha límite de defensa: </strong> {{period.end_date}} </p></td>
+
+                                <td><p><strong style="color:#3b3d3f; font-weight: bold;">Estado: </strong> {{ cstate.name }} </p></td>
+                            </tr>
+                            <tr>
+                                
+                                <td colspan="2"><p><strong style="color:#3b3d3f; font-weight: bold;">Tutor: </strong></p> 
+                                    <select name="tutor" id="tutor">
+                                        <option value=""disabled selected>- {{tutorfir.name}} {{tutorfir.l_name}} {{tutorfir.ml_name}} -</option>
+                                        {% for newTutor in newTutors %}
+                                            <option value="{{newTutor.id_account}}">{{newTutor.name}} {{newTutor.l_name}} {{newTutor.ml_name}}</option>
+                                        {% endfor %}
+                                    </select>   
+                                </td>
+                                {% if twofold %}
+                                    <td colspan="2"><p><strong style="color:#3b3d3f; font-weight: bold;">Segundo tutor (opcional): </strong></p> 
+                                        <select name="stutor" id="stutor">
+                                            <option value=""disabled selected>- {{ tutorsec.name}} {{tutorsec.l_name}} {{tutorsec.ml_name}} -</option>
+                                            {% for state in newTutors %}
+                                                <option value="{{newTutor.id_account}}">{{newTutor.name}} {{newTutor.l_name}} {{newTutor.ml_name}}</option>
+                                            {% endfor %}
+                                        </select>   
+                                    </td>
+                                {% else %}
+                                    <td colspan="2"><p><strong style="color:#3b3d3f; font-weight: bold;">Segundo tutor (opcional): </strong></p> 
+                                        <select name="stutor" id="stutor">
+                                            <option value=""disabled selected>- {{ "Seleccionar" }} -</option>
+                                            {% for newTutor in newTutors %}
+                                                <option value="{{newTutor.id_account}}">{{newTutor.name}} {{newTutor.l_name}} {{newTutor.ml_name}}</option>
+                                            {% endfor %}
+                                        </select>   
+                                    </td>
+                                    
+                                {% endif %}
+                                
+                            </tr>
+                            {% if modality.id == 3 %}
+                                <tr>
+                                    <td colspan="4"><p><strong style="color:#3b3d3f; font-weight: bold;">Institución participante: </strong>{{attendant.name}} ({{attendant.acronym}})</p></td>
+                                </tr>
+                            {% endif %}
+                            <tr>
+                                <td colspan="2"><p><strong style="color:#3b3d3f; font-weight: bold;">Área: </strong>{{areap.name}}</p></td>
+                                <td colspan="2"><p><strong style="color:#3b3d3f; font-weight: bold;">Sub área: </strong>{{ subareap.name }}</p> </td>
+                            </tr>
+                        </table>
+                        <div class="row uniform">
+                                    <div class="12u 12u$(xsmall)">
+                                        <label><strong style="color:red">(*) </strong> Título</label>
+                                        <input type="text" name="title" id="title" value="{{ profile.title }}" placeholder="Título del Perfil..." onkeyup="formatLetters(this)" onchange="formatLetters(this)"/>
+                                    </div>
+                                    <div class="12u 12u$(xsmall)">
+                                        <label><strong style="color:red">(*) </strong> Objetivo general</label>
+                                        <input type="text" name="gobj" id="gobj" value="{{ profile.g_objective }}" placeholder="Objetivo general del Perfil..." onkeyup="formatLetters(this)" onchange="formatLetters(this)"/>
+                                    </div>
+                                    <div class="12u 12u$(xsmall)">
+                                        <label><strong style="color:red">(*) </strong> Objetivos específicos</label>
+                                        <textarea name="sobj" id="sobj" rows="2" placeholder="Objetivos específicos del Perfil...">{{ profile.s_objects }}</textarea>
+                                    </div>
+                                    <div class="12u 12u$(xsmall)">
+                                        <label><strong style="color:red">(*) </strong> Descripción</label>
+                                        <textarea name="dcptn" id="dcptn" rows="2" placeholder="Descripción del Perfil...">{{ profile.description }}</textarea>
+                                    </div>
+                                </div>
+                        {% if group %}
+                            <table id="table_settle">
+                                <tr>
+                                    <td colspan="5" height="30px"></td>
+                                </tr>
+                                <tr style="text-align: center; font-size: .95em;">
+                                    <td>
+                                        <p style="border-top: 1px dotted gray;">{{director.name}} {{director.l_name}} {{director.ml_name}}</p><p>Director de carrera</p>
+                                    </td>
+                                    <td>
+                                        <p style="border-top: 1px dotted gray;">{{ teacher.name }} {{ teacher.l_name }} {{ teacher.ml_name }}</p><p>Docente de la Materia</p>
+                                    </td>
+                                    <td>
+                                        <p style="border-top: 1px dotted gray;">{{tutorfir.name}} {{tutorfir.l_name}} {{tutorfir.ml_name}}</p><p>Tutor</p>
+                                    </td>
+                                    {% if modality.id == 3 %}
+                                        <td>
+                                            <p style="border-top: 1px dotted gray;">{{attendant.responsable}}</p><p>Responsable</p>
+                                        </td>
+                                    {% endif %}
+                                    <td>
+                                        <p style="border-top: 1px dotted gray;">{{ postf.name }} {{ postf.l_name }} {{ postf.ml_name }}</p><p>Estudiante</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        {% else %}
+                            <table id="table_settle">
+                                <tr>
+                                    <td colspan="5" height="50px"></td>
+                                </tr>
+                                <tr style="text-align: center; font-size: .95em;">
+                                    <td>
+                                        <p style="border-top: 1px dotted gray;">{{director.name}} {{director.l_name}} {{director.ml_name}}</p> <p>Director de carrera</p>
+                                    </td>
+                                    <td>
+                                        <p style="border-top: 1px dotted gray;">{{ teacher.name }} {{ teacher.l_name }} {{ teacher.ml_name }}</p><p>Docente de la Materia</p>
+                                    </td>
+                                    <td>
+                                        <p style="border-top: 1px dotted gray;">{{tutorfir.name}} {{tutorfir.l_name}} {{tutorfir.ml_name}}</p><p>Tutor</p>
+                                    </td>
+                                    {% if modality.id == 3 %}
+                                        <td>
+                                            <p style="border-top: 1px dotted gray;">{{attendant.responsable}}</p><p>Responsable</p>
+                                        </td>
+                                    {% endif %}
+                                    <td>
+                                        <p style="border-top: 1px dotted gray;">{{ postf.name }} {{ postf.l_name }} {{ postf.ml_name }}</p><p>Estudiante</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        {% endif %}
+                        <br>
+                        <div class="12u 12u$(xsmall)">
+                            <ul class="actions" style="text-align: center">
+                                <li><button class="principal" type="submit">Guardar los cambios</button>
+                                </li>
+                            </ul>
+                        </div>
+                    </form>
+                </section>
+            </div>
+        </section>
+    </article>
+{% endblock %}
+
+{% block jslink %}
+    <script src='../../../../public/assets/js/jquery.min.js'></script>
+    <script src='../../../../public/assets/js/jquery.scrollex.min.js'></script>
+    <script src='../../../../public/assets/js/jquery.scrolly.min.js'></script>
+    <script src='../../../../public/assets/js/skel.min.js'></script>
+    <script src='../../../../public/assets/js/util.js'></script>
+    <script src='../../../../public/assets/js/main.js'></script>
+
+    <script src='../../../../public/assets/js/jquery-3.3.1.min.js'></script>
+    <script src='../../../../public/assets/alertifyjs/alertify.min.js'></script>
+     <script src='../../../../public/assets/alertifyjs/validation.js'></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.29.1/dist/sweetalert2.all.min.js"></script>
+    <script>
+        var selectTutor = document.getElementById('tutor');
+        var selectStutor = document.getElementById('stutor');
+        var valueStatep = 0;
+        
+        selectStutor.addEventListener('change', function(){
+            var selectedOption = this.options[selectStutor.selectedIndex];
+            valueStatep = selectedOption.value
+        });
+
+         selectTutor.addEventListener('change', function(){
+            var selectedOption = this.options[selectTutor.selectedIndex];
+            valueStatep = selectedOption.value
+        });
+
+        function validateFromDateeee(){
+            var result = false;
+
+            var title = document.getElementById('title').value.trim();
+            var gobj = document.getElementById('gobj').value.trim();
+            var sobj = document.getElementById('sobj').value.trim();
+            var dcptn = document.getElementById('dcptn').value.trim();
+
+            if(title === '' || gobj === '' || sobj === '' || dcptn === ''){
+                alertify.alert("Todos los campos deben ser llenados.", function(){
+                    alertify.message('Ingrese datos correctamente');
+                });
+                return false;
+            }else{
+                var auxtitle = document.getElementById('auxtitle').value.trim();
+                var auxgobj = document.getElementById('auxgobj').value.trim();
+                var auxsobj = document.getElementById('auxsobj').value.trim();
+                var auxdcptn = document.getElementById('auxdcptn').value.trim();
+
+                if (valueStatep>0 || auxtitle != auxtitle || auxgobj != gobj || auxsobj != sobj || auxdcptn != dcptn ){
+                    
+                    result = confirm('Los cambios se guardarán, ¿está seguro de continuar?');
+
+                }
+            }
+            return result;
+       } 
+    </script>
+{% endblock %}

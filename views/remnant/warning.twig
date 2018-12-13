@@ -28,3 +28,9 @@
         El correo es incorrecto.
     </div>
 {% endif %}
+
+{% if shotperiod %}
+    <div class="alert alert-warning">
+        Ya no es posible realizar esta operación. <strong>El periodo para cambio de tema o tutor ya se agotó</strong>
+    </div>
+{% endif %}

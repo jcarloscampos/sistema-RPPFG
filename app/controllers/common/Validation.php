@@ -52,7 +52,7 @@ class Validation
     public function setRuleUser($validator)
     {
         $validator->add(array(
-            'user:Nonbre de usuario'=> 'required | 
+            'user:Nombre de usuario'=> 'required | 
                                         minlength(4)({label} debe tener al menos {min} caracteres) | 
                                         maxlength(16)({label} debe tener menos de {max} caracteres)'
         ));

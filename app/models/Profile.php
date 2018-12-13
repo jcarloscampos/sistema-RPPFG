@@ -22,6 +22,7 @@ class Profile extends Model
         'description',
         'id_cmpy_area',
         'id_mod',
-        'id_status'
+        'id_status',
+        'tchange'
     ];
 }
