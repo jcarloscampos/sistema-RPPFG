@@ -20,9 +20,10 @@ class ProfessionalExt extends Model
         'l_name',
         'ml_name',
         'email',
+        'phone',
         'address',
         'active',
-        'a_degree',
+        'id_ad',
         'profile',
         'id_account'
     ];
