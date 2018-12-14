@@ -493,10 +493,10 @@ class ProjectsController extends BaseController
                 //email por defecto
                 $email_tutor = substr($nombre_tutor,0,1) . $apellido_paterno_tutor . "_temp@umss.edu.bo";
                 //username = primera letra del nombre y el apellido, ejemplo: wramirez
-                $username_tutor = substr($nombre_tutor,0,1) . $apellido_paterno_tutor;
+                $username_tutor = str_replace(" ", "", substr($nombre_tutor,0,1) . $apellido_paterno_tutor);
                 //password
                 //TODO -> Se van a crear los passwords con las 3 primeras letras del nombre, las 3 primeras del apellido y el CI, en caso de no haber CI se utilizará los digitos 1234567
-                $pass_tutor = substr($nombre_tutor,0,3) . substr($apellido_paterno_tutor,0,3) . $ci_tutor;
+                $pass_tutor = str_replace(" ", "", substr($nombre_tutor,0,3) . substr(str_replace(" ", "", $apellido_paterno_tutor),0,3) . $ci_tutor);
                 
                 $account = new Account([
                     'username' => $username_tutor,
@@ -590,10 +590,10 @@ class ProjectsController extends BaseController
             //Cod SIS postulante por defecto
             $cod_sis_postulante = $settingData->recuperarSISStudent($nombre_postulante, $apellido_paterno_postulante, $apellido_materno_postulante);
             //username = primera letra del nombre y el apellido, ejemplo: wramirez
-            $username_postulante = substr($nombre_postulante,0,1) . $apellido_paterno_postulante;
+            $username_postulante = str_replace(" ", "", substr($nombre_postulante,0,1) . $apellido_paterno_postulante);
             //password
             //TODO -> Se van a crear los passwords con las 3 primeras letras del nombre, las 3 primeras del apellido y el CI
-            $pass_postulante = substr($nombre_postulante,0,3) . substr($apellido_paterno_postulante,0,3) . $ci_postulante;
+            $pass_postulante = str_replace(" ", "", substr($nombre_postulante,0,3) . substr(str_replace(" ", "", $apellido_paterno_postulante),0,3) . $ci_postulante);
             
             $account = new Account([
                 'username' => $username_postulante,

@@ -358,7 +358,7 @@ class ProfessionalsController extends BaseController
                                     }else{
                                         if($pass_cuenta == ''){
                                             //TODO -> Se van  a crear las cuentas con las 3 primeras letras del nombre, las 3 primeras del apellido y el CI en caso de no existir un password por defecto en el documento de donde se importan los datos
-                                            $pass_cuenta = substr($nombre,0,3) . substr($ap_paterno,0,3) . $ci;
+                                            $pass_cuenta = str_replace(" ", "", substr($nombre,0,3) . substr(str_replace(" ", "", $ap_paterno),0,3) . $ci);
                                         }
                                         $account_id = Account::where('username', $nombre_cuenta)->first();
                                         if (is_null($account_id)){
