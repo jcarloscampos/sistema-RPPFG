@@ -226,6 +226,25 @@ class ProjectsController extends BaseController
                                 }
                             }
                         }
+                    }else{
+                        $sizeColms = sizeof($data);
+                        echo "<script>console.log( 'size $sizeColms ' );</script>";
+                        if(sizeof($data)!=13){
+                            $errors = [["Archivo Invalido, por favor refierase al manual de usuario para mayor información."]];
+                            return $this->render('admin/import_from_files.twig',
+                                [
+                                    'result'=>$result,
+                                    'errors' => $errors,
+                                    'information' => $information,
+                                    'admin' => $admin,
+                                    'prev' => "projects",
+                                    'prevMenu' => "Proyectos",
+                                    'currentMenu' => "Importar Proyectos de Grado",
+                                    'currentHeader' => "Importar desde Lista de Proyectos de Grado",
+                                    'formID' => "listaProyectos"
+                                ]
+                            );
+                        }
                     }
                     $counter++;
                 }

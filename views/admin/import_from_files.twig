@@ -44,18 +44,18 @@
                         <form method="post" action="#" enctype="multipart/form-data">
                             <div class="row uniform">
                                 <div class="12u 12u$(xsmall)">
-                                <label>{{currentHeader}}</label>
-                                <input type="file" accept=".csv" name="{{formID}}" id="{{formID}}">
-                                <label for="{{formID}}" style='display:none'>
-                                    <img src="../../../public/images/wrapper/loading.gif" style="width:10px;height:10px;">Uploading...</img>
-                                </label>
-                                <br>
-                            </div>
+                                    <label>{{currentHeader}}</label>
+                                    <br>
+                                    <input name="{{formID}}" id="{{formID}}" onchange="cambiar({{formID}})" type="file" accept=".csv" />
+                                    <p><div id="info">Ningún Archivo Seleccionado...</div></p>
+                                    <br>
+                                </div>
                             </div>
                             <br>
                             <div class="12u 12u$(xsmall)">
                                 <ul class="actions" style="text-align: center">
-                                    <li><button class="principal" type="submit">Importar</button>
+                                    <li>
+                                        <button class="principal" type="submit" disabled="disabled" id="importarButton" onclick='cargando()'>Importar</button>
                                     </li>
                                 </ul>
                             </div>
@@ -78,4 +78,16 @@
     <script src='../../../public/assets/js/util.js'></script>
     <script src='../../../public/assets/js/main.js'></script>
     <script src='../../../public/assets/js/upload.file.js'></script>
+    <script>
+        function cambiar(pdrs){
+            if ('files' in pdrs){
+                document.getElementById('info').innerHTML = "<b> Se subirá el siguiente Archivo: </b> <i>" + pdrs.files[0].name + "</i>";
+                document.getElementById('importarButton').disabled=false;
+            }
+        }
+        function cargando(){
+            document.getElementById('info').innerHTML = "Los datos se estan cargando al sistema, espere por favor...<img src=\"../../../public/images/wrapper/loading.gif\" style=\"width:25px;height:25px;\" />";
+            document.getElementById('importarButton').disabled=false;
+        }
+    </script>
 {% endblock %}

@@ -398,6 +398,25 @@ class ProfessionalsController extends BaseController
                         else{
                             array_push($information, "Docente " . $grado_academico . " " . $ap_paterno . " " . $ap_materno . " " . $nombre. " ya registrado");
                         }
+                    }else{
+                        $sizeColms = sizeof($data);
+                        echo "<script>console.log( 'size $sizeColms ' );</script>";
+                        if(sizeof($data)!=13){
+                            $errors = [["Archivo Invalido, por favor refierase al manual de usuario para mayor información."]];
+                            return $this->render('admin/import_from_files.twig',
+                                [
+                                    'result'=>$result,
+                                    'errors' => $errors,
+                                    'information' => $information,
+                                    'admin' => $admin,
+                                    'prev' => "professionals",
+                                    'prevMenu' => "Profesionales",
+                                    'currentMenu' => "Importar Docentes",
+                                    'currentHeader' => "Importar desde Lista de Docentes",
+                                    'formID' => "listaDocentes"
+                                ]
+                            );
+                        }
                     }
                     $counter++;
                 }
