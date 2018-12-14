@@ -167,22 +167,22 @@ class ProjectsController extends BaseController
                 while (($data = fgetcsv($handle, 1000, ";")) !== FALSE){
                     //asi omitimos la columna de titulos
                     if($counter > 0){
-                        $titulo_proyecto_final = $data[0];
-                        $nombre_tutor = $data[1];
-                        $apellido_paterno_tutor = $data[2];
-                        $apellido_materno_tutor = $data[3];
-                        $nombre_postulante = $data[4];
-                        $apellido_paterno_postulante = $data[5];
-                        $apellido_materno_postulante = $data[6];
-                        $objetivo_general = $data[7];
-                        $area_perfil = $data[8];
-                        $modalidad_titulacion = $data[9];
-                        $carrera = $data[10];
-                        $fecha_de_registro = $data[11];
-                        $periodo = $data[12];
+                        $titulo_proyecto_final = $data[0].trim();
+                        $nombre_tutor = $data[1].trim();
+                        $apellido_paterno_tutor = $data[2].trim();
+                        $apellido_materno_tutor = $data[3].trim();
+                        $nombre_postulante = $data[4].trim();
+                        $apellido_paterno_postulante = $data[5].trim();
+                        $apellido_materno_postulante = $data[6].trim();
+                        $objetivo_general = $data[7].trim();
+                        $area_perfil = $data[8].trim();
+                        $modalidad_titulacion = $data[9].trim();
+                        $carrera = $data[10].trim();
+                        $fecha_de_registro = $data[11].trim();
+                        $periodo = $data[12].trim();
 
                          // Usamos esta seccion para validar el formato de los datos
-                         if(!preg_match("/^([0-2][0-9]|3[0-1])(\/|-)(0[1-9]|1[0-2])\2(\d{4})$/",$data[11])){
+                         if(!preg_match("/^([0-2][0-9]|3[0-1])(\/|-)(0[1-9]|1[0-2])\2(\d{4})$/",$fecha_de_registro)){
                             $line = $counter + 1;
                             array_push($information, "Fecha de Registro en la linea: " . $line . " tiene un formato incorrecto. Por favor verifique e intente nuevamente");
                         }else{

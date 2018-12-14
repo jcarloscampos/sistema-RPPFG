@@ -297,14 +297,14 @@ class AreaController extends BaseController
                 {
                     //asi omitimos la columna de titulos
                     if($counter > 0){
-                        $index = $data[0];
-                        $name_area = $data[1];
-                        $desc_area = $data[2];
-                        $parentID = $data[3];
+                        $index = $data[0].trim();
+                        $name_area = $data[1].trim();
+                        $desc_area = $data[2].trim();
+                        $parentID = $data[3].trim();
                         //insertamos el area solo si no tiene un area ID es decir, solo si no es una subarea
                         if(!$parentID){
                             // Usamos esta seccion para validar el formato de los datos
-                            if(!preg_match("/^[0-9]+$/", $data[0])){
+                            if(!preg_match("/^[0-9]+$/", $index)){
                                 $line = $counter + 1;
                                 array_push($information, "Area en la linea: " . $line . " tiene un formato incorrecto. La Primera columna debe contener un valor numérico.");
                             }else{
@@ -364,7 +364,7 @@ class AreaController extends BaseController
                         if($parentID){
                     
                             // Usamos esta seccion para validar el formato de los datos
-                            if(!preg_match("/^[0-9]+$/", $data[0]) || !preg_match("/^[0-9]+$/", $data[3])){
+                            if(!preg_match("/^[0-9]+$/", $index) || !preg_match("/^[0-9]+$/", $parentID)){
                                 $line = $counter + 1;
                                 array_push($information, "Sub-Area en la linea: " . $line . " tiene un formato incorrecto. La Primera y Cuarta columnas deben contener valores numéricos.");
                             }else{
