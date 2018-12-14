@@ -120,39 +120,6 @@ function validateFormCrudArea ()
     return result;
 }
 
-
-function validateFormConfigPUmss()
-{
-    var email = document.getElementById('email').value.trim();
-    var result = /\w+@\w+\.+[a-z]/.test(email);
-    if(!result){
-        alertify.alert("El correo no es válido.", function(){
-            alertify.message('Ingrese datos correctos');
-        });
-        return false;
-    } else {
-        var name = document.getElementById('name').value.trim();
-        var lname = document.getElementById('lname').value.trim();
-        var codsis = document.getElementById('codsis').value.trim();
-        var ci = document.getElementById('ci').value.trim();
-        var email = document.getElementById('email').value.trim();
-       
-        if(name === '' || lname === '' || codsis === '' || ci === '' || email === ''){
-            alertify.alert("Nombre, apellido, cod-sis, ci y email son obligatorios.", function(){
-                alertify.message('Ingrese datos correctos');
-            });
-            return false;
-        }else{
-            var result = false;
-            result = confirm('Los cambios se guardarán, ¿está seguro de continuar?');
-            return result;
-        }
-    }
-}
-
-
-
-
 function validateFormEssence()
 {
     var title = document.getElementById('title').value.trim();
@@ -170,36 +137,51 @@ function validateFormEssence()
     }
 }
 
-
-
-
-function validateFormConfigEtn()
+function validateFormConfigPost()
 {
+    var auxname = document.getElementById('auxname').value.trim();
+    var auxlname = document.getElementById('auxlname').value.trim();
+    var auxmlname = document.getElementById('auxmlname').value.trim();
+    var auxci = document.getElementById('auxci').value.trim();
+    var auxemail = document.getElementById('auxemail').value.trim();
+    var auxaddress = document.getElementById('auxaddress').value.trim();
+    var auxphone = document.getElementById('auxphone').value.trim();
+    var auxcodsis = document.getElementById('auxcodsis').value.trim();
+
+    var name = document.getElementById('name').value.trim();
+    var lname = document.getElementById('lname').value.trim();
+    var mlname = document.getElementById('mlname').value.trim();
+    var ci = document.getElementById('ci').value.trim();
     var email = document.getElementById('email').value.trim();
-    var result = /\w+@\w+\.+[a-z]/.test(email);
-    if(!result){
-        alertify.alert("El correo no es válido.", function(){
-            alertify.message('Ingrese datos correctos');
-        });
-        return false;
-    } else {
-        var name = document.getElementById('name').value.trim();
-        var lname = document.getElementById('lname').value.trim();
-        var ci = document.getElementById('ci').value.trim();
-        var email = document.getElementById('email').value.trim();
-       
-        if(name === '' || lname === '' || ci === '' || email === ''){
-            alertify.alert("Nombre, apellido, ci y email son obligatorios.", function(){
+    var address = document.getElementById('address').value.trim();
+    var phone = document.getElementById('phone').value.trim();
+    var codsis = document.getElementById('codsis').value.trim();
+    var pwd = document.getElementById('pwd').value.trim();
+
+    var result = false;
+
+    if (auxname != name || auxlname != lname || auxmlname != mlname || auxci != ci || auxemail != email || auxaddress != address || 
+        auxphone != phone || auxcodsis != codsis || pwd != "" ){
+        if (name === '' || lname === '' || ci === '' || email === '' || codsis === '') {
+            alertify.alert('Nombre, apellido, ci, código sis y email son obligatorios.', function(){
                 alertify.message('Ingrese datos correctos');
             });
-            return false;
-        }else{
-            var result = false;
-            result = confirm('Los cambios se guardarán, ¿está seguro de continuar?');
-            return result;
+        } else {
+            var result = /\w+@\w+\.+[a-z]/.test(email);
+            if(!result){
+                alertify.alert("El correo no es válido.", function(){
+                    alertify.message('Ingrese correo válido');
+                });
+            } else {
+                result = true;
+            }
         }
+        
     }
+    return result;
 }
+
+
 
 
 /************************************************************************/

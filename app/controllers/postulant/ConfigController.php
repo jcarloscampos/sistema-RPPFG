@@ -23,7 +23,7 @@ class ConfigController extends BaseController
     public function postIndex()
     {
         $errors = [];
-        $result = false;
+        $resultCPost = false;
         $validator = new Validator();
         $validation = new Validation();
         $makeDB = new ServerConnection();
@@ -47,10 +47,10 @@ class ConfigController extends BaseController
         if ($validator->validate($_POST)) {
             if (isset($_POST['pwd']) && $_POST['pwd'] != "") {
                 # los campos de pwd fueron modificados
-                $result = $makeDB->updateAccount($user, $_POST['pwd']);
-            }
+                $resultCPost = $makeDB->updateAccount($user, $_POST['pwd']);
+            } else 
             # solo actualizar los datos
-            $result = $makeDB->updateUser($user, $userprofile, $makeDB);
+            $resultCPost = $makeDB->updateUser($user, $userprofile, $makeDB);
         } else {
             $errors = $validator->getMessages();
         }
@@ -58,7 +58,7 @@ class ConfigController extends BaseController
         $uimage = substr($user->name, 0, 1);
         return $this->render(
             'postulant/config.twig',
-            ['vPerfil' => $user, 'uimage'=>$uimage, 'errors' => $errors, 'result' => $result
+            ['vPerfil' => $user, 'uimage'=>$uimage, 'errors' => $errors, 'resultCPost' => $resultCPost
             ]
         );
     }

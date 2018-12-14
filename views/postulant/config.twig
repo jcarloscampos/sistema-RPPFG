@@ -41,7 +41,17 @@
                             {% include 'remnant/errors.twig' %}
                             {% include 'remnant/success.twig' %}
                         </div>
-                        <form method="post" onsubmit="return validateFormConfigPUmss()">
+                        <form method="post" onsubmit="return validateFormConfigPost()">
+                            <input type="hidden" name="auxname" id="auxname" value="{{ vPerfil.name }}">
+                            <input type="hidden" name="auxlname" id="auxlname" value="{{ vPerfil.l_name }}">
+                            <input type="hidden" name="auxmlname" id="auxmlname" value="{{ vPerfil.ml_name }}">
+                            <input type="hidden" name="auxci" id="auxci" value="{{ vPerfil.ci }}">
+                            <input type="hidden" name="auxemail" id="auxemail" value="{{ vPerfil.email }}">
+                            <input type="hidden" name="auxaddress" id="auxaddress" value="{{ vPerfil.address }}">
+                            <input type="hidden" name="auxphone" id="auxphone" value="{{ vPerfil.phone }}">
+                            <input type="hidden" name="auxcodsis" id="auxcodsis" value="{{ vPerfil.cod_sis }}">
+
+
 							<input type="hidden" name="id" value="{{ vPerfil.id }}">
                             <input type="hidden" name="id_account" value="{{ vPerfil.id_account }}">
                             <div class="row uniform">

@@ -57,7 +57,7 @@ class EtnController extends BaseController
     public function postConfig()
     {
         $errors = [];
-        $result = false;
+        $resultCP = false;
         $etn = true;
         $validator = new Validator();
         $validation = new Validation();
@@ -85,9 +85,9 @@ class EtnController extends BaseController
         
         if ($validator->validate($_POST)) {
             if (isset($_POST['pwd']) && $_POST['pwd'] != "") {
-                $result = $makeDB->updateAccount($user, $_POST['pwd']);
-            }
-            $result = $makeDB->updateUser($user, $userprofile, $makeDB);
+                $resultCP = $makeDB->updateAccount($user, $_POST['pwd']);
+            } else 
+            $resultCP = $makeDB->updateUser($user, $userprofile, $makeDB);
         }else{
             $errors = $validator->getMessages();
         }
@@ -96,7 +96,7 @@ class EtnController extends BaseController
             ['vPerfil' => $user,
             'uimage' => $uimage,
             'errors' => $errors,
-            'result' => $result,
+            'resultCP' => $resultCP,
             'vTitles'=>$title,
             'etn' =>$etn
             ]);

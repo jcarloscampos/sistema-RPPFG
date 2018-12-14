@@ -35,3 +35,21 @@
         Sr(a) Administrador {{vPerfil.name}} {{vPerfil.l_name}} {{vPerfil.ml_name}} su información fue actualizada correctamente.
     </div>
 {% endif %}
+
+{% if resultCP %}
+    <div class="alert alert-success">
+        Sr(a) Docente {{vPerfil.name}} {{vPerfil.l_name}} {{vPerfil.ml_name}}, su información fue actualizada correctamente.
+    </div>
+{% endif %}
+
+{% if resultCPost %}
+    <div class="alert alert-success">
+        Sr(a) Postulante {{vPerfil.name}} {{vPerfil.l_name}} {{vPerfil.ml_name}}, su información fue actualizada correctamente.
+    </div>
+{% endif %}
+
+{% if resultCS %}
+    <div class="alert alert-success">
+        Sra Secretaria {{vPerfil.name}} {{vPerfil.l_name}} {{vPerfil.ml_name}}, su información fue actualizada correctamente.
+    </div>
+{% endif %}

@@ -23,7 +23,7 @@ class configController extends BaseController
     public function postIndex()
     {
         $errors = [];
-        $result = false;
+        $resultCS = false;
         $validator = new Validator();
         $validation = new Validation();
         $makeDB = new ServerConnection(); 
@@ -45,16 +45,16 @@ class configController extends BaseController
         if ($validator->validate($_POST)) {
             if (isset($_POST['pwd']) && $_POST['pwd'] != "") {
                  # los campos de pwd fueron modificados
-                 $result = $makeDB->updateAccount($user, $_POST['pwd']);
-            }
+                 $resultCS = $makeDB->updateAccount($user, $_POST['pwd']);
+            } else 
             # solo actualiza datos
-            $result = $makeDB->updateUser($user, $userprofile, $makeDB);
+            $resultCS = $makeDB->updateUser($user, $userprofile, $makeDB);
         }else{
             $errors = $validator->getMessages();
         }
         $user = Secretary::find($_POST['id']);
         return $this->render('secretary/config.twig',
-            ['errors' => $errors, 'vPerfil' => $user, 'uimage'=>$uimage, 'result' => $result
+            ['errors' => $errors, 'vPerfil' => $user, 'uimage'=>$uimage, 'resultCS' => $resultCS
         ]);
     }
 }

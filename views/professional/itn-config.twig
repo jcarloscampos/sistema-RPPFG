@@ -44,6 +44,18 @@
                             {% include 'remnant/information.twig' %}
                         </div>
                         <form method="post" onsubmit="return validateFormConfigPUmss()">
+                            <input type="hidden" name="auxname" id="auxname" value="{{ vPerfil.name }}">
+                            <input type="hidden" name="auxlname" id="auxlname" value="{{ vPerfil.l_name }}">
+                            <input type="hidden" name="auxmlname" id="auxmlname" value="{{ vPerfil.ml_name }}">
+                            <input type="hidden" name="auxci" id="auxci" value="{{ vPerfil.ci }}">
+                            <input type="hidden" name="auxemail" id="auxemail" value="{{ vPerfil.email }}">
+                            <input type="hidden" name="auxaddress" id="auxaddress" value="{{ vPerfil.address }}">
+                            <input type="hidden" name="auxphone" id="auxphone" value="{{ vPerfil.phone }}">
+                            <input type="hidden" name="auxcodsis" id="auxcodsis" value="{{ vPerfil.cod_sis }}">
+                            <input type="hidden" name="auxprofile" id="auxprofile" value="{{ vPerfil.profile }}">
+                            
+
+
 							<input type="hidden" name="id" value="{{ vPerfil.id }}">
                             <input type="hidden" name="id_account" value="{{ vPerfil.id_account }}">
                             <div class="row uniform">
@@ -151,4 +163,67 @@
     <script src='../../public/assets/js/jquery-3.3.1.min.js'></script>
     <script src='../../public/assets/alertifyjs/alertify.min.js'></script>
     <script src='../../public/assets/alertifyjs/validation.js'></script>
+
+    <script>
+        var valueStatep = 0;
+        
+        var selectAdegree = document.getElementById('adegree');
+        var selectWload = document.getElementById('wload');
+        
+        selectAdegree.addEventListener('change', function(){
+            var selectedOption = this.options[selectAdegree.selectedIndex];
+            valueStatep = selectedOption.value
+        });
+
+        selectWload.addEventListener('change', function(){
+            var selectedOption = this.options[selectWload.selectedIndex];
+            valueStatep = selectedOption.value
+        });
+
+        function validateFormConfigPUmss()
+        {
+            var auxname = document.getElementById('auxname').value.trim();
+            var auxlname = document.getElementById('auxlname').value.trim();
+            var auxmlname = document.getElementById('auxmlname').value.trim();
+            var auxci = document.getElementById('auxci').value.trim();
+            var auxemail = document.getElementById('auxemail').value.trim();
+            var auxaddress = document.getElementById('auxaddress').value.trim();
+            var auxphone = document.getElementById('auxphone').value.trim();
+            var auxcodsis = document.getElementById('auxcodsis').value.trim();
+            var auxprofile = document.getElementById('auxprofile').value.trim();
+            
+
+            var name = document.getElementById('name').value.trim();
+            var lname = document.getElementById('lname').value.trim();
+            var mlname = document.getElementById('mlname').value.trim();
+            var ci = document.getElementById('ci').value.trim();
+            var email = document.getElementById('email').value.trim();
+            var address = document.getElementById('address').value.trim();
+            var phone = document.getElementById('phone').value.trim();
+            var codsis = document.getElementById('codsis').value.trim();
+            var profile = document.getElementById('profile').value.trim();
+            var pwd = document.getElementById('pwd').value.trim();
+
+            var result = false;
+
+            if (auxname != name || auxlname != lname || auxmlname != mlname || auxci != ci || auxemail != email ||auxaddress != address || 
+            auxphone != phone || auxprofile != profile || auxcodsis != codsis || valueStatep > 0 || pwd != "" ){
+                if (name === '' || lname === '' || ci === '' || email === '' || codsis === '') {
+                    alertify.alert('Nombre, apellido, ci, código sis y email son obligatorios.', function(){
+                        alertify.message('Ingrese datos correctos');
+                    });
+                } else {
+                    var result = /\w+@\w+\.+[a-z]/.test(email);
+                    if(!result){
+                        alertify.alert("El correo no es válido.", function(){
+                            alertify.message('Ingrese correo válido');
+                        });
+                    } else {
+                        result = true;
+                    }
+                }
+            }
+            return result;
+        }
+    </script>
 {% endblock %}

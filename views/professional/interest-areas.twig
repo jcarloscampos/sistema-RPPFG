@@ -55,7 +55,9 @@
                             <table id="tabla_docentes">
                                 <thead>
                                     <tr>
+                                        <th>Tipo</th>
                                         <th>Nombre de área</th>
+                                        <th>Pertenece al área:</th>
                                         <th>Adicionarme</th>
                                     </tr>
                                 </thead>
@@ -63,7 +65,23 @@
                                     {% for area in vareas %}
                                         <tr>
                                             <td>
+                                                {% if area.id == area.id_parent_area or area.id_parent_area == null %}
+                                                    {{ "Área" }}
+                                                {% else %}
+                                                    {{ "Sub área " }}
+                                                {% endif %}
+                                            </td>
+                                            <td>
                                                 {{ area.name }} {# {{ area.id == area.id_parent_area ? '<span class="algo">Tiene subareas</span>' : '' }} #}
+                                            </td>
+                                            <td>
+                                                {% if area.id != area.id_parent_area  %}
+                                                    {% for auxarea in vareas %}
+                                                        {% if auxarea.id == area.id_parent_area %}
+                                                            {{ auxarea.name }}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% endif %}
                                             </td>
                                             <td width="20%">
                                                 <div class="menu-actions-tb">
