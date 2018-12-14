@@ -334,73 +334,78 @@ class ProfessionalsController extends BaseController
                         $ci = $settingData->recuperarCIProfessional($nombre, $ap_paterno, $ap_materno);
                         $cod_sis = $settingData->recuperarSISProfessional($nombre, $ap_paterno, $ap_materno);
 
-                        // Verificamos si el usuario ya existe registrado como docente:
-                        // Validamos si existe la carga horaria
-                        // validamos si existe el grado academico
-                        // Insertamos los datos del docente
-                        $user_exists = ProfessionalUMSS::where('name', $nombre)
-                                            ->where('l_name', $ap_paterno)
-                                            ->where('ml_name', $ap_materno)
-                                            ->where('ci', $ci)->first();
-                        if (is_null($user_exists)){
-                            $id_carga_horaria = Workload::where('name_wl',$carga_horaria)->first();
-                            $id_grado_academico = ADegree::where('name_ad',$grado_academico)->first();
-                            if(is_null($id_carga_horaria)){
-                               array_push($information, 'Carga horaria: ' . $carga_horaria . ' no registrada.');
-                            }else{
-                                if (is_null($id_grado_academico)){
-                                    array_push($information, 'Grado Académico: ' . $grado_academico . ' no registrado.');
+                        // Usamos esta seccion para validar el formato de los datos
+                        if(!preg_match("/[-0-9a-zA-Z.+_]+@[-0-9a-zA-Z.+_]+.[a-zA-Z]{2,4}/",$data[3]) && $data[3]!=''){
+                            $line = $counter + 1;
+                            array_push($information, "Correo electrónico en la linea: " . $line . " tiene un formato incorrecto.Por favor verifique e intente nuevamente");
+                        }else{
+                            // Verificamos si el usuario ya existe registrado como docente:
+                            // Validamos si existe la carga horaria
+                            // validamos si existe el grado academico
+                            // Insertamos los datos del docente
+                            $user_exists = ProfessionalUMSS::where('name', $nombre)
+                                                ->where('l_name', $ap_paterno)
+                                                ->where('ml_name', $ap_materno)
+                                                ->where('ci', $ci)->first();
+                            if (is_null($user_exists)){
+                                $id_carga_horaria = Workload::where('name_wl',$carga_horaria)->first();
+                                $id_grado_academico = ADegree::where('name_ad',$grado_academico)->first();
+                                if(is_null($id_carga_horaria)){
+                                array_push($information, 'Carga horaria: ' . $carga_horaria . ' no registrada.');
                                 }else{
-                                    if($pass_cuenta == ''){
-                                        //TODO -> Se van  a crear las cuentas con las 3 primeras letras del nombre, las 3 primeras del apellido y el CI en caso de no existir un password por defecto en el documento de donde se importan los datos
-                                        $pass_cuenta = substr($nombre,0,3) . substr($ap_paterno,0,3) . $ci;
-                                    }
-                                    $account_id = Account::where('username', $nombre_cuenta)->first();
-                                    if (is_null($account_id)){
-                                        $account = new Account([
-                                            'username' => $nombre_cuenta,
-                                            'password' => password_hash($pass_cuenta, PASSWORD_DEFAULT),
-                                            'state' => 1
-                                        ]);
-                                        $account->save();
-                                    }
-                                    $account_id = Account::where('username', $nombre_cuenta)->first();
-                                    if (is_null($account_id)){
-                                        array_push($error, 'Cuenta de Usuario: ' . $nombre_cuenta . ' no registrada.');
+                                    if (is_null($id_grado_academico)){
+                                        array_push($information, 'Grado Académico: ' . $grado_academico . ' no registrado.');
                                     }else{
-                                        //creamos la relacion entre el proffesional UMSS y su rol
-                                        $user_rol_profUMSS = new UserRol([
-                                            'id_account' => $account_id->id,
-                                            'id_rol' => 4
-                                        ]);
-                                        $user_rol_profUMSS->save();
-                                        //Insertamos los datos del docente
-                                        $ProfessionalUMSS = new ProfessionalUMSS([
-                                            'ci' => $ci,
-                                            'name' => $nombre,
-                                            'l_name' => $ap_paterno,
-                                            'ml_name' => $ap_materno,
-                                            'email' => $email,
-                                            'phone' => $telefono,
-                                            'address' => $direccion,
-                                            'cod_sis' => $cod_sis,
-                                            'active' => "1",
-                                            'id_ad' => $id_grado_academico->id,
-                                            'id_wl' => $id_carga_horaria->id,
-                                            'profile' => $perfil,
-                                            'id_account' => $account_id->id
-                                        ]);
-                                        $ProfessionalUMSS->save();
+                                        if($pass_cuenta == ''){
+                                            //TODO -> Se van  a crear las cuentas con las 3 primeras letras del nombre, las 3 primeras del apellido y el CI en caso de no existir un password por defecto en el documento de donde se importan los datos
+                                            $pass_cuenta = substr($nombre,0,3) . substr($ap_paterno,0,3) . $ci;
+                                        }
+                                        $account_id = Account::where('username', $nombre_cuenta)->first();
+                                        if (is_null($account_id)){
+                                            $account = new Account([
+                                                'username' => $nombre_cuenta,
+                                                'password' => password_hash($pass_cuenta, PASSWORD_DEFAULT),
+                                                'state' => 1
+                                            ]);
+                                            $account->save();
+                                        }
+                                        $account_id = Account::where('username', $nombre_cuenta)->first();
+                                        if (is_null($account_id)){
+                                            array_push($error, 'Cuenta de Usuario: ' . $nombre_cuenta . ' no registrada.');
+                                        }else{
+                                            //creamos la relacion entre el proffesional UMSS y su rol
+                                            $user_rol_profUMSS = new UserRol([
+                                                'id_account' => $account_id->id,
+                                                'id_rol' => 4
+                                            ]);
+                                            $user_rol_profUMSS->save();
+                                            //Insertamos los datos del docente
+                                            $ProfessionalUMSS = new ProfessionalUMSS([
+                                                'ci' => $ci,
+                                                'name' => $nombre,
+                                                'l_name' => $ap_paterno,
+                                                'ml_name' => $ap_materno,
+                                                'email' => $email,
+                                                'phone' => $telefono,
+                                                'address' => $direccion,
+                                                'cod_sis' => $cod_sis,
+                                                'active' => "1",
+                                                'id_ad' => $id_grado_academico->id,
+                                                'id_wl' => $id_carga_horaria->id,
+                                                'profile' => $perfil,
+                                                'id_account' => $account_id->id
+                                            ]);
+                                            $ProfessionalUMSS->save();
+                                        }
                                     }
                                 }
                             }
-                        }
-                        else{
-                            array_push($information, "Docente " . $grado_academico . " " . $ap_paterno . " " . $ap_materno . " " . $nombre. " ya registrado");
+                            else{
+                                array_push($information, "Docente " . $grado_academico . " " . $ap_paterno . " " . $ap_materno . " " . $nombre. " ya registrado");
+                            }
                         }
                     }else{
                         $sizeColms = sizeof($data);
-                        echo "<script>console.log( 'size $sizeColms ' );</script>";
                         if(sizeof($data)!=13){
                             $errors = [["Archivo Invalido, por favor refierase al manual de usuario para mayor información."]];
                             return $this->render('admin/import_from_files.twig',
