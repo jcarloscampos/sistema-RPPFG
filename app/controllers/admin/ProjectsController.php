@@ -181,54 +181,54 @@ class ProjectsController extends BaseController
                         $fecha_de_registro = $data[11];
                         $periodo = $data[12];
 
-                        //Obtenemos el ID de la carrera
-                        $career = Career::where('name', $carrera)->first();
-                        if (is_null($career)){
-                            array_push($information, "Error en la linea: $counter, La siguiente carrera no se encuentra registrada en el sistema: \"$carrera\", por favor verifique e intente nuevamente.");
-                        }
-                        else {
-                            $id_career = $career->id;
-                            echo "<script>console.log( 'ID id_career $id_career ' );</script>";
-
-                            //Obtenemos el ID del area
-                            $area = Area::where('name', $area_perfil)->first();
-                            if (is_null($area)){
-                                array_push($information, "Error en la linea: $counter, La siguiente area no se encuentra registrada en el sistema: \"$area\", por favor registrela e intente nuevamente.");
+                         // Usamos esta seccion para validar el formato de los datos
+                         if(!preg_match("/^([0-2][0-9]|3[0-1])(\/|-)(0[1-9]|1[0-2])\2(\d{4})$/",$data[11])){
+                            $line = $counter + 1;
+                            array_push($information, "Fecha de Registro en la linea: " . $line . " tiene un formato incorrecto. Por favor verifique e intente nuevamente");
+                        }else{
+                            //Obtenemos el ID de la carrera
+                            $career = Career::where('name', $carrera)->first();
+                            if (is_null($career)){
+                                array_push($information, "Error en la linea: $counter, La siguiente carrera no se encuentra registrada en el sistema: \"$carrera\", por favor verifique e intente nuevamente.");
                             }
-                            else{
-                                $id_area = $area->id;
-                                echo "<script>console.log( 'ID area $id_area ' );</script>";
+                            else {
+                                $id_career = $career->id;
 
-                                //Obtenemos el ID de la modalidad
-                                $modality = Modality::where('name_mod', $modalidad_titulacion)->first();
-                                if (is_null($modality)){
-                                    array_push($information, "Error en la linea: $counter, La siguiente modalidad de titulación no se encuentra registrada en el sistema: \"$modalidad_titulacion\", por favor verifique e intente nuevamente.");
+                                //Obtenemos el ID del area
+                                $area = Area::where('name', $area_perfil)->first();
+                                if (is_null($area)){
+                                    array_push($information, "Error en la linea: $counter, La siguiente area no se encuentra registrada en el sistema: \"$area\", por favor registrela e intente nuevamente.");
                                 }
                                 else{
-                                    $id_modality = $modality->id;
-                                    echo "<script>console.log( 'ID moda $id_modality ' );</script>";
+                                    $id_area = $area->id;
 
-                                    //Obtenemos el ID del status
-                                    $status = Status::where('name', "aceptado")->first();
-                                    $id_status = $status->id;
+                                    //Obtenemos el ID de la modalidad
+                                    $modality = Modality::where('name_mod', $modalidad_titulacion)->first();
+                                    if (is_null($modality)){
+                                        array_push($information, "Error en la linea: $counter, La siguiente modalidad de titulación no se encuentra registrada en el sistema: \"$modalidad_titulacion\", por favor verifique e intente nuevamente.");
+                                    }
+                                    else{
+                                        $id_modality = $modality->id;
 
-                                    //Obtenemos el ID del postulante
-                                    $id_postulant = $this->getPostulantID($nombre_postulante, $apellido_paterno_postulante, $apellido_materno_postulante, $id_career, $counter, $information);
-                                    echo "<script>console.log( 'ID postulant $id_postulant ' );</script>";
+                                        //Obtenemos el ID del status
+                                        $status = Status::where('name', "aceptado")->first();
+                                        $id_status = $status->id;
 
-                                    //Obtenemos el ID del tutor
-                                    $is_ProfUMSS = true;
-                                    $id_tutor = $this->getTutorID($nombre_tutor, $apellido_paterno_tutor, $apellido_materno_tutor, $id_area, $counter, $information,$is_ProfUMSS);
-                                    echo "<script>console.log( 'ID tutor $id_tutor ' );</script>";
+                                        //Obtenemos el ID del postulante
+                                        $id_postulant = $this->getPostulantID($nombre_postulante, $apellido_paterno_postulante, $apellido_materno_postulante, $id_career, $counter, $information);
 
-                                    //validamos la infomracion del Perfil y la introducimos a la base de datos
-                                    $this->crear_actualizarPerfil($counter, $titulo_proyecto_final, $objetivo_general, $id_modality, $periodo, $fecha_de_registro, $id_postulant, $id_area, $id_status, $id_tutor, $id_career, $is_ProfUMSS);
+                                        //Obtenemos el ID del tutor
+                                        $is_ProfUMSS = true;
+                                        $id_tutor = $this->getTutorID($nombre_tutor, $apellido_paterno_tutor, $apellido_materno_tutor, $id_area, $counter, $information,$is_ProfUMSS);
+
+                                        //validamos la infomracion del Perfil y la introducimos a la base de datos
+                                        $this->crear_actualizarPerfil($counter, $titulo_proyecto_final, $objetivo_general, $id_modality, $periodo, $fecha_de_registro, $id_postulant, $id_area, $id_status, $id_tutor, $id_career, $is_ProfUMSS);
+                                    }
                                 }
                             }
                         }
                     }else{
                         $sizeColms = sizeof($data);
-                        echo "<script>console.log( 'size $sizeColms ' );</script>";
                         if(sizeof($data)!=13){
                             $errors = [["Archivo Invalido, por favor refierase al manual de usuario para mayor información."]];
                             return $this->render('admin/import_from_files.twig',

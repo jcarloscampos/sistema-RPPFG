@@ -303,29 +303,35 @@ class AreaController extends BaseController
                         $parentID = $data[3];
                         //insertamos el area solo si no tiene un area ID es decir, solo si no es una subarea
                         if(!$parentID){
-                            $area = Area::where('name',$name_area)->get();
-                            if(!count($area)){
-                                $area = new Area([
-                                    'name' => $name_area,
-                                    'description' => $desc_area,
-                                    'id_parent_area' => null
-                                    ]);
-                                $area->save();
-                                
+                            // Usamos esta seccion para validar el formato de los datos
+                            if(!preg_match("/^[0-9]+$/", $data[0])){
+                                $line = $counter + 1;
+                                array_push($information, "Area en la linea: " . $line . " tiene un formato incorrecto. La Primera columna debe contener un valor numérico.");
+                            }else{
+                                $area = Area::where('name',$name_area)->get();
+                                if(!count($area)){
+                                    $area = new Area([
+                                        'name' => $name_area,
+                                        'description' => $desc_area,
+                                        'id_parent_area' => null
+                                        ]);
+                                    $area->save();
+                                    
+                                    $uArea = Area::where('name', $name_area)->first();
+                                    $areaprofile = ['id_parent_area' => $uArea->id];
+                                    $result = $makeDB->updateUser($uArea, $areaprofile, $makeDB);
+                                }
+                                else{
+                                    array_push($information, "Area " . $name_area. " ya registrada");
+                                }
                                 $uArea = Area::where('name', $name_area)->first();
                                 $areaprofile = ['id_parent_area' => $uArea->id];
                                 $result = $makeDB->updateUser($uArea, $areaprofile, $makeDB);
+                                $Areas_list[$index] = $name_area;
                             }
-                            else{
-                                array_push($information, "Area " . $name_area. " ya registrada");
-                            }
-                            $uArea = Area::where('name', $name_area)->first();
-                            $areaprofile = ['id_parent_area' => $uArea->id];
-                            $result = $makeDB->updateUser($uArea, $areaprofile, $makeDB);
-                            $Areas_list[$index] = $name_area;
                         }
                     }else{
-                        if(sizeof($data)!=5){
+                        if(sizeof($data)!=4){
                             $errors = [["Archivo Invalido, por favor refierase al manual de usuario para mayor información."]];
                             return $this->render('admin/import_from_files.twig',
                                 [
@@ -356,19 +362,26 @@ class AreaController extends BaseController
                         $desc_subarea = $data[2];
                         $parentID = $data[3];
                         if($parentID){
-                            $parentName = $Areas_list[$parentID];
-                            $area_ID = Area::where('name',$parentName)->first()->id;
-                            $subarea = Area::where('name',$name_area)->where('id_parent_area',$area_ID)->get();
-                            if(!count($subarea)){
-                                $subarea = new Area([
-                                    'name' => $name_area,
-                                    'description' => $desc_area,
-                                    'id_parent_area' => $area_ID
-                                    ]);
-                                $subarea->save();
-                            }
-                            else{
-                                array_push($information, "SubArea \"" . $name_area. "\" ya registrada para el área \"" . $parentName . "\"");
+                    
+                            // Usamos esta seccion para validar el formato de los datos
+                            if(!preg_match("/^[0-9]+$/", $data[0]) || !preg_match("/^[0-9]+$/", $data[3])){
+                                $line = $counter + 1;
+                                array_push($information, "Sub-Area en la linea: " . $line . " tiene un formato incorrecto. La Primera y Cuarta columnas deben contener valores numéricos.");
+                            }else{
+                                $parentName = $Areas_list[$parentID];
+                                $area_ID = Area::where('name',$parentName)->first()->id;
+                                $subarea = Area::where('name',$name_area)->where('id_parent_area',$area_ID)->get();
+                                if(!count($subarea)){
+                                    $subarea = new Area([
+                                        'name' => $name_area,
+                                        'description' => $desc_area,
+                                        'id_parent_area' => $area_ID
+                                        ]);
+                                    $subarea->save();
+                                }
+                                else{
+                                    array_push($information, "SubArea \"" . $name_area. "\" ya registrada para el área \"" . $parentName . "\"");
+                                }
                             }
                         }
                     }
