@@ -67,28 +67,43 @@ function validateFormSignin()
 
 function validateFormConfigAdmin()
 {
+    var auxname = document.getElementById('auxname').value.trim();
+    var auxlname = document.getElementById('auxlname').value.trim();
+    var auxmlname = document.getElementById('auxmlname').value.trim();
+    var auxci = document.getElementById('auxci').value.trim();
+    var auxemail = document.getElementById('auxemail').value.trim();
+    var auxaddress = document.getElementById('auxaddress').value.trim();
+    var auxphone = document.getElementById('auxphone').value.trim();
+
+    var name = document.getElementById('name').value.trim();
+    var lname = document.getElementById('lname').value.trim();
+    var mlname = document.getElementById('mlname').value.trim();
+    var ci = document.getElementById('ci').value.trim();
     var email = document.getElementById('email').value.trim();
-    var result = /\w+@\w+\.+[a-z]/.test(email);
-    if(!result){
-        alertify.alert("El correo no es válido.", function(){
-            alertify.message('Ingrese datos correctos');
-        });
-        return false;
-    } else {
-        var name = document.getElementById('name').value.trim();
-        var lname = document.getElementById('lname').value.trim();
-        var ci = document.getElementById('ci').value.trim();
-        var email = document.getElementById('email').value.trim();
-        
-        if(name === '' || lname === '' || ci === '' || email === ''){
+    var address = document.getElementById('address').value.trim();
+    var phone = document.getElementById('phone').value.trim();
+    var pwd = document.getElementById('pwd').value.trim();
+
+    var result = false;
+
+    if (auxname != name || auxlname != lname || auxmlname != mlname || auxci != ci || auxemail != email || auxaddress != address || auxphone != phone || pwd != "" ){
+        if (name === '' || lname === '' || ci === '' || email === '') {
             alertify.alert('Nombre, apellido, ci y email son obligatorios.', function(){
                 alertify.message('Ingrese datos correctos');
             });
-            return false;
-        }else{
-            return true;
+        } else {
+            var result = /\w+@\w+\.+[a-z]/.test(email);
+            if(!result){
+                alertify.alert("El correo no es válido.", function(){
+                    alertify.message('Ingrese correo válido');
+                });
+            } else {
+                result = true;
+            }
         }
+        
     }
+    return result;
 }
 
 function validateFormCrudArea ()

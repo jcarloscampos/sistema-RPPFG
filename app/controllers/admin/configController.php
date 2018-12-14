@@ -23,7 +23,7 @@ class configController extends BaseController
     public function postIndex()
     {
         $errors = [];
-        $result = false;
+        $resultCA = false;
         $validator = new Validator();
         $validation = new Validation();
         $makeDB = new ServerConnection(); 
@@ -45,17 +45,17 @@ class configController extends BaseController
         if ($validator->validate($_POST)) {
             if (isset($_POST['pwd']) && $_POST['pwd'] != "") {
                  # los campos de pwd fueron modificados
-                 $result = $makeDB->updateAccount($user, $_POST['pwd']);
-            }
-            # solo actualiza datos
-            $result = $makeDB->updateUser($user, $userprofile, $makeDB);
+                 $resultCA = $makeDB->updateAccount($user, $_POST['pwd']);
+            } else
+                # solo actualiza datos
+                $resultCA = $makeDB->updateUser($user, $userprofile, $makeDB);
         }else{
             $errors = $validator->getMessages();
         }
         $user = Administrator::find($_POST['id']);
         $uimage = substr($user->name, 0, 1);
         return $this->render('admin/config.twig',
-            ['errors' => $errors, 'vPerfil' => $user, 'uimage'=>$uimage, 'result' => $result
+            ['errors' => $errors, 'vPerfil' => $user, 'uimage'=>$uimage, 'resultCA' => $resultCA
         ]);
     }
 }
