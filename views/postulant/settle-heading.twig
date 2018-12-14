@@ -90,8 +90,10 @@
                                         <select name="area" id="area">
                                             <option value=""disabled selected>- Selecciones un área -</option>
                                             {% for area in areas %}
+                                                    {% set selected = '' %}
                                                 {% if area.id == area.id_parent_area %}
-                                                    <option value="{{area.id}}">{{ area.name }}</option>
+                                                           {% set selected = 'selected' %}
+                                                    <option value="{{area.id}}"{{selected}}>{{ area.name }}</option>
                                                 {% endif %}
                                             {% endfor %}
                                         </select>    
@@ -100,12 +102,12 @@
                                     <div class="6u$ 12u$(xsmall)">
                                         <label>Sub área</label>
                                         <select name="subarea" id="subarea">
-                                            <option value=""disabled selected>- Selecciones un sub área -</option>
-                                            {% for area in areas %}
+                                            <option value=""disabled selected>- Seleccione un sub área -</option>
+                                            {#% for area in areas %}
                                                 {% if area.id != area.id_parent_area %}
                                                     <option value="{{area.id}}">{{ area.name }}</option>
                                                 {% endif %}
-                                            {% endfor %}
+                                            {% endfor %#}
                                         </select>    
                                     </div>
 
@@ -179,7 +181,23 @@
             return;
         }
     </script>
-
+    <script>
+         $(document).ready(function(){
+            var areas = {{ areas|json_encode|raw }};
+           $('#area').on('click', function(){
+                var selectval = +$(this).val();
+                var $el = $("#subarea");
+                $el.empty(); // remove old options
+                $el.append($("<option></option>").attr("value", '').text('- Seleccione un sub área -'));
+                $.each(areas, function(value, key) {
+                    console.log(key);
+                    if(key.id_parent_area == selectval){
+                        $el.append($("<option></option>").attr("value", key.id).text(key.name));
+                    }
+                });		                
+            });
+        });
+    </script>
     <script>
         $(document).ready(function(){
             $('#modality').on('change', function(){
