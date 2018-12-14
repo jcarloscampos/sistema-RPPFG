@@ -94,14 +94,15 @@ function validateFormConfigAdmin()
 function validateFormCrudArea ()
 {
     var name = document.getElementById('name').value.trim();
+    var result = false
     if(name === ''){
-        alertify.alert("Nombre de área debe ser llenado.", function(){
+        alertify.alert("Los campos deben ser llenados correctamente. \n Obligatorio: nombre de área. \n Opcional: descripción de área.", function(){
             alertify.message('Ingrese datos correctos');
         });
-        return false;
     }else{
-        return true;
+        result = confirm("Los datos se guardaran en la Base de Datos. \n ¿Está seguro de continuar?");
     }
+    return result;
 }
 
 

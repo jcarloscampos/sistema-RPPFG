@@ -79,7 +79,8 @@ class ProfessionalsController extends BaseController
         $generate = new SettingData();
         $mail = new Mail();
         $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
-    
+        $uimage = substr($admin->name, 0, 1);
+
         $validation->setRuleBasic($validator);
         $validation->setRuleTuser($validator);
         $validation->setRuleCI($validator);
@@ -115,13 +116,13 @@ class ProfessionalsController extends BaseController
             $errors = $validator->getMessages();
             return $this->render(
                 'admin/insert-account.twig', 
-                ['vadmin' => $admin, 'errors' => $errors, 'vprofile'=>$userprofile]);
+                ['vadmin' => $admin, 'errors' => $errors, 'vprofile'=>$userprofile, 'uimage'=>$uimage]);
             return null;
         }
         return $this->render(
             'admin/insert-account.twig', 
             ['vadmin' => $admin, 'createAccount' => $createAccount, 'duplicate' => $duplicate,
-            'vprofile'=>$userprofile, 'errormail'=>$errormail]);
+            'vprofile'=>$userprofile, 'errormail'=>$errormail, 'uimage'=>$uimage]);
     }
 
     /**
@@ -168,6 +169,7 @@ class ProfessionalsController extends BaseController
     public function getUpdateprofessional($idAccount)
     {
         $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
+        $uimage = substr($admin->name, 0, 1);
         $urol = UserRol::where('id_account', $idAccount)->first();
         $rol = Rol::where('id_rol', $urol->id_rol)->first();
         $itn = false;
@@ -181,14 +183,18 @@ class ProfessionalsController extends BaseController
             # Profesional externo
             $user = ProfessionalExt::where('id_account', $idAccount)->first();
         }
-        return $this->render('admin/update-professional.twig', ['vadmin' => $admin, 'vPerfil'=>$user, 'itn'=>$itn, 'rol'=>$rol]);
+        return $this->render('admin/update-professional.twig', ['vadmin' => $admin, 'vPerfil'=>$user, 'itn'=>$itn, 'rol'=>$rol, 'uimage'=>$uimage]);
     }
 
     public function postUpdateprofessional($idAccount)
     {
         $result = false;
+        $resultRol = false;
+        $resultActive = false;
         $itn = false;
+
         $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
+        $uimage = substr($admin->name, 0, 1);
         $urol = UserRol::where('id_account', $idAccount)->first();
         //$rol = Rol::where('id_rol', $_POST['id_rol'])->first();
         $rol = Rol::where('id_rol', $urol->id_rol)->first();
@@ -204,24 +210,32 @@ class ProfessionalsController extends BaseController
 
         if (isset($_POST['rolprof'])) {
             $userprofile = ['id_rol'=> $_POST['rolprof']];
-            $result = $makeDB->updateUser($urol, $userprofile, $makeDB);
+            $resultRol = $makeDB->updateUser($urol, $userprofile, $makeDB);
         }
 
         if (isset($_POST['activeprof'])) {
-            $userprofile = ['active'=> $_POST['activeprof']];
-            $result = $makeDB->updateUser($user, $userprofile, $makeDB);
+            if ($_POST['activeprof'] == 1){
+                $userprofile = ['active'=> $_POST['activeprof']];
+            } else {
+                $userprofile = ['active'=> 0];
+            }
+            $resultActive = $makeDB->updateUser($user, $userprofile, $makeDB);
         }
+
         //optimizar las vistas...
         if ($rol->name_rol == "itnprof" || $rol->name_rol == "director") {
-            $user = ProfessionalUmss::find($_POST['id']);
+            $user = ProfessionalUmss::where('id_account', $idAccount)->first();
             $itn = true;
         } elseif ($rol->name_rol == "etnprof") {
-            $user = ProfessionalExt::find($_POST['id']);
+            $user = ProfessionalExt::where('id_account', $idAccount)->first();
         }
-        $rol = Rol::where('id_rol', $_POST['id_rol'])->first();
+        
+        //$rol = Rol::where('id_rol', $_POST['id_rol'])->first();
         
         return $this->render('admin/update-professional.twig',
-        ['vadmin' => $admin, 'result' => $result, 'vPerfil'=>$user, 'itn'=>$itn, 'rol'=>$rol]);
+        ['vadmin' => $admin, 'vPerfil'=>$user, 'itn'=>$itn, 'rol'=>$rol, 
+        'uimage'=>$uimage, 'resultRol'=>$resultRol, 'resultActive'=>$resultActive
+        ]);
     }
 
     public function getViewinformation($idAccount)

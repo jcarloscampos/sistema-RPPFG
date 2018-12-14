@@ -2,6 +2,8 @@
 
 {% block csslink %}
     <link rel='stylesheet' href='../../../../public/assets/css/app.css'>
+    <link rel='stylesheet' href='../../../../public/assets/alertifyjs/css/alertify.min.css'>
+    <link rel='stylesheet' href='../../../../public/assets/alertifyjs/css/themes/default.min.css'>
 {% endblock %}
 
 {% block namepage %}
@@ -35,7 +37,7 @@
                             {% include 'remnant/errors.twig' %}
                             {% include 'remnant/success.twig' %}
                         </div>
-                        <form method="post" action="#">
+                        <form method="post" onsubmit="return validateFormRolProfessional()">
                             <input type="hidden" name="id_rol" value="{{ rol.id_rol }}">
                             <input type="hidden" name="id" value="{{ vPerfil.id }}">
                             <div class="row uniform">
@@ -62,7 +64,7 @@
                                 {% if itn %}
                                     <div class="3u 12u$(xsmall)">
                                         <label>Rol del Profesional</label>
-                                        <select name="rolprof">
+                                        <select name="rolprof" id="rolprof">
                                             {% if rol.name_rol == "director" %}
                                                 <option value="" disabled selected>- Director de Carrera -</option>
                                             {% else %}
@@ -75,14 +77,14 @@
                                 {% endif %}
                                 <div class="4u$ 12u$(xsmall)">
                                     <label>Estado del Profesional</label>
-                                    <select name="activeprof">
+                                    <select name="activeprof" id="activeprof" >
                                         {% if vPerfil.active == 1 %}
                                             <option value="" disabled selected>- Activo para Proyectos -</option>
                                         {% else %}
                                             <option value="" disabled selected>- Inactivo para Proyectos -</option>
                                         {% endif %}
                                         <option value="1">Activo para Proyectos</option>
-                                        <option value="0">Inactivo para Proyectos</option>
+                                        <option value="2">Inactivo para Proyectos</option>
                                     </select>    
                                 </div> 
                             </div>
@@ -112,4 +114,41 @@
     <script src='../../../../public/assets/js/skel.min.js'></script>
     <script src='../../../../public/assets/js/util.js'></script>
     <script src='../../../../public/assets/js/main.js'></script>
+
+    <script src='../../../../public/assets/js/jquery-3.3.1.min.js'></script>
+    <script src='../../../../public/assets/alertifyjs/alertify.min.js'></script>
+    {# <script src='../../../../public/assets/alertifyjs/validation.js'></script> #}
+
+    <script>
+        var valueStatep = 0;
+        
+        var selectRolprof = document.getElementById('rolprof');
+        var selectActiveprof = document.getElementById('activeprof');
+        
+        selectRolprof.addEventListener('change', function(){
+            var selectedOption = this.options[selectRolprof.selectedIndex];
+            valueStatep = selectedOption.value
+        });
+
+        
+        selectActiveprof.addEventListener('change', function(){
+            var selectedOption = this.options[selectActiveprof.selectedIndex];
+            valueStatep = selectedOption.value
+        });
+
+        function validateFormRolProfessional ()
+        {
+            var result = false;
+
+            if (valueStatep == 0) {
+                alertify.alert("Puede actualizar el Rol o Estado del Profesional.\n Para cambiar Rol de Profesional, seleccione una opción desde 'Rol del Profesional'. \n Para actualizar el estado del Profesional; seleccione una opción desde 'Estado del Profesional'.", function(){
+                    alertify.message('Seleccione una opción');
+                });
+            } else {
+                result = confirm("¿Está seguro de guardar los cambios?");
+            }
+            
+            return result;
+        }
+    </script>
 {% endblock %}

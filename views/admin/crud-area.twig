@@ -5,11 +5,11 @@
     {% if updarea %}
         <link rel='stylesheet' href='../../../../public/assets/css/app.css'>
         <link rel='stylesheet' href='../../../../public/assets/alertifyjs/css/alertify.min.css'>
-    <link rel='stylesheet' href='../../../../public/assets/alertifyjs/css/themes/default.min.css'>
+        <link rel='stylesheet' href='../../../../public/assets/alertifyjs/css/themes/default.min.css'>
     {% else %}
         <link rel='stylesheet' href='../../../public/assets/css/app.css'>
         <link rel='stylesheet' href='../../../public/assets/alertifyjs/css/alertify.min.css'>
-    <link rel='stylesheet' href='../../../public/assets/alertifyjs/css/themes/default.min.css'>
+        <link rel='stylesheet' href='../../../public/assets/alertifyjs/css/themes/default.min.css'>
     {% endif %}
     
 {% endblock %}
@@ -153,15 +153,23 @@
 
             function validateFormCrudSubArea ()
             {
+                var result = false;
+
                 var name = document.getElementById('name').value.trim();
-                if(name === '' || valueStatep == 0){
-                    alertify.alert("Los campos deben ser llenados correctamente.", function(){
+                if(name === ''){
+                    alertify.alert("Los campos deben ser llenados correctamente. \n Obligatorio: nombre de sub área. \n Opcional: descripción de sub área.", function(){
                         alertify.message('Ingrese datos correctos');
                     });
-                    return false;
-                }else{
-                    return true;
+                } else {
+                    if (valueStatep == 0) {
+                         alertify.alert("Debe selecciona el área al que pertenece la nueva sub área que está creando.", function(){
+                        alertify.message('Seleccione el área');
+                    });
+                    } else {
+                        result = confirm("¿Está seguro de crear la nueva sub área?");
+                    }
                 }
+                return result;
             }
         </script>
     {% endif %}
