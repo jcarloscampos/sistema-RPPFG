@@ -189,7 +189,8 @@ class ProjectsController extends BaseController
                             //Obtenemos el ID de la carrera
                             $career = Career::where('name', $carrera)->first();
                             if (is_null($career)){
-                                array_push($information, "Error en la linea: $counter, La siguiente carrera no se encuentra registrada en el sistema: \"$carrera\", por favor verifique e intente nuevamente.");
+                                $linea = $counter + 1;
+                                array_push($information, "Error en la linea: $linea, La siguiente carrera no se encuentra registrada en el sistema: \"$carrera\", por favor verifique e intente nuevamente.");
                             }
                             else {
                                 $id_career = $career->id;
@@ -197,7 +198,8 @@ class ProjectsController extends BaseController
                                 //Obtenemos el ID del area
                                 $area = Area::where('name', $area_perfil)->first();
                                 if (is_null($area)){
-                                    array_push($information, "Error en la linea: $counter, La siguiente area no se encuentra registrada en el sistema: \"$area\", por favor registrela e intente nuevamente.");
+                                    $linea = $counter + 1;
+                                    array_push($information, "Error en la linea: $linea, La siguiente area no se encuentra registrada en el sistema: \"$area\", por favor registrela e intente nuevamente.");
                                 }
                                 else{
                                     $id_area = $area->id;
@@ -205,7 +207,8 @@ class ProjectsController extends BaseController
                                     //Obtenemos el ID de la modalidad
                                     $modality = Modality::where('name_mod', $modalidad_titulacion)->first();
                                     if (is_null($modality)){
-                                        array_push($information, "Error en la linea: $counter, La siguiente modalidad de titulación no se encuentra registrada en el sistema: \"$modalidad_titulacion\", por favor verifique e intente nuevamente.");
+                                        $linea = $counter + 1;
+                                        array_push($information, "Error en la linea: $linea, La siguiente modalidad de titulación no se encuentra registrada en el sistema: \"$modalidad_titulacion\", por favor verifique e intente nuevamente.");
                                     }
                                     else{
                                         $id_modality = $modality->id;
@@ -492,7 +495,8 @@ class ProjectsController extends BaseController
                 $account->save();
                 $account_id_tutor = Account::where('username', $username_tutor)->first();
                 if (is_null($account_id_tutor)){
-                    array_push($information, "Cuenta de usuario para el tutor de la linea: $counter no fué creada correctamente, por favor verifique e intente nuevamente");
+                    $linea = $counter + 1;
+                    array_push($information, "Cuenta de usuario para el tutor de la linea: $linea no fué creada correctamente, por favor verifique e intente nuevamente");
                 }else{
                     //creamos la relacion entre el proffesional EXT y su rol
                     $user_rol_profEXT = new UserRol([
@@ -589,7 +593,8 @@ class ProjectsController extends BaseController
             $account_id_postulante = Account::where('username', $username_postulante)
                                             ->where('state', 1)->first();
             if (is_null($account_id_postulante)){
-                array_push($information, "Cuenta de usuario para el postulante en la linea: $counter no fué creada correctamente, por favor verifique e intente nuevamente");
+                $linea = $counter + 1;
+                array_push($information, "Cuenta de usuario para el postulante en la linea: $linea no fué creada correctamente, por favor verifique e intente nuevamente");
             }else{
                 //Luego guardamos la informacion en la tabla postulante
                 $new_postulant = new Postulant([
