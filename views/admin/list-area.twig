@@ -2,6 +2,8 @@
 
 {% block csslink %}
     <link rel='stylesheet' href='../../public/assets/css/app.css'>
+    <link rel='stylesheet' href='../../public/assets/alertifyjs/css/alertify.min.css'>
+    <link rel='stylesheet' href='../../public/assets/alertifyjs/css/themes/default.min.css'>
 {% endblock %}
 
 {% block namepage %}
@@ -77,8 +79,12 @@
                                                         {% endif %}
                                                     {% endfor %}
 
-                                                    {% if condition  %}
-                                                    <a href="{{ 'admin/area/delete/' | url }}{{ area.id }}">Eliminar</a>
+                                                    {% if condition %}
+                                                        {% if area.id != area.id_parent_area %}
+                                                            <a href="{{ 'admin/area/delete/' | url }}{{ area.id }}" id="deletesa">Eliminar</a>
+                                                        {% else %}
+                                                            <a href="{{ 'admin/area/delete/' | url }}{{ area.id }}" id="deletea">Eliminar</a>
+                                                        {% endif %}
                                                     {% else %}
                                                        <a class="disabled" href="{{ 'admin/area/delete/' | url }}{{ area.id }}">Eliminar</a>
                                                     {% endif %}
@@ -122,4 +128,37 @@
     <script src='../../public/assets/js/skel.min.js'></script>
     <script src='../../public/assets/js/util.js'></script>
     <script src='../../public/assets/js/main.js'></script>
+
+    <script src='../../public/assets/js/jquery-3.3.1.min.js'></script>
+    <script src='../../public/assets/alertifyjs/alertify.min.js'></script>
+    
+    <script>
+        $(document).ready(function() {
+            $('a').click(function(event) {
+                var id = $(this).prop('id');
+                if (id == 'deletea') {
+                    var result = confirm("Todas las sub áreas dependientes se eliminaran. \n ¿Realmente desea quitar el área?");
+                    if (result == true){
+                        return falsel
+                    }else{
+                        event.preventDefault();
+                    }
+                } 
+            });
+        });
+
+        $(document).ready(function() {
+            $('a').click(function(event) {
+                var id = $(this).prop('id');
+                if (id == 'deletesa') {
+                    var result = confirm("¿Realmente desea quitar el sub área?");
+                    if (result == true){
+                        return falsel
+                    }else{
+                        event.preventDefault();
+                    }
+                } 
+            });
+        });
+    </script>
 {% endblock %}

@@ -95,7 +95,11 @@
                                                             {% for profarea in profareas if condition %}
                                                                 {% if area.id == profarea.id_area %}
                                                                     {% if profarea.id_prof == vPerfil.id %}
-                                                                    <a href="{{ etn ? 'remove/' : 'itnprofessional/remove/' | url }}{{ profarea.id }}" id="delete" >Quitar</a>
+                                                                        {% if area.id != area.id_parent_area %}
+                                                                            <a href="{{ etn ? 'remove/' : 'itnprofessional/remove/' | url }}{{ profarea.id }}" id="deletesap" >Quitar</a>
+                                                                        {% else %}
+                                                                            <a href="{{ etn ? 'remove/' : 'itnprofessional/remove/' | url }}{{ profarea.id }}" id="deleteap" >Quitar</a>
+                                                                        {% endif %}
                                                                     {% set condition = false %}
                                                                     {% endif %}
                                                                     
@@ -147,8 +151,22 @@
         $(document).ready(function() {
             $('a').click(function(event) {
                 var id = $(this).prop('id');
-                if (id == 'delete') {
+                if (id == 'deleteap') {
                     var result = confirm("Todas las sub áreas dependientes se eliminaran. \n ¿Realmente desea quitar el área?");
+                    if (result == true){
+                        return falsel
+                    }else{
+                        event.preventDefault();
+                    }
+                } 
+            });
+        });
+
+        $(document).ready(function() {
+            $('a').click(function(event) {
+                var id = $(this).prop('id');
+                if (id == 'deletesap') {
+                    var result = confirm("¿Realmente desea quitar el sub área?");
                     if (result == true){
                         return falsel
                     }else{

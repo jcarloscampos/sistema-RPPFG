@@ -25,7 +25,7 @@
     </div>
     <div class="nav-way">
         <p>
-        <a class=".btn .btn-primary" href="{{'secretary' | url }}">Inicio</a> &nbsp; | &nbsp; <a class=".btn .btn-primary" href="{{'secretary/settle' | url }}">Perfiles</a> &nbsp; | &nbsp; Establecer permisos
+        <a class=".btn .btn-primary" href="{{'secretary' | url }}">Inicio</a> &nbsp; | &nbsp; <a class=".btn .btn-primary" href="{{'secretary/settle' | url }}">Perfiles</a> &nbsp; | &nbsp; Actualizar estado
         </p>
     </div>
 
@@ -129,6 +129,9 @@
                                     {% endif %}
                                     <td>
                                         <p style="border-top: 1px dotted gray;">{{ postf.name }} {{ postf.l_name }} {{ postf.ml_name }}</p><p>Estudiante</p>
+                                    </td>
+                                    <td>
+                                        <p style="border-top: 1px dotted gray;">{{ posts.name }} {{ posts.l_name }} {{ posts.ml_name }}</p><p>Estudiante</p>
                                     </td>
                                 </tr>
                             </table>
