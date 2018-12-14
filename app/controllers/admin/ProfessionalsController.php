@@ -320,22 +320,22 @@ class ProfessionalsController extends BaseController
                 while (($data = fgetcsv($handle, 1000, ";")) !== FALSE){
                     //asi omitimos la columna de titulos
                     if($counter > 0){
-                        $nombre = $data[0];
-                        $ap_paterno = $data[1];
-                        $ap_materno = $data[2];
-                        $email = $data[3];
-                        $grado_academico = $data[4];
-                        $carga_horaria = $data[5];
-                        $nombre_cuenta = $data[6];
-                        $telefono = $data[7];
-                        $direccion = $data[8];
-                        $perfil = $data[9];
-                        $pass_cuenta = $data[10];
+                        $nombre = $data[0].trim();
+                        $ap_paterno = $data[1].trim();
+                        $ap_materno = $data[2].trim();
+                        $email = $data[3].trim();
+                        $grado_academico = $data[4].trim();
+                        $carga_horaria = $data[5].trim();
+                        $nombre_cuenta = $data[6].trim();
+                        $telefono = $data[7].trim();
+                        $direccion = $data[8].trim();
+                        $perfil = $data[9].trim();
+                        $pass_cuenta = $data[10].trim();
                         $ci = $settingData->recuperarCIProfessional($nombre, $ap_paterno, $ap_materno);
                         $cod_sis = $settingData->recuperarSISProfessional($nombre, $ap_paterno, $ap_materno);
 
                         // Usamos esta seccion para validar el formato de los datos
-                        if(!preg_match("/[-0-9a-zA-Z.+_]+@[-0-9a-zA-Z.+_]+.[a-zA-Z]{2,4}/",$data[3]) && $data[3]!=''){
+                        if(!preg_match("/[-0-9a-zA-Z.+_]+@[-0-9a-zA-Z.+_]+.[a-zA-Z]{2,4}/",$email) && $email!=''){
                             $line = $counter + 1;
                             array_push($information, "Correo electrónico en la linea: " . $line . " tiene un formato incorrecto.Por favor verifique e intente nuevamente");
                         }else{
