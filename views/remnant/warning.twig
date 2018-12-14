@@ -46,3 +46,10 @@
         El CI: {{ user.ci }} ya está registrado en otra cuenta.
     </div>
 {% endif %}
+
+
+{% if duplicateArea %}
+    <div class="alert alert-warning">
+         Ya existe un área con el nombre de área introducido. No se puede guardar; el nombre de área debe ser único 
+    </div>
+{% endif %}

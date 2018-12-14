@@ -77,7 +77,7 @@ class AreaController extends BaseController
         $errors = [];
         $result = false;
         $typeArea = true;
-        $duplicate = false;
+        $duplicateArea = false;
         $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
         $uimage = substr($admin->name, 0, 1);
         $validator = new Validator();
@@ -103,12 +103,12 @@ class AreaController extends BaseController
                 header('Location:' . BASE_URL . 'admin/area');
                 return null;
             } else {
-                $duplicate = true;
+                $duplicateArea = true;
             }
         }
         $errors = $validator->getMessages();
         return $this->render('admin/crud-area.twig',
-        ['vadmin' => $admin, 'uimage'=>$uimage, 'errors' => $errors, 'duplicate' => $duplicate, 'result'=>$result, 'typeArea' => $typeArea]);
+        ['vadmin' => $admin, 'uimage'=>$uimage, 'errors' => $errors, 'duplicateArea' => $duplicateArea, 'result'=>$result, 'typeArea' => $typeArea]);
     }
 
 
@@ -168,7 +168,7 @@ class AreaController extends BaseController
         $errors = [];
         $result = false;
         $typeArea = false;
-        $duplicate = false;
+        $duplicateArea = false;
         $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
         $uimage = substr($admin->name, 0, 1);
         $validator = new Validator();
@@ -192,12 +192,12 @@ class AreaController extends BaseController
                     header('Location:' . BASE_URL . 'admin/area');
                     return null;
             } else {
-                $duplicate = true;
+                $duplicateArea = true;
             }
         }
         $errors = $validator->getMessages();
         return $this->render('admin/crud-area.twig',
-        ['vadmin' => $admin, 'uimage'=>$uimage, 'errors' => $errors, 'vareas' => $areas, 'duplicate' => $duplicate, 'typeArea' => $typeArea]);
+        ['vadmin' => $admin, 'uimage'=>$uimage, 'errors' => $errors, 'vareas' => $areas, 'duplicateArea' => $duplicateArea, 'typeArea' => $typeArea]);
     }
 
     public function getAddsubarea($id)
@@ -217,7 +217,7 @@ class AreaController extends BaseController
         $errors = [];
         $result = false;
         $typeArea = false;
-        $duplicate = false;
+        $duplicateArea = false;
         $updarea = true;
         $addsubarea = true;
         $admin = Administrator::where('id_account', $_SESSION['admID'])->first();
@@ -242,12 +242,12 @@ class AreaController extends BaseController
                     header('Location:' . BASE_URL . 'admin/area');
                     return null;
             } else {
-                $duplicate = true;
+                $duplicateArea = true;
             }
         }
         $errors = $validator->getMessages();
         return $this->render('admin/crud-area.twig',
-        ['vadmin' => $admin, 'errors' => $errors, 'duplicate' => $duplicate, 'typeArea' => $typeArea, 
+        ['vadmin' => $admin, 'errors' => $errors, 'duplicateArea' => $duplicateArea, 'typeArea' => $typeArea, 
         'updarea' => $updarea, 'addsubarea' => $addsubarea, 'uimage'=>$uimage]);
     }
 
