@@ -151,14 +151,14 @@
                                     <td colspan="4">
                                     {# <p><strong style="color:#3b3d3f; font-weight: bold;">Objetivos específicos: </strong>{{ profile.s_objects }}</p> #}
                                     <label><strong style="color:red">(*) </strong> Objetivos específicos</label>
-                                        <textarea name="sobj" id="sobj" rows="2">{{ profile.s_objects }}</textarea>
+                                        <textarea name="sobj" id="sobj" rows="2"><pre>{{ profile.s_objects }}<pre></textarea>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td colspan="4">
                                     {# <p><strong style="color:#3b3d3f; font-weight: bold;">Descripción: </strong>{{ profile.description }}</p> #}
                                     <label><strong style="color:red">(*) </strong> Descripción</label>
-                                        <textarea name="dcptn" id="dcptn" rows="2">{{ profile.description }}</textarea>
+                                        <textarea name="dcptn" id="dcptn" rows="2"><pre>{{ profile.description }}</pre></textarea>
                                     </td>
                                 </tr>
                             {% else %}
@@ -169,10 +169,10 @@
                                     <td colspan="4"><p><strong style="color:#3b3d3f; font-weight: bold;">Objetivo general: </strong>{{ profile.g_objective }}</p></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="4"><p><strong style="color:#3b3d3f; font-weight: bold;">Objetivos específicos: </strong>{{ profile.s_objects }}</p></td>
+                                    <td colspan="4"><p><strong style="color:#3b3d3f; font-weight: bold;">Objetivos específicos: </strong><pre>{{ profile.s_objects }}</pre></p></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="4"><p><strong style="color:#3b3d3f; font-weight: bold;">Descripción: </strong>{{ profile.description }}</p></td>
+                                    <td colspan="4"><p><strong style="color:#3b3d3f; font-weight: bold;">Descripción: </strong><pre>{{ profile.description }}</pre></p></td>
                                 </tr>
                             {% endif %}
 

@@ -858,14 +858,14 @@ class RestrainedController extends BaseController
         </tr>
 
         <tr>
-            <td colspan="4"><p><strong style="color:#3b3d3f; font-weight: bold;">Objetivos específicos: </strong>' . $profile->s_objects . '</p></td>
+            <td colspan="4"><p><strong style="color:#3b3d3f; font-weight: bold;">Objetivos específicos: </strong><pre>' . $profile->s_objects . '</pre></p></td>
         </tr>
         <tr>
             <td colspan="4" style=" padding: .2em;" class="c"></td>
         </tr>
 
         <tr>
-            <td colspan="4"><p><strong style="color:#3b3d3f; font-weight: bold;">Descripción: </strong>' . $profile->description . '</p></td>
+            <td colspan="4"><p><strong style="color:#3b3d3f; font-weight: bold;">Descripción: </strong><pre>' . $profile->description . '</pre></p></td>
         </tr>
         <tr>
             <td colspan="4" style=" padding: .2em;" class="c"></td>
