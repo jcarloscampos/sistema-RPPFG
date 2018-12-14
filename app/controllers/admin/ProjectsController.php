@@ -461,6 +461,12 @@ class ProjectsController extends BaseController
                 if (is_null($account_id_tutor)){
                     array_push($information, "Cuenta de usuario para el tutor de la linea: $counter no fué creada correctamente, por favor verifique e intente nuevamente");
                 }else{
+                    //creamos la relacion entre el proffesional EXT y su rol
+                    $user_rol_profEXT = new UserRol([
+                        'id_account' => $account_id_tutor->id,
+                        'id_rol' => 3
+                    ]);
+                    $user_rol_profEXT->save();
                     //Luego guardamos la informacion en la tabla prof externo
                     $new_prof_externo = new ProfessionalExt([
                     'ci' => $ci_tutor,

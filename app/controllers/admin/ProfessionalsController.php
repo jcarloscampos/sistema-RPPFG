@@ -368,6 +368,12 @@ class ProfessionalsController extends BaseController
                                     if (is_null($account_id)){
                                         array_push($error, 'Cuenta de Usuario: ' . $nombre_cuenta . ' no registrada.');
                                     }else{
+                                        //creamos la relacion entre el proffesional UMSS y su rol
+                                        $user_rol_profUMSS = new UserRol([
+                                            'id_account' => $account_id->id,
+                                            'id_rol' => 4
+                                        ]);
+                                        $user_rol_profUMSS->save();
                                         //Insertamos los datos del docente
                                         $ProfessionalUMSS = new ProfessionalUMSS([
                                             'ci' => $ci,
