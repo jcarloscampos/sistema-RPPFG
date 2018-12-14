@@ -325,7 +325,7 @@ class AreaController extends BaseController
                             $Areas_list[$index] = $name_area;
                         }
                     }else{
-                        if(sizeof($data)!=5){
+                        if(sizeof($data)!=4){
                             $errors = [["Archivo Invalido, por favor refierase al manual de usuario para mayor información."]];
                             return $this->render('admin/import_from_files.twig',
                                 [
