@@ -324,6 +324,23 @@ class AreaController extends BaseController
                             $result = $makeDB->updateUser($uArea, $areaprofile, $makeDB);
                             $Areas_list[$index] = $name_area;
                         }
+                    }else{
+                        if(sizeof($data)!=5){
+                            $errors = [["Archivo Invalido, por favor refierase al manual de usuario para mayor información."]];
+                            return $this->render('admin/import_from_files.twig',
+                                [
+                                    'result'=>$result,
+                                    'errors' => $errors,
+                                    'information' => $information,
+                                    'admin' => $admin,
+                                    'prev' => "area",
+                                    'prevMenu' => "Áreas",
+                                    'currentMenu' => "Importar Áreas",
+                                    'currentHeader' => "Importar desde Lista de Areas y Subareas",
+                                    'formID' => "listaAreasSubareas"
+                                ]
+                            );
+                        }
                     }
                     $counter++;
                 }
