@@ -9,6 +9,7 @@ use AppPHP\Models\Profile;
 use AppPHP\Models\Period;
 use AppPHP\Models\Postulant;
 use AppPHP\Models\Area;
+use AppPHP\Models\UserRol;
 use AppPHP\Models\Career;
 use AppPHP\Models\Modality;
 use AppPHP\Models\Responsable;
