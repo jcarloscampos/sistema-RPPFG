@@ -320,17 +320,17 @@ class ProfessionalsController extends BaseController
                 while (($data = fgetcsv($handle, 1000, ";")) !== FALSE){
                     //asi omitimos la columna de titulos
                     if($counter > 0){
-                        $nombre = $data[0].trim();
-                        $ap_paterno = $data[1].trim();
-                        $ap_materno = $data[2].trim();
-                        $email = $data[3].trim();
-                        $grado_academico = $data[4].trim();
-                        $carga_horaria = $data[5].trim();
-                        $nombre_cuenta = $data[6].trim();
-                        $telefono = $data[7].trim();
-                        $direccion = $data[8].trim();
-                        $perfil = $data[9].trim();
-                        $pass_cuenta = $data[10].trim();
+                        $nombre = trim($data[0]);
+                        $ap_paterno = trim($data[1]);
+                        $ap_materno = trim($data[2]);
+                        $email = trim($data[3]);
+                        $grado_academico = trim($data[4]);
+                        $carga_horaria = trim($data[5]);
+                        $nombre_cuenta = trim($data[6]);
+                        $telefono = trim($data[7]);
+                        $direccion = trim($data[8]);
+                        $perfil = trim($data[9]);
+                        $pass_cuenta = trim($data[10]);
                         $ci = $settingData->recuperarCIProfessional($nombre, $ap_paterno, $ap_materno);
                         $cod_sis = $settingData->recuperarSISProfessional($nombre, $ap_paterno, $ap_materno);
 

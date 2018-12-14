@@ -297,10 +297,10 @@ class AreaController extends BaseController
                 {
                     //asi omitimos la columna de titulos
                     if($counter > 0){
-                        $index = $data[0].trim();
-                        $name_area = $data[1].trim();
-                        $desc_area = $data[2].trim();
-                        $parentID = $data[3].trim();
+                        $index = trim($data[0]);
+                        $name_area = trim($data[1]);
+                        $desc_area = trim($data[2]);
+                        $parentID = trim($data[3]);
                         //insertamos el area solo si no tiene un area ID es decir, solo si no es una subarea
                         if(!$parentID){
                             // Usamos esta seccion para validar el formato de los datos

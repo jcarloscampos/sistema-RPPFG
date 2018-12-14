@@ -167,24 +167,24 @@ class ProjectsController extends BaseController
                 while (($data = fgetcsv($handle, 1000, ";")) !== FALSE){
                     //asi omitimos la columna de titulos
                     if($counter > 0){
-                        $titulo_proyecto_final = $data[0].trim();
-                        $nombre_tutor = $data[1].trim();
-                        $apellido_paterno_tutor = $data[2].trim();
-                        $apellido_materno_tutor = $data[3].trim();
-                        $nombre_postulante = $data[4].trim();
-                        $apellido_paterno_postulante = $data[5].trim();
-                        $apellido_materno_postulante = $data[6].trim();
-                        $objetivo_general = $data[7].trim();
-                        $area_perfil = $data[8].trim();
-                        $modalidad_titulacion = $data[9].trim();
-                        $carrera = $data[10].trim();
-                        $fecha_de_registro = $data[11].trim();
-                        $periodo = $data[12].trim();
+                        $titulo_proyecto_final = trim($data[0]);
+                        $nombre_tutor = trim($data[1]);
+                        $apellido_paterno_tutor = trim($data[2]);
+                        $apellido_materno_tutor = trim($data[3]);
+                        $nombre_postulante = trim($data[4]);
+                        $apellido_paterno_postulante = trim($data[5]);
+                        $apellido_materno_postulante = trim($data[6]);
+                        $objetivo_general = trim($data[7]);
+                        $area_perfil = trim($data[8]);
+                        $modalidad_titulacion = trim($data[9]);
+                        $carrera = trim($data[10]);
+                        $fecha_de_registro = trim($data[11]);
+                        $periodo = trim($data[12]);
 
                          // Usamos esta seccion para validar el formato de los datos
-                         if(!preg_match("/^([0-2][0-9]|3[0-1])(\/|-)(0[1-9]|1[0-2])\2(\d{4})$/",$fecha_de_registro)){
+                         if(!preg_match("/^([0-2][0-9]|3[0-1])(\/|-)(0[1-9]|1[0-2])(\/|-)(\d{4})$/",$fecha_de_registro)){
                             $line = $counter + 1;
-                            array_push($information, "Fecha de Registro en la linea: " . $line . " tiene un formato incorrecto. Por favor verifique e intente nuevamente");
+                            array_push($information, "Fecha de Registro en la linea: " . $line . $fecha_de_registro . "tiene un formato incorrecto. Por favor verifique e intente nuevamente");
                         }else{
                             //Obtenemos el ID de la carrera
                             $career = Career::where('name', $carrera)->first();
@@ -199,7 +199,7 @@ class ProjectsController extends BaseController
                                 $area = Area::where('name', $area_perfil)->first();
                                 if (is_null($area)){
                                     $linea = $counter + 1;
-                                    array_push($information, "Error en la linea: $linea, La siguiente area no se encuentra registrada en el sistema: \"$area\", por favor registrela e intente nuevamente.");
+                                    array_push($information, "Error en la linea: $linea, La siguiente area no se encuentra registrada en el sistema: \"$area_perfil\", por favor registrela e intente nuevamente.");
                                 }
                                 else{
                                     $id_area = $area->id;
@@ -364,7 +364,18 @@ class ProjectsController extends BaseController
         if(!is_null($profUmssArea)){
             $prof_id = $profUmssArea->id_prof;
         }else{
-            $prof_id = ItnProfArea::query()->first()->id_prof;
+            $first_prof_area = ItnProfArea::query()->first();
+            //en caso de no tener docentes registrados con el área, se asignará al primer docente registrado en el sistema el área
+            if(!is_null($first_prof_area)){
+                $prof_id = $first_prof_area->id_prof;
+            }else{
+                $prof_id = ProfessionalUMSS::query()->first()->id;
+                $new_prof_area = new ItnProfArea([
+                    "id_prof" => $prof_id,
+                    "id_area" => $id_area
+                ]);
+                $new_prof_area->save();
+            }
         }
 
         $type_resp_id = TypeResponsable::where('name',"teacher")->first()->id;
